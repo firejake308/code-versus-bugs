@@ -7,6 +7,8 @@
  * 11/2/14:	
  * 		Now keeps track of fps and displays it in the info panel
  * 
+ * ----------------------------------------------------------------------
+ * 
  * Copyright 2014 Adel Hassan and Patrick Kenney
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
