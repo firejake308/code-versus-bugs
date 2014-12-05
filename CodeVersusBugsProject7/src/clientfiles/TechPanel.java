@@ -1,0 +1,162 @@
+
+package clientfiles;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+/**TechPanel.java
+ * This class handles universal upgrades in-between rounds.
+ * @author Adel Hassan
+ * 
+ * UPDATE LOG
+ * 11/25/14:
+ * 		class created
+ * 11/29/14:
+ * 		upgrading damage now affects future towers
+ */
+public class TechPanel extends JPanel implements ActionListener
+{
+	//width and height of the panel for compatibility across multiple devices
+	int width;
+	int height; 
+	
+	//buttons for the upgrades
+	private JButton damage;
+	private JButton lives;
+	private JButton money;
+	
+	//number of points spent on each upgrade
+	private int damagePoints;
+	private int livesPoints;
+	private int moneyPoints;
+	
+	public TechPanel()
+	{
+		damagePoints = 0;
+		livesPoints = 0;
+		moneyPoints = 0;
+	}
+	/**all GUI initializing goes in this pseudo-constructor
+	 * 
+	 */
+	public void initializeTechPanel()
+	{
+		//print width and height for debugging
+		width = getWidth();
+		height = getHeight();
+		System.out.println("(w, h): "+width+" "+height);
+		
+		//we want to place our own buttons as we please
+		setLayout(null);
+		
+		//initialize the buttons
+		damage = new JButton("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
+		lives = new JButton("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
+		money = new JButton("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
+		
+		//set bounds using fractions of width and height*
+		damage.setBounds(width/6-50, 25, 100, height/15);
+		lives.setBounds(width/2-50, 25, 100, height/15);
+		money.setBounds(5*width/6-50, 25,100, height/15);
+		
+		//add action listeners
+		damage.addActionListener(this);
+		lives.addActionListener(this);
+		money.addActionListener(this);
+		
+		//add buttons to panel
+		add(damage);
+		add(lives);
+		add(money);
+	}
+	
+	@Override
+	public void setVisible(boolean aFlag)
+	{
+		if(aFlag == true)
+		{
+			//set visible like normal
+			super.setVisible(true);
+			
+			//make the buttons clickable again if user can spend more points on them
+			if(damagePoints < 5)
+				damage.setEnabled(true);
+			if(livesPoints < 5)
+				lives.setEnabled(true);
+			if(moneyPoints < 5)
+				money.setEnabled(true);
+		}
+		else if(aFlag == false)
+			//set invisible like normal
+			super.setVisible(false);
+	}
+	
+	public void actionPerformed(ActionEvent e)
+	{
+		JButton clicked = (JButton) e.getSource();
+		
+		if(clicked == damage)
+		{
+			damagePoints++;
+			
+			//increase damage of pre-existing towers by 5
+			for(int t = 0; t < Tower.allTowers.length; t++)
+			{
+				Tower curr = Tower.allTowers[t];
+				if(curr == null)
+					break;
+				else if(curr.getType() == TowerType.DISC_THROWER || curr.getType() == TowerType.SCANNER)
+				{
+					curr.damage += 5; //only increases damage on dt's and scanners by 5
+				}
+			}
+			
+			//update damage for future towers
+			DiscThrower.increaseDamage(5);
+		}
+		
+		else if(clicked == lives)
+		{
+			livesPoints++;
+			Game.lives += 20;
+			Game.gf.life.setText("Lives: "+Game.lives+"....Round: "+Game.level);
+		}
+		
+		else if(clicked == money)
+		{
+			moneyPoints++;
+			Game.addMoney(25);
+		}
+		
+		//update point values
+		damage.setText("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
+		lives.setText("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
+		money.setText("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
+		
+		//disable all buttons after a point is spent
+		damage.setEnabled(false);
+		lives.setEnabled(false);
+		money.setEnabled(false);
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		//attack
+		g.setColor(Color.red);
+		g.fillRect(0, 0, width/3, height);
+		//defense
+		g.setColor(Color.blue);
+		g.fillRect(width/3, 0, width/3, height);
+		//utility
+		g.setColor(new Color(73, 227, 122));
+		g.fillRect(2*width/3, 0, width/3, height);
+		
+		//strings
+		g.setColor(Color.black);
+		g.setFont(new Font("myfont", Font.BOLD, 20));
+		g.drawString("ATTACK", 10, height-20);
+		g.drawString("DEFENSE", width/3+10, height-20);
+		g.drawString("SUPPORT", 2*width/3+10, height-20);
+	}
+}
