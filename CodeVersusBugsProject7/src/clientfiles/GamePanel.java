@@ -209,11 +209,15 @@ public class GamePanel extends JPanel
         		{
         			TowerType towerToPlace = TowerType.DISC_THROWER;
         			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
         		}
         		if(e.getKeyCode()==KeyEvent.VK_N)
         		{
         			TowerType towerToPlace = TowerType.NUMBER_GENERATOR;
         			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
         		}
         	}
         	public void keyReleased(KeyEvent e){}
@@ -244,7 +248,9 @@ public class GamePanel extends JPanel
 	{
 		return mouseY;
 	}
-	
+	/**updates the cursor based on the current towerToPlace
+	 * 
+	 */
 	public void setCursorIcon()
 	{
 		switch (ShopPanel.towerToPlace)
@@ -277,26 +283,6 @@ public class GamePanel extends JPanel
 		{
 			setBackground(Color.GREEN);
 			setOpaque(false);
-			/*
-			//tutorial things
-    		JLabel tutorialBox;
-    		int w = Game.screenSize.width - 110;
-    		int h = Game.screenSize.height- 110;
-    		Font consolas = new Font("Monospaced", Font.PLAIN, h/20);
-    		switch(Game.tutorialSlide)
-    		{
-    			case 0:
-    				break;
-    			case 1:
-    				tutorialBox = new JLabel("Welcome to Code Versus Bugs!");
-    				tutorialBox.setBounds(900,400, w, h / 10);
-    				System.out.println(tutorialBox.getLocation());
-    				tutorialBox.setFont(consolas);
-    				tutorialBox.setBackground(new Color(143, 211, 247, 175));
-    				tutorialBox.setOpaque(true);
-    				this.add(tutorialBox);
-    				System.out.println(tutorialBox.getLocation());
-    		}*/
 		}
 		public void paintComponent(Graphics g)
 		{
