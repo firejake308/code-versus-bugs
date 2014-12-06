@@ -1,25 +1,23 @@
-/**Virus.java
- * Handles movement and drawing of viruses.
+/**Minion.java
+ * Handles minion-specific stuff.
  * 
  * UPDATE LOG
- * 11/1/14:	
- * 		speed is now in pixels per second
- * 		x, y, and distance are now doubles for more fine tuning
- * 		made checkpoint variables for future use in implementing different paths
- * 11/2/14:	
- * 		drawVirus and moveVirus are no longer static for more logical code
- * 11/12/14:
- * 		2 paths now exist for viruses to follow
- * 		implemented directions and path arrays in moveVirus()
- * 11/15/14:
- * 		added lanes 3,4 and 5 
- * 		[BALANCE] reduced income from viruses ($10 -> $5)
- * 11/23/14:
- * 		added freezing ability and framework for future abilities
- * 11/27/14:
- * 		[BALANCE] increased speed of virus (20 -> 35)
- * TODO
- * see if we are done with this class for now
+ * 
+ * ----------------------------------------------------------------------
+ * 
+ * Copyright 2014 Adel Hassan and Patrick Kenney
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package clientfiles;
 

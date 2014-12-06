@@ -1,5 +1,6 @@
-/**LevelManager.java
- * This class creates a LevelManager object, which generates a group of Virus objects.
+/**StoryManager.java
+ * This class creates a StoryManager object, which generates a group of Virus objects
+ * according to a pre-defined order.
  * 
  * UPDATE LOG
  * 10/13/2014 - class created
@@ -16,6 +17,22 @@
  * 
  * TODO
  * write AI to initialize rounds with a seed value for harder or lower difficulties?
+ * 
+ * ----------------------------------------------------------------------
+ * 
+ * Copyright 2014 Adel Hassan and Patrick Kenney
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package clientfiles;
 
