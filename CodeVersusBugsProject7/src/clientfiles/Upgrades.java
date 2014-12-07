@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
@@ -178,7 +179,7 @@ public abstract class Upgrades
 	}
 	
 	public static void removeUpgradePanel()
-	{
+	{	
 		if (GamePanel.numTowers < displayedUpgradeID)
 			displayedUpgradeID = GamePanel.numTowers--;
 		
@@ -348,6 +349,10 @@ public abstract class Upgrades
 											//special case for tutorial slide 13
 											if(Game.tutorialSlide == 13)
 												Game.gamePanel.nextSlide();
+											//update range indicator
+											Tower tower = Tower.allTowers[displayedUpgradeID];
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+													tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 										
 											

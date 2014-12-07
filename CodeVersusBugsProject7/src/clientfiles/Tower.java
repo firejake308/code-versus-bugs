@@ -3,10 +3,13 @@ package clientfiles;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -74,6 +77,8 @@ public abstract class Tower implements ActionListener
 	protected int level = 1;
 	protected int health = 50;
 	private boolean infected = false;
+	protected Ellipse2D rangeIndicator;
+	public boolean rangeOn = false;
 	
 	//upgrades
 	protected int projectileDurability;
@@ -122,7 +127,7 @@ public abstract class Tower implements ActionListener
 		sprites[id].setBounds(getX(), getY(), 50, 50);
 		sprites[id].addActionListener(this);
 		
-		Game.gamePanel.add(sprites[id]);
+		Game.gamePanel.addToLayeredPane(sprites[id], 5);
 	}
 	public int getRadius()
 	{
@@ -367,8 +372,12 @@ public abstract class Tower implements ActionListener
 	
 	public void drawTower(Graphics g)
 	{
-		g.setColor(Color.BLACK);
-		g.drawOval((int)(getCenterX()-range)+GamePanel.getMapX(), (int)(getCenterY()-range)+GamePanel.getMapY(), (int)range*2,(int) range*2);
+		if(rangeOn)
+		{
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setColor(new Color(0, 0, 0, 50));
+			g2d.fill(rangeIndicator);
+		}
 		sprites[id].setBounds(getScreenX(), getScreenY(), sprites[id].getWidth(), sprites[id].getHeight());
 	}
 	
@@ -396,14 +405,22 @@ public abstract class Tower implements ActionListener
 			{
 				if (Upgrades.displayedUpgradeID != i)
 				{
+					//show panel and range indicator
 					Upgrades.showUpgradePanel(i);
+					rangeOn = true;
+					rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
+					
 					//special case for tutorial slide 9
 					//user was asked to select a tower to bring up upgrade panel
 					if(Game.tutorialSlide == 9)
 						Game.gamePanel.nextSlide();
 				}
 				else if (Upgrades.displayedUpgradeID == i)
+				{
+					//hide upgrade panel and range indicator
 					Upgrades.removeUpgradePanel();
+					rangeOn = false;
+				}
 			}
 		}
 	}

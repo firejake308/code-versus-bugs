@@ -150,7 +150,11 @@ public class GamePanel extends JPanel
             			if (Tower.allTowers[i] == null)
             				break;
             			else if (i == Upgrades.displayedUpgradeID)
+            			{
             				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
             		}
             	}
             	

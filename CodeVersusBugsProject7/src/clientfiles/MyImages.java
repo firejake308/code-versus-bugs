@@ -1,14 +1,15 @@
 package clientfiles;
 
-import java.awt.Toolkit;
+//import java.awt.Toolkit;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 /**MyImages.java
- * Holds static Image variables for use in the other classes.
+ * Holds static BufferedImage variables for use in the other classes.
  * @author Ahmadul
  * 
  * ----------------------------------------------------------------------
@@ -29,54 +30,54 @@ import javax.swing.JOptionPane;
  */
 public class MyImages 
 {
-	private static Toolkit tk = Toolkit.getDefaultToolkit();
+	//private static Toolkit tk = Toolkit.getDefaultToolkit();
 	//frames and buttons
-	public static Image miniMinion;
-	public static Image play;
-	public static Image pause;
-	public static Image redArrow;
+	public static BufferedImage miniMinion;
+	public static BufferedImage play;
+	public static BufferedImage pause;
+	public static BufferedImage redArrow;
 	//malware
-	public static Image minion;
-	public static Image wormHead;
-	public static Image wormBody;
+	public static BufferedImage minion;
+	public static BufferedImage wormHead;
+	public static BufferedImage wormBody;
 	//towers
-	public static Image dt;
-	public static Image invalidDT;
-	public static Image random;
-	public static Image randomlethal;
-	public static Image random0;
-	public static Image random1;
-	public static Image random2;
-	public static Image random3;
-	public static Image random4;
-	public static Image random5;
-	public static Image random6;
-	public static Image random7;
-	public static Image random8;
-	public static Image random9;
-	public static Image invalidRandom;
+	public static BufferedImage dt;
+	public static BufferedImage invalidDT;
+	public static BufferedImage random;
+	public static BufferedImage randomlethal;
+	public static BufferedImage random0;
+	public static BufferedImage random1;
+	public static BufferedImage random2;
+	public static BufferedImage random3;
+	public static BufferedImage random4;
+	public static BufferedImage random5;
+	public static BufferedImage random6;
+	public static BufferedImage random7;
+	public static BufferedImage random8;
+	public static BufferedImage random9;
+	public static BufferedImage invalidRandom;
 	//projectiles
-	public static Image cd;
-	public static Image r0;
-	public static Image r1;
-	public static Image r2;
-	public static Image r3;
-	public static Image r4;
-	public static Image r5;
-	public static Image r6;
-	public static Image r7;
-	public static Image r8;
-	public static Image r9;
-	public static Image r0lethal;
-	public static Image r1lethal;
-	public static Image r2lethal;
-	public static Image r3lethal;
-	public static Image r4lethal;
-	public static Image r5lethal;
-	public static Image r6lethal;
-	public static Image r7lethal;
-	public static Image r8lethal;
-	public static Image r9lethal;
+	public static BufferedImage cd;
+	public static BufferedImage r0;
+	public static BufferedImage r1;
+	public static BufferedImage r2;
+	public static BufferedImage r3;
+	public static BufferedImage r4;
+	public static BufferedImage r5;
+	public static BufferedImage r6;
+	public static BufferedImage r7;
+	public static BufferedImage r8;
+	public static BufferedImage r9;
+	public static BufferedImage r0lethal;
+	public static BufferedImage r1lethal;
+	public static BufferedImage r2lethal;
+	public static BufferedImage r3lethal;
+	public static BufferedImage r4lethal;
+	public static BufferedImage r5lethal;
+	public static BufferedImage r6lethal;
+	public static BufferedImage r7lethal;
+	public static BufferedImage r8lethal;
+	public static BufferedImage r9lethal;
 	
 	/**I believe I need the method due to the need for a try-catch
 	 * 
