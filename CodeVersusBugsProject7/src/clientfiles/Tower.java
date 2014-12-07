@@ -4,14 +4,18 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImageOp;
 import java.util.Random;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -61,6 +65,7 @@ public abstract class Tower implements ActionListener
 	public static Tower[] allTowers = new Tower[100];
 	protected static JButton[] sprites = new JButton[100];
 	protected  int[] costsOfUpgrades = new int[27];
+	private ImageIcon icon;
 	private static Random generator = new Random();
 	
 	protected int id;
@@ -77,8 +82,10 @@ public abstract class Tower implements ActionListener
 	protected int level = 1;
 	protected int health = 50;
 	private boolean infected = false;
+	
 	protected Ellipse2D rangeIndicator;
-	public boolean rangeOn = false;
+	public boolean rangeOn = true;
+	protected double angleOfArrow;
 	
 	//upgrades
 	protected int projectileDurability;
@@ -123,11 +130,15 @@ public abstract class Tower implements ActionListener
 		
 		System.out.println("The id is: " + id);
 		
+		this.icon = icon;
+		
 		sprites[id] = new JButton(icon);
-		sprites[id].setBounds(getX(), getY(), 50, 50);
+		sprites[id].setBounds(getX(), getY(), (int)(50*Game.scaleOfSprites), (int)(50*Game.scaleOfSprites));
 		sprites[id].addActionListener(this);
 		
-		Game.gamePanel.addToLayeredPane(sprites[id], 5);
+		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
+		
+		Game.gamePanel.addToLayeredPane(sprites[id], 0);
 	}
 	public int getRadius()
 	{
@@ -250,13 +261,25 @@ public abstract class Tower implements ActionListener
 			
 			
 			if (xOfVirus >= xOfTower && yOfVirus <= yOfTower)
+			{
 				quadrant = 1;
+				angleOfArrow=Math.PI-angle;
+			}
 			else if (xOfVirus <= xOfTower && yOfVirus <= yOfTower)
+			{
 				quadrant = 2;
+				angleOfArrow = angle;
+			}
 			else if (xOfVirus <= xOfTower && yOfVirus >= yOfTower)
+			{
 				quadrant = 3;
+				angleOfArrow = -angle;
+			}
 			else if (xOfVirus >= xOfTower && yOfVirus >= yOfTower)
+			{
 				quadrant = 4;
+				angleOfArrow = Math.PI + angle;
+			}
 			
 			//go through allProjectiles until you hit a null
 			//and create a projectile at that location in the array
@@ -372,13 +395,30 @@ public abstract class Tower implements ActionListener
 	
 	public void drawTower(Graphics g)
 	{
+		Graphics2D g2d = (Graphics2D) g;
+		
+		//draw range indicator if necessary
 		if(rangeOn)
 		{
-			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(new Color(0, 0, 0, 50));
 			g2d.fill(rangeIndicator);
 		}
+		
+		//reset image
+		AffineTransform at = new AffineTransform();
+		at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
+		at.translate(getX()/Game.scaleOfSprites, getY()/Game.scaleOfSprites);
+		g2d.drawImage(icon.getImage(), at, null);
+		sprites[id].setIcon(icon);
+		
 		sprites[id].setBounds(getScreenX(), getScreenY(), sprites[id].getWidth(), sprites[id].getHeight());
+		//rotate arrow
+				AffineTransform op = new AffineTransform();
+				op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
+						getCenterY()-MyImages.redArrow.getHeight()/2);
+				op.rotate(angleOfArrow, 24, 23);
+				op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+				g2d.drawImage(MyImages.redArrow, op, null);
 	}
 	
 	public abstract void addUpgradeOptions(int idOfTower);

@@ -22,6 +22,8 @@
  * 		made it so that if you move over an invalid area, the cursor turns red
  * 11/29/2014:
  * 		scrolling removed
+ * 12/7/14:
+ * 		tower range indicator disappears when user clicks on map
  * 
  * ----------------------------------------------------------------------
  * 
@@ -276,6 +278,10 @@ public class GamePanel extends JPanel
         			ShopPanel.validateBuy(towerToPlace);
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_SPACE)
+        		{
+        			Game.pauseListener();
         		}
         	}
         	public void keyReleased(KeyEvent e){}

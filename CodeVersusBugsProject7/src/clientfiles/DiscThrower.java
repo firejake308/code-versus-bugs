@@ -72,6 +72,8 @@ public class DiscThrower extends Tower
 		type = TowerType.DISC_THROWER;
 		damage = damageToSet;
 		
+		angleOfArrow = 0;
+		
 		realValue += cost;
 		
 		//make user pay for towers

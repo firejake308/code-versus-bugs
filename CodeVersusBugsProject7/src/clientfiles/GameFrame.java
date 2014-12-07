@@ -35,6 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.*;
 
@@ -115,6 +116,8 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
+		Game.scaleOfSprites = (Game.widthOfGamePanel / 50) / 26.44;	
+		
 		int lowest = JLayeredPane.FRAME_CONTENT_LAYER;
 		
 		// for top left entrance
@@ -446,45 +449,7 @@ public class GameFrame extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if(Game.gameState == Game.PLAYING)
-		{
-			Game.pauseButton.setText("");
-			Game.pauseButton.setIcon(PauseButtonListener.sprite);
-			
-			Game.gameState = Game.PAUSED;
-			
-			Object[] options = {"Resume", "Quit"};
-			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
-					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
-			
-			if(choice == 0)
-			{
-				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-				Game.gameState = Game.PLAYING;
-			}
-			else if(choice == 1)
-			{
-				System.exit(0);
-			}
-		}
-		else if(Game.gameState == Game.PAUSED)
-		{
-			// doesn't close round unless it is end of round, changed in Virus when game is paused remotely
-			if (Game.endOfRound == true)
-			{
-				Game.endOfRound = false;
-				Game.gamePanel.lvlManager.nextlvl();
-				Game.gamePanel.setVisible(true);
-				Game.techPanel.setVisible(false);
-				
-				//special case for tutorial slide 17
-				if(Game.tutorialSlide == 17)
-					Game.gamePanel.nextSlide();
-			}
-			
-			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-			Game.gameState = Game.PLAYING;
-		}
+		Game.pauseListener();
 	}
 	
 }
