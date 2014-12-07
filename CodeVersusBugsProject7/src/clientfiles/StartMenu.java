@@ -120,9 +120,9 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	
 	        creditsText.setEditable(false);
 	        creditsText.setBounds(140, 50, 120, 200);
-	        //creditsText.add(new Scrollbar(Scrollbar.VERTICAL));
 	        
-	        //c.add(scroll);
+	        
+	        //c.add(new JScrollBar(creditsText));
 			c.add(creditsText);
 			
 			back.setBounds(140, 275, 120, 50);

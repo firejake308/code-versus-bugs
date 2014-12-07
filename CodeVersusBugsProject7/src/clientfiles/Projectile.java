@@ -233,13 +233,6 @@ public class Projectile
 			yOfNewLocation = oldY + (a * elapsedTime * speed);
 		}
 		
-		//System.out.println(xOfNewLocation + ", " + yOfNewLocation);
-		
-		// currently useless
-		//double distance = Math.sqrt(Math.pow(xOfNewLocation - oldX, 2) + Math.pow(yOfNewLocation - oldY, 2));
-		
-		//System.out.println(distance + " units traveled this frame.");
-		
 		x = xOfNewLocation;
 		y = yOfNewLocation;
 		

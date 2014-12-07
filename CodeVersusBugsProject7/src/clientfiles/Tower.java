@@ -172,7 +172,7 @@ public abstract class Tower implements ActionListener
 	 */
 	public int getCenterX()
 	{
-		return x + sprites[id].getWidth() / 2;
+		return (int) (x + Game.scaleOfSprites * sprites[id].getWidth() / 2);
 	}
 	/**returns the y of the center of the tower
 	 * 
@@ -180,7 +180,7 @@ public abstract class Tower implements ActionListener
 	 */
 	public int getCenterY()
 	{
-		return y + sprites[id].getHeight() / 2;
+		return y + (int) (Game.scaleOfSprites * sprites[id].getHeight() / 2);
 	}
 	/**sets the x-coordinate of the center of the tower
 	 * 
@@ -412,13 +412,14 @@ public abstract class Tower implements ActionListener
 		sprites[id].setIcon(icon);
 		
 		sprites[id].setBounds(getScreenX(), getScreenY(), sprites[id].getWidth(), sprites[id].getHeight());
+		
 		//rotate arrow
-				AffineTransform op = new AffineTransform();
-				op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
-						getCenterY()-MyImages.redArrow.getHeight()/2);
-				op.rotate(angleOfArrow, 24, 23);
-				op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
-				g2d.drawImage(MyImages.redArrow, op, null);
+		AffineTransform op = new AffineTransform();
+		op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
+				getCenterY()-MyImages.redArrow.getHeight()/2);
+		op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
+		op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+		g2d.drawImage(MyImages.redArrow, op, null);
 	}
 	
 	public abstract void addUpgradeOptions(int idOfTower);
