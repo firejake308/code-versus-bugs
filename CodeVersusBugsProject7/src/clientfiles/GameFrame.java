@@ -473,9 +473,13 @@ public class GameFrame extends JFrame implements ActionListener
 			if (Game.endOfRound == true)
 			{
 				Game.endOfRound = false;
-				Game.gamePanel.lvlManager.closelvl();
+				Game.gamePanel.lvlManager.nextlvl();
 				Game.gamePanel.setVisible(true);
 				Game.techPanel.setVisible(false);
+				
+				//special case for tutorial slide 17
+				if(Game.tutorialSlide == 17)
+					Game.gamePanel.nextSlide();
 			}
 			
 			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);

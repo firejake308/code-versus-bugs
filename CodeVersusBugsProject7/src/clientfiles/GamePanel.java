@@ -72,6 +72,7 @@ public class GamePanel extends JPanel
 	
 	static private final long serialVersionUID = 1;
 	
+	private JLabel tutorial;
 	JLayeredPane layeredPane;
 	
 	public GamePanel()
@@ -82,10 +83,60 @@ public class GamePanel extends JPanel
 		DrawingPanel drawingPanel = new DrawingPanel();
 		drawingPanel.setBounds(0,0,Game.screenSize.width -115, Game.screenSize.height -115);
 		
+		//shortcuts used in bounds calculation of tutorial
+		int w = Game.screenSize.width - 110;
+		int h = Game.screenSize.height - 110;
+		
+		//initialize the tutorial
+		tutorial = new JLabel("Welcome to Code Versus Bugs! ... (Click to continue)");
+		tutorial.setBounds(0, 9*h/10, w, h/10);
+		tutorial.setBackground(new Color(158, 216, 255, 175));
+		tutorial.setOpaque(true);
+		tutorial.setFont(new Font("Monospaced", Font.PLAIN, w/40));
+		tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+		tutorial.setVerticalAlignment(SwingConstants.CENTER);
+		tutorial.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				tutorial.setBackground(new Color(158,216,255,255));
+			}
+			public void mouseExited(MouseEvent e)
+			{
+				tutorial.setBackground(new Color(158, 216, 255, 175));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				//if a special action from the user is required to move on to the
+				//next slide, don't do anything
+				switch(Game.tutorialSlide)
+				{
+					case 7:
+					case 8:
+					case 9:
+					case 13:
+					case 17:
+					case 28:
+						return;
+				}
+				//if it's any other level, move on to the next slide
+				nextSlide();
+				/*Notes:
+				 * Slide 7 requires the user to buy a disc thrower
+				 * Slide 8 requires placing a tower
+				 * Slide 9 requires the user to click on the tower
+				 * Slide 13 requires upgrading a tower's range
+				 * Slide 17 requires starting the first round
+				 * Slide 28 is invisible, and will only move on when the tech panel appears
+				 */
+			}
+		});
+		
 		//layered pane stuff
 		layeredPane = new JLayeredPane();
 		layeredPane.setSize(Game.screenSize.width -115, Game.screenSize.height -115);
 		layeredPane.add(drawingPanel, JLayeredPane.DEFAULT_LAYER);
+		layeredPane.add(tutorial, JLayeredPane.DRAG_LAYER);
 		add(layeredPane);
 		
 		addMouseListener(new MouseAdapter()
@@ -134,7 +185,10 @@ public class GamePanel extends JPanel
             			//reset cursor to default and tower to place to none
                         setCursor(Cursor.getDefaultCursor());
                         ShopPanel.towerToPlace = TowerType.NONE;
-            			//System.out.println("cursor set to normal");
+                        
+                        //special case for tutorial slide 8
+                        if(Game.tutorialSlide == 8)
+                        	nextSlide();
                         break;
             		case NUMBER_GENERATOR:
 	            		// create a new number generator in the static array
@@ -275,6 +329,113 @@ public class GamePanel extends JPanel
 	public void addToLayeredPane(Component c, Integer i)
 	{
 		layeredPane.add(c, i);
+	}
+	public void nextSlide()
+	{
+		//shortcuts used in bounds calculation of tutorial
+		int w = Game.screenSize.width - 110;
+		int h = Game.screenSize.height - 110;
+		
+		//move on to next slide of tutorial
+		Game.tutorialSlide++;		
+		switch(Game.tutorialSlide)
+		{
+			case 2:
+				tutorial.setText("In this game, you play as a computer virus tracker...");
+				break;
+			case 3:
+				tutorial.setText("who moves around the network, placing disc throwers...");
+				break;
+			case 4:
+				tutorial.setText("that throw CDs at viruses to kill them. Along the...");
+				break;
+			case 5:
+				tutorial.setText("way, you'll meet more advanced malware and use more...");
+				break;
+			case 6:
+				tutorial.setText("powerful towers, but I'm getting ahead of myself.");
+				break;
+			case 7:
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				tutorial.setHorizontalAlignment(SwingConstants.LEFT);
+				tutorial.setText("First, click this button to buy a disc thrower.");
+				tutorial.setBounds(0, 70, 4*w/5, h/10);
+				break;
+			case 8:
+				tutorial.setText("Now place it over here.");
+				tutorial.setBounds(17*w/32, 13*h/20, 7*w/16, h/10);
+				break;
+			case 9:
+				tutorial.setText("Now click on the tower.");
+				tutorial.setBounds(17*w/32, 13*h/20, 7*w/16, h/10);
+				break;
+			case 10:
+				tutorial.setText("Excellent! You've brought up the upgrade panel!...");
+				tutorial.setIcon(null);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setBounds(0, 8*h/10, w, h/10);
+				break;
+			case 11:
+				tutorial.setText("Here you can see your tower's stats, delete it...");
+				break;
+			case 12:
+				tutorial.setText("for a partial refund, and upgrade your tower,...");
+				break;
+			case 13:
+				tutorial.setText("for a fee. Buy the Wider Range upgrade now.");
+				break;
+			case 14:
+				tutorial.setText("Great! Whenever you want, click anywhere on...");
+				break;
+			case 15:
+				tutorial.setText("the map to hide the upgrade panel. Now...");
+				break;
+			case 16:
+				tutorial.setText("you're all set. Press the play button...");
+				break;
+			case 17:
+				tutorial.setText("in the top left corner to begin the round.");
+				break;
+			case 18:
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setText("These guys are malware minions.");
+				tutorial.setBounds(9*w/21, 15, 11*w/21, h/10);
+				break;
+			case 19:
+				tutorial.setText("They are little snippets of...");
+				break;
+			case 20:
+				tutorial.setText("executable code that will...");
+				break;
+			case 21:
+				tutorial.setText("crash your CPU if they get to it.");
+				tutorial.setBounds(9*w/21, 15, 12*w/21, h/10);
+				break;
+			case 22:
+				tutorial.setText("Your tower's CDs contain the...");
+				break;
+			case 23:
+				tutorial.setText("code that'll remove these guys...");
+				break;
+			case 24:
+				tutorial.setText("from the network. Okay, looks...");
+				break;
+			case 25:
+				tutorial.setText("like you're all set. ...");
+				break;
+			case 26:
+				tutorial.setText("I'll check back on you at the...");
+				break;
+			case 27:
+				tutorial.setText("end of this round. Good luck!...");
+				break;
+			case 28:
+				tutorial.setVisible(false);
+				break;
+			case 29:
+				break;
+		}
 	}
 	
 	private class DrawingPanel extends JPanel

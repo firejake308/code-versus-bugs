@@ -102,6 +102,11 @@ public class TechPanel extends JPanel implements ActionListener
 				lives.setEnabled(true);
 			if(moneyPoints < 5)
 				money.setEnabled(true);
+			
+			//special case for tutorial slide 28
+			//force user to slide 29 once tech panel appears for the first time
+			if(Game.tutorialSlide <= 28)
+				Game.tutorialSlide = 29;
 		}
 		else if(aFlag == false)
 			//set invisible like normal

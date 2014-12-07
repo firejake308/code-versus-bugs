@@ -34,6 +34,7 @@ public class MyImages
 	public static Image miniMinion;
 	public static Image play;
 	public static Image pause;
+	public static Image redArrow;
 	//malware
 	public static Image minion;
 	public static Image wormHead;
@@ -88,6 +89,7 @@ public class MyImages
 			miniMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon.png"));
 			pause = ImageIO.read(MyImages.class.getResourceAsStream("resources/pausePauseButton.png"));
 			play = ImageIO.read(MyImages.class.getResourceAsStream("resources/playPauseButton.png"));
+			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
@@ -137,6 +139,7 @@ public class MyImages
 		{
 			System.out.println("there was an error in loading images");
 			JOptionPane.showMessageDialog(null, "there was an error in loading images");
+			e.printStackTrace();
 		}
 	}
 }

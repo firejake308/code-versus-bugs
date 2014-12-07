@@ -397,6 +397,10 @@ public abstract class Tower implements ActionListener
 				if (Upgrades.displayedUpgradeID != i)
 				{
 					Upgrades.showUpgradePanel(i);
+					//special case for tutorial slide 9
+					//user was asked to select a tower to bring up upgrade panel
+					if(Game.tutorialSlide == 9)
+						Game.gamePanel.nextSlide();
 				}
 				else if (Upgrades.displayedUpgradeID == i)
 					Upgrades.removeUpgradePanel();

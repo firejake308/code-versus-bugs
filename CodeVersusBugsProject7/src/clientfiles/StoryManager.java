@@ -123,8 +123,10 @@ public class StoryManager implements LevelManager
 			break;
 		}
 	}
-	
-	public void closelvl()
+	/**takes the user to the next level by creating the correct
+	 * number of malwares for the level
+	 */
+	public void nextlvl()
 	{	
 		switch(lvl)
 		{

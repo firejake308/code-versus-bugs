@@ -10,7 +10,7 @@ public interface LevelManager
 	// extra methods removed to get rid of errors, replaced by:
 	public void addMalwares(int virusesThisLevel);
 	
-	public void closelvl();
+	public void nextlvl();
 	
 	public int getMalwaresThisLevel();
 	

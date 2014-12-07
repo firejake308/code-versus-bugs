@@ -24,6 +24,8 @@ import javax.swing.JTextArea;
  * 11/27/2014-functional
  * 11/27/14:
  * 		deleting towers fixed - Adel
+ * 12/6/14:
+ * 		fixed overlapping delete button
  * 
  * @author Patrick Kenney
  * 
@@ -69,16 +71,16 @@ public abstract class Upgrades
 		upgrade.setVisible(true);
 		upgrade.setLayout(null);
 		
-		upgradePath1.setBounds(width/6-75, 10, 150, height-20);
-		upgradePath2.setBounds(width/3-75, 10, 150, height-20);
-		upgradePath3.setBounds(width/2-75, 10, 150, height-20);
+		upgradePath1.setBounds(width/10 + 80, 10, 150, height-20);
+		upgradePath2.setBounds(width/10 + 235, 10, 150, height-20);
+		upgradePath3.setBounds(width/10 + 390, 10, 150, height-20);
 		
-		statistics.setBounds(5, 10, 100, 80);
+		statistics.setBounds(5, 5, 100, 80);
 		statistics.setBackground(Color.CYAN);
 		upgradesInfo.setBounds((int) (width / 1.5) - 75, 10, 150, height - 20);
 		upgradesInfo.setBackground(Color.CYAN);
 		
-		deleteTower.setBounds(width/10-37, 10, 75, 25);
+		deleteTower.setBounds(105+(width/10-25)/2-37, 10, 75, 25);
 		deleteTower.setText("Delete");
 		
 		upgrade.addMouseListener(new MouseAdapter()
@@ -343,6 +345,9 @@ public abstract class Upgrades
 											
 			case 131:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 6; // nerfed from 200
 											System.out.println("range++");
+											//special case for tutorial slide 13
+											if(Game.tutorialSlide == 13)
+												Game.gamePanel.nextSlide();
 											break;
 										
 											

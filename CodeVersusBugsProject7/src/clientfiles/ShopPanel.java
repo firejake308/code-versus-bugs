@@ -68,11 +68,10 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		info.setText("$"+DiscThrower.cost);
             		if (Game.money < DiscThrower.cost)
-            			info.setBackground(Color.red);
+            			changeInfo("$"+DiscThrower.cost, true);
             		else
-                		info.setBackground(Color.white);
+            			changeInfo("$"+DiscThrower.cost, false);
             	}
 			}
 		});
@@ -83,11 +82,10 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		info.setText("$60");
             		if (Game.money < NumberGenerator.cost)
-            			info.setBackground(Color.red);
+            			changeInfo("$60", true);
             		else
-            			info.setBackground(Color.white);
+            			changeInfo("$60", false);
             	}
 			}
 		});
@@ -104,6 +102,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			warned = true;
 			info.setBackground(Color.red);
 		}
+		//reset timer so that text fades after 2 seconds
 		timer = 120;
 		
 	}
@@ -241,7 +240,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				return false;
 			}
 			
-			/**CORNERS**/
+/**CORNERS**/
 			
 			// check corner of 1st on top left
 			else if(y < Game.heightOfGamePanel / 4 + offset && y > Game.heightOfGamePanel / 4 - Game.widthOfGamePanel / 42 + offset && x < Game.widthOfGamePanel / 14 + Game.widthOfGamePanel / 42 - offset && x > Game.widthOfGamePanel / 14 - offset)
@@ -255,59 +254,59 @@ public class ShopPanel extends JPanel implements ActionListener
 				return false;
 			}
 			
-			/* check corner of 2 vertical on left side (not top row)
-			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + offset && x < Game.widthOfGamePanel / 5 - offset && x > Game.widthOfGamePanel / 5 - Game.widthOfGamePanel / 42 - offset)
+			// check corner of 2 vertical on left side (not top row)
+			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + offset && x < Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 42 - offset && x > Game.widthOfGamePanel / 5 - offset)
 			{
 				return false;
 			}
 			
 			// check corner opposite of above (left side)
-			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42 + Game.widthOfGamePanel / 42 && x > (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42)
+			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .4) + offset)
 			{
 				return false;
 			}
 			
 			// check corner above line converging both sides, left corner
-			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) + offset && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) + offset && x > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 - offset && y > (int) (Game.heightOfGamePanel * .4) - offset && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 42) - offset && x > (int) (Game.widthOfGamePanel * .4) - offset)
 			{
 				return false;
 			}
 			
 			// check corner above line converging both sides, right corner
-			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 + offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 - offset && y > (int) (Game.heightOfGamePanel * .4) - offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 + offset && x > (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 - Game.widthOfGamePanel / 42 + offset)
 			{
 				return false;
 			}
 			
 			// check corner directly below line converging both sides, both
-			else if(y < 699 + offset && y > 667 + offset && x < 736 + offset && x > 707 + offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 + offset && y > (int) (Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 - Game.widthOfGamePanel / 42 + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 + offset && x > (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 - Game.widthOfGamePanel / 42 + offset)
 			{
 				return false;
 			}
 			
 			// check last corner
-			else if(y < 699 - offset && y > 667 - offset && x < 337 - offset && x > 304 - offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 - offset && y > (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) - offset && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42 - offset && x > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) - offset)
 			{
 				return false;
 			}
 			
 			// check corner connecting 4th on left side, top
-			else if(y < 332 + offset && y > 300 + offset && x < 919 - offset && x > 885 - offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + offset && x < (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 42 - offset && x > (int) (Game.widthOfGamePanel * .65) - offset)
 			{
 				return false;
 			}
 			
 			// check corner connecting last column to left on top
-			else if(y < 332 + offset && y > 300 + offset && x < 1161 + offset && x > 1129 + offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + offset && x < (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 5 + offset)
 			{
 				return false;
 			}
 			
 			// last corner on right side before merging
-			else if(y < 524 + offset && y > 492 + offset && x < 1098 + offset && x > 1066 + offset)
+			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .3) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .3) + offset && x < (int) (Game.widthOfGamePanel * .8) + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .8) + offset)
 			{
 				return false;
-			}*/
+			}
 			
 			/**For checking proximity to other towers*/
 			for (int j = 0; j < Tower.allTowers.length; j++)
@@ -345,6 +344,9 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.NONE;
 				return;
 			}
+			//special case if user is on tutorial slide 6
+			if(Game.tutorialSlide == 7)
+				Game.gamePanel.nextSlide();
 			
 			changeInfo("Disc Thrower Selected",false);
 		}
