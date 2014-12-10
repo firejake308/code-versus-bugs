@@ -143,8 +143,8 @@ public class MyImages
 			
 			//map
 			cpu = ImageIO.read(MyImages.class.getResourceAsStream("resources/cpu.png"));
-			modem = ImageIO.read(MyImages.class.getResourceAsStream("resources/modem.png"));
-			router = ImageIO.read(MyImages.class.getResourceAsStream("resources/router.png"));
+			modem = ImageIO.read(MyImages.class.getResourceAsStream("resources/modem1.png"));
+			router = ImageIO.read(MyImages.class.getResourceAsStream("resources/router1.png"));
 		}
 		catch(Exception e)
 		{
