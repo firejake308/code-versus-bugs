@@ -78,6 +78,10 @@ public class MyImages
 	public static BufferedImage r7lethal;
 	public static BufferedImage r8lethal;
 	public static BufferedImage r9lethal;
+	//map
+	public static BufferedImage cpu;
+	public static BufferedImage modem;
+	public static BufferedImage router;
 	
 	/**I believe I need the method due to the need for a try-catch
 	 * 
@@ -113,6 +117,7 @@ public class MyImages
 			random8 = ImageIO.read(MyImages.class.getResourceAsStream("resources/random8.png"));
 			random9 = ImageIO.read(MyImages.class.getResourceAsStream("resources/random9.png"));
 			invalidRandom = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidRandom.png"));
+			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));
 			r0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r0.png"));
@@ -135,6 +140,11 @@ public class MyImages
 			r7lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r7lethal.png"));
 			r8lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r8lethal.png"));
 			r9lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r9lethal.png"));
+			
+			//map
+			cpu = ImageIO.read(MyImages.class.getResourceAsStream("resources/cpu.png"));
+			modem = ImageIO.read(MyImages.class.getResourceAsStream("resources/modem.png"));
+			router = ImageIO.read(MyImages.class.getResourceAsStream("resources/router.png"));
 		}
 		catch(Exception e)
 		{
