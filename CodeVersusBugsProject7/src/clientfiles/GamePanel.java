@@ -97,6 +97,7 @@ public class GamePanel extends JPanel
 		tutorial.setFont(new Font("Monospaced", Font.PLAIN, w/40));
 		tutorial.setHorizontalAlignment(SwingConstants.CENTER);
 		tutorial.setVerticalAlignment(SwingConstants.CENTER);
+		
 		tutorial.addMouseListener(new MouseAdapter()
 		{
 			public void mouseEntered(MouseEvent e)
@@ -446,6 +447,10 @@ public class GamePanel extends JPanel
 			case 29:
 				break;
 		}
+	}
+	public void disableTutorial()
+	{
+		tutorial.setVisible(false);
 	}
 	
 	private class DrawingPanel extends JPanel

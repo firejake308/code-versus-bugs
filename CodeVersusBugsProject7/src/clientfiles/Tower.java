@@ -413,13 +413,16 @@ public abstract class Tower implements ActionListener
 		
 		sprites[id].setBounds(getScreenX(), getScreenY(), sprites[id].getWidth(), sprites[id].getHeight());
 		
-		//rotate arrow
-		AffineTransform op = new AffineTransform();
-		op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
-				getCenterY()-MyImages.redArrow.getHeight()/2);
-		op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
-		op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
-		g2d.drawImage(MyImages.redArrow, op, null);
+		//rotate arrow for disc throwers
+		if(this instanceof DiscThrower)
+		{
+			AffineTransform op = new AffineTransform();
+			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
+					getCenterY()-MyImages.redArrow.getHeight()/2);
+			op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
+			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+			g2d.drawImage(MyImages.redArrow, op, null);
+		}
 	}
 	
 	public abstract void addUpgradeOptions(int idOfTower);
