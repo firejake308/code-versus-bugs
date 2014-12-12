@@ -190,8 +190,7 @@ public abstract class Upgrades
 		Game.gamePanel.remove(upgradePath3); 
 		Game.gamePanel.remove(upgradesInfo);
 		
-		Game.gamePanel.layeredPane.remove(upgrade);
-		
+		Game.gamePanel.removeFromLayeredPane(upgrade);
 		displayedUpgradeID = 98;
 		upgradesInfo.setText("");
 	}
@@ -201,8 +200,8 @@ public abstract class Upgrades
 		Tower.allTowers[displayedUpgradeID].accuracy = Tower.allTowers[displayedUpgradeID].hits / Tower.allTowers[displayedUpgradeID].shotsFired;
 		
 		statistics.setText("    Kills: " + Tower.allTowers[displayedUpgradeID].kills + "\n   Shots Fired: " 
-																+ Tower.allTowers[displayedUpgradeID].shotsFired + "\n   Hits: " + Tower.allTowers[displayedUpgradeID].hits 
-																+ "\n   Accuracy: " + Tower.allTowers[displayedUpgradeID].accuracy);
+										+ Tower.allTowers[displayedUpgradeID].shotsFired + "\n   Hits: " + Tower.allTowers[displayedUpgradeID].hits 
+										+ "\n   Accuracy: " + Tower.allTowers[displayedUpgradeID].accuracy);
 		upgrade.add(statistics);
 	}
 	
@@ -215,10 +214,10 @@ public abstract class Upgrades
 		
 		GamePanel.numTowers--;
 		
-		Game.gamePanel.remove(Tower.sprites[towerToBeDeletedID]);
+		Game.gamePanel.removeFromLayeredPane(Tower.sprites[towerToBeDeletedID]);
 		
 		// reimburse 60% of cost
-		Game.addMoney((int) (Tower.allTowers[towerToBeDeletedID].realValue * 0.6) );
+		Game.addMoney((int) (Tower.allTowers[towerToBeDeletedID].realValue * 0.6));
 		
 		removeUpgradePanel();
 		

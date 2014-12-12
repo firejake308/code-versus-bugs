@@ -38,7 +38,9 @@ package clientfiles;
 
 public class StoryManager implements LevelManager
 {
-	//current level
+	/**
+	 * Current level.
+	 */
 	public static int lvl;
 	public int malwaresThisLevel = 15;
 	
@@ -49,6 +51,7 @@ public class StoryManager implements LevelManager
 	private int malwaresForLevel4 = 5;
 	private int malwaresForLevel5 = 55;
 	private int malwaresForLevel6 = 120;
+	private int malwaresForLevel7 = 25;
 	
 	public StoryManager()
 	{
@@ -86,8 +89,9 @@ public class StoryManager implements LevelManager
 				startY -= 70;
 			}
 			break;
-			//worms only levels
+		//worms only levels
 		case 4:
+		case 7:
 			// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
 			for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
 			{
@@ -154,6 +158,10 @@ public class StoryManager implements LevelManager
 				addMalwares(malwaresForLevel6);
 				malwaresThisLevel = malwaresForLevel6;
 			case 7:
+				addMalwares(malwaresForLevel7);
+				malwaresThisLevel = malwaresForLevel7;
+				break;
+			case 8:
 				Game.gameState = Game.OVER;
 		}
 	}

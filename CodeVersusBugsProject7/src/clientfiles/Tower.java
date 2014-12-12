@@ -166,6 +166,12 @@ public abstract class Tower implements ActionListener
 		y=yToSet;
 	}
 	
+	public void setIcon(ImageIcon i)
+	{
+		sprites[id].setIcon(i);
+		icon = i;
+	}
+	
 	/**returns the x of the center of the tower
 	 * 
 	 * @return
@@ -222,7 +228,41 @@ public abstract class Tower implements ActionListener
 	public void dealDamage(int damage)
 	{
 		health -= damage;
-		if(health<=0)
+		
+		//change image for disc throwers
+		if(this instanceof DiscThrower)
+		{
+			if(health <= 0)
+			{
+				//kill a worm-ed tower
+				//Upgrades.displayedUpgradeID = id;
+				//Upgrades.deleteTower();
+				
+				//or, just infect it
+				infected = true;
+				health = 100;
+				setIcon(new ImageIcon(MyImages.dt5));
+			}
+			else if(health <= 10)
+			{
+				setIcon(new ImageIcon(MyImages.dt4));
+			}
+			else if(health <= 20)
+			{
+				setIcon(new ImageIcon(MyImages.dt3));
+			}
+			else if(health <=30)
+			{
+				setIcon(new ImageIcon(MyImages.dt2));
+			}
+			else if(health <= 40)
+			{
+				setIcon(new ImageIcon(MyImages.dt1));
+			}
+		}
+		
+		//for ng's, just infect 'em for now
+		else if(health <= 0)
 		{
 			//kill a worm-ed tower
 			//Upgrades.displayedUpgradeID = id;

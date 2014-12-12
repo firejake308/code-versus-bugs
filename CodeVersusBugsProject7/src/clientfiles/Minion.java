@@ -45,7 +45,7 @@ public class Minion extends Malware
 		
 		//initialize instance variables
 		health = 100;
-		reward = 5;
+		reward = 4;
 	}
 	
 	/**call this method on a virus object to move the virus

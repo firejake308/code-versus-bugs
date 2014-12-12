@@ -41,7 +41,12 @@ public class MyImages
 	public static BufferedImage wormHead;
 	public static BufferedImage wormBody;
 	//towers
-	public static BufferedImage dt;
+	public static BufferedImage dt0;
+	public static BufferedImage dt1;
+	public static BufferedImage dt2;
+	public static BufferedImage dt3;
+	public static BufferedImage dt4;
+	public static BufferedImage dt5;
 	public static BufferedImage invalidDT;
 	public static BufferedImage random;
 	public static BufferedImage randomlethal;
@@ -102,7 +107,12 @@ public class MyImages
 			wormBody = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormBody.png"));
 			
 			//towers
-			dt = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower1.png"));
+			dt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower0.png"));
+			dt1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower1.png"));
+			dt2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower2.png"));
+			dt3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower3.png"));
+			dt4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower4.png"));
+			dt5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower5.png"));
 			invalidDT = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidDiscThrower1.png"));
 			random = ImageIO.read(MyImages.class.getResourceAsStream("resources/random.png"));
 			randomlethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/randomlethal.png"));

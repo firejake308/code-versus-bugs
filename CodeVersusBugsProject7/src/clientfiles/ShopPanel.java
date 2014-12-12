@@ -51,7 +51,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		info.setOpaque(true);
 		info.setBounds(5, 10, 75, 55);
 		//info.setEditable(false);
-		buyDiscThrower.setBounds(20, 75, 50, 50);
+		buyDiscThrower.setBounds(20, 75, 50, 63);
 		buyNumberGenerator.setBounds(20, 150, 50, 50);
 		
 		buyDiscThrower.addActionListener(this);

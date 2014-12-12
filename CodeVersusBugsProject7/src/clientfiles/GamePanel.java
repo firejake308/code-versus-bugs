@@ -75,7 +75,7 @@ public class GamePanel extends JPanel
 	static private final long serialVersionUID = 1;
 	
 	private JLabel tutorial;
-	JLayeredPane layeredPane;
+	private JLayeredPane layeredPane;
 	
 	public GamePanel()
 	{
@@ -340,6 +340,10 @@ public class GamePanel extends JPanel
 	public void addToLayeredPane(Component c, Integer i)
 	{
 		layeredPane.add(c, i);
+	}
+	public void removeFromLayeredPane(Component c)
+	{
+		layeredPane.remove(c);
 	}
 	public void nextSlide()
 	{

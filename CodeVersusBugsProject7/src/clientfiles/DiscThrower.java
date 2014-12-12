@@ -44,7 +44,7 @@ import javax.swing.JLabel;
 public class DiscThrower extends Tower
 {
 	public static int cost = 50;
-	public static ImageIcon icon = new ImageIcon(MyImages.dt);
+	public static ImageIcon icon = new ImageIcon(MyImages.dt0);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
 	public static int damageToSet = 25;
 	
