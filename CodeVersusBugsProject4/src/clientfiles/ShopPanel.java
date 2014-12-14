@@ -358,7 +358,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				return;
 			}
 			
-			changeInfo(" Number Generator Selected",false);
+			changeInfo("Number Generator Selected",false);
 		}
 		else if (temp == buyScanner)
 		{
@@ -369,7 +369,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				return;
 			}
 			
-			changeInfo(" Scanner Selected",false);
+			changeInfo("Scanner Selected",false);
 		}
 		
 		validateBuy(towerType);
@@ -384,7 +384,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.DISC_THROWER;
 			}
 			else
-				changeInfo("Need $!", true);
+				changeInfo("Not Enough Money", true);
 		}
 		
 		else if(type == TowerType.NUMBER_GENERATOR)
@@ -394,7 +394,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.NUMBER_GENERATOR;
 			}
 			else
-				changeInfo("Need $!", true);
+				changeInfo("Not Enough Money!", true);
 		}
 		
 		else if(type == TowerType.SCANNER)
