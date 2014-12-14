@@ -47,10 +47,10 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyNumberGenerator = new JButton(ngImage);
 		buyScanner = new JButton();
 		
+		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
 		info.setOpaque(true);
 		info.setBounds(5, 10, 75, 55);
-		//info.setEditable(false);
 		buyDiscThrower.setBounds(20, 75, 50, 63);
 		buyNumberGenerator.setBounds(20, 150, 50, 50);
 		
@@ -90,7 +90,6 @@ public class ShopPanel extends JPanel implements ActionListener
 			}
 		});
 	}
-	
 	public static void changeInfo(String text, boolean warning)
 	{
 		// sets text

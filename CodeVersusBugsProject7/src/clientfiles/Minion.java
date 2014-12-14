@@ -48,7 +48,8 @@ public class Minion extends Malware
 		reward = 4;
 	}
 	
-	/**call this method on a virus object to move the virus
+	/**
+	 * call this method on a virus object to move the virus
 	 * where frames is the interpolation
 	 * 
 	 * @param frames

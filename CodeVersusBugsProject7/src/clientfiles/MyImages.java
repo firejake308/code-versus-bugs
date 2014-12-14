@@ -30,11 +30,12 @@ import javax.swing.JOptionPane;
  */
 public class MyImages 
 {
-	//private static Toolkit tk = Toolkit.getDefaultToolkit();
 	//frames and buttons
 	public static BufferedImage miniMinion;
 	public static BufferedImage play;
 	public static BufferedImage pause;
+	public static BufferedImage fastForwardOff;
+	public static BufferedImage fastForwardOn;
 	public static BufferedImage redArrow;
 	//malware
 	public static BufferedImage minion;
@@ -88,7 +89,8 @@ public class MyImages
 	public static BufferedImage modem;
 	public static BufferedImage router;
 	
-	/**I believe I need the method due to the need for a try-catch
+	/**
+	 * I believe I need the method due to the need for a try-catch
 	 * 
 	 */
 	public static void initializeImages()
@@ -99,6 +101,8 @@ public class MyImages
 			miniMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon.png"));
 			pause = ImageIO.read(MyImages.class.getResourceAsStream("resources/pausePauseButton.png"));
 			play = ImageIO.read(MyImages.class.getResourceAsStream("resources/playPauseButton.png"));
+			fastForwardOff = ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOff.png"));
+			fastForwardOn = ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOn.png"));
 			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
 			
 			//malware

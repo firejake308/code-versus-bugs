@@ -9,6 +9,7 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 /**
@@ -274,6 +275,18 @@ public abstract class Upgrades
 			
 			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath1;
 			
+			//warn user if in tutorial
+			if(Game.tutorial && Game.tutorialSlide <= 13)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "That's the wrong upgrade!", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 0)
+					return;
+				else if(choice == 1)
+					Game.gamePanel.disableTutorial();
+			}
+			
 			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1)))
 			{
 				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1);
@@ -291,6 +304,18 @@ public abstract class Upgrades
 			upgradeID += 20;
 			
 			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath2;
+			
+			//warn user if in tutorial
+			if(Game.tutorial && Game.tutorialSlide <= 13)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "That's the wrong upgrade!", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 0)
+					return;
+				else if(choice == 1)
+					Game.gamePanel.disableTutorial();
+			}
 			
 			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(2)))
 			{
@@ -343,11 +368,13 @@ public abstract class Upgrades
 											System.out.println("damage++");
 											break;
 											
-			case 131:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 6; // nerfed from 200
+			case 131:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 6;
 											System.out.println("range++");
+											
 											//special case for tutorial slide 13
 											if(Game.tutorialSlide == 13)
 												Game.gamePanel.nextSlide();
+											
 											//update range indicator
 											Tower tower = Tower.allTowers[displayedUpgradeID];
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 

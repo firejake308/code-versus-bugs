@@ -38,10 +38,6 @@ package clientfiles;
 
 public class StoryManager implements LevelManager
 {
-	/**
-	 * Current level.
-	 */
-	public static int lvl;
 	public int malwaresThisLevel = 15;
 	
 	// malwares per level
@@ -53,9 +49,9 @@ public class StoryManager implements LevelManager
 	private int malwaresForLevel6 = 120;
 	private int malwaresForLevel7 = 25;
 	
-	public StoryManager()
+	public StoryManager()  
 	{
-		lvl = 1;
+		
 	}
 	
 	public int getMalwaresThisLevel()
@@ -63,76 +59,98 @@ public class StoryManager implements LevelManager
 		return malwaresThisLevel;
 	}
 	
-	/**creates the malwares for story mode levels
+	/**
+	 * Creates the malwares for story mode levels.
 	 * 
+	 * @param malwaresToAddThisLevel the total number of malwares in this level.
 	 */
 	public void addMalwares(int malwaresToAddThisLevel)
 	{
 		// v is the counter for malwares input
 		int v = 0;
 		int startY = -75;
-		switch(lvl)
+		
+		switch(Game.level)
 		{
-		//all minions only levels
-		case 1:
-		case 2:
-		case 3:
-			// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
-			for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
-			{
-				// l == lane
-				for(int l = 1; l < 6; l++)
+			//all minions only levels
+			case 1:
+			case 2:
+			case 3:
+				// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
+				for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
 				{
-					Malware.allMalware[v] = new Minion(l, startY);
-					v++;
+					// l == lane
+					for(int l = 1; l < 6; l++)
+					{
+						Malware.allMalware[v] = new Minion(l, startY);
+						v++;
+					}
+					startY -= 70;
+				}
+				break;
+				
+			//worms only levels
+			case 4:
+			case 7:
+				// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
+				for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
+				{
+					// l == lane
+					for(int l = 1; l < 6; l++)
+					{
+						Malware.allMalware[v] = new Worm(l, startY);
+						v++;
+					}
+					startY -= 70;
+				}
+				break;
+				
+			//mostly minions followed by 5 worms
+			case 5:
+			case 6:
+				
+				//initialize all but 5 of malwares in this level to minions
+				for (int i = 0; i < (malwaresToAddThisLevel - 5) / 5; i++)
+				{
+					// l == lane
+					for(int l = 1; l < 6; l++)
+					{
+						Malware.allMalware[v] = new Minion(l, startY);
+						v++;
+					}
+					startY -= 70;
 				}
 				startY -= 70;
-			}
-			break;
-		//worms only levels
-		case 4:
-		case 7:
-			// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
-			for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
-			{
-				// l == lane
+				
+				//last 5 malwares should be worms
 				for(int l = 1; l < 6; l++)
 				{
 					Malware.allMalware[v] = new Worm(l, startY);
 					v++;
 				}
-				startY -= 70;
-			}
-			break;
-		//mostly minions followed by 5 worms
-		case 5:
-		case 6:
-			//initialize all but 5 of malwares in this level to minions
-			for (int i = 0; i < (malwaresToAddThisLevel - 5) / 5; i++)
-			{
-				// l == lane
-				for(int l = 1; l < 6; l++)
+				break;
+				/*
+			case 7:
+				for(int i = 0; i < malwaresToAddThisLevel / 5; i++)
 				{
-					Malware.allMalware[v] = new Minion(l, startY);
-					v++;
+					for (int l = 1; l < 6; l++)
+					{
+						Malware.allMalware[v] = new Worm(l, startY);
+						v++;
+					}
+					startY-=70;
+					
 				}
-				startY -= 70;
-			}
-			//last 5 malwares should be worms
-			for(int l = 1; l <= 5; l++)
-			{
-				Malware.allMalware[v] = new Worm(l, startY);
-				v++;
-			}
-			break;
+				break;*/
 		}
 	}
-	/**takes the user to the next level by creating the correct
-	 * number of malwares for the level
+	
+	/**
+	 * Takes the user to the next level.
 	 */
 	public void nextlvl()
 	{	
-		switch(lvl)
+		switch(Game.level)
 		{
 			case 1:	
 				addMalwares(malwaresForLevel1);
@@ -157,6 +175,7 @@ public class StoryManager implements LevelManager
 			case 6:
 				addMalwares(malwaresForLevel6);
 				malwaresThisLevel = malwaresForLevel6;
+				break;
 			case 7:
 				addMalwares(malwaresForLevel7);
 				malwaresThisLevel = malwaresForLevel7;

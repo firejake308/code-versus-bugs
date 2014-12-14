@@ -62,6 +62,7 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.techPanel = new TechPanel();
 		Game.shopPanel = new ShopPanel();
 		Game.pauseButton = new JButton(PauseButtonListener.sprite);
+		Game.fastForwardButton = new JButton(new ImageIcon(MyImages.fastForwardOff));
 		
 		//set layout for game
 		Container mainWindow = getContentPane();
@@ -77,6 +78,9 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.pauseButton.addActionListener(this);
 		
 		mainWindow.add(Game.infoPanel);
+		
+		//Game.fastForwardButton.setBounds(x, y, width, height);
+		
 		Game.infoPanel.setBounds(110,5,screenSize.width-110,50);
 		
 		//initialize money label and fps counter

@@ -36,86 +36,92 @@ public class CodeVersusBugs
 	
 	public static void main(String args[])
 	{
-		try{
-		MyImages.initializeImages();
-		game = new Game();
-		
-		try {
-			SwingUtilities.invokeAndWait(new StartMenuCreator());
-		} catch (InvocationTargetException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		Game.startMenu.setIconImage(MyImages.miniMinion);
-		
-		Game.gf = new GameFrame();
-		
-		//time variables for game loop
-		long lastUpdateTime = System.nanoTime();
-		final int TARGET_FPS = 60;
-		final double ONE_SECOND= 1e9;
-		final long TARGET_TIME = (long) (ONE_SECOND/TARGET_FPS);
-		int framesThisSec=0;
-		int lastFrameTime=0;
-		
-		//intentionally infinite loop
-		while (Game.gameState != Game.OVER)
-		{	
-			long now = System.nanoTime();
-			long updateLength = now - lastUpdateTime;
-			lastUpdateTime = now;
-			Game.numFramesPassed = (double)updateLength/TARGET_TIME;
+		try
+		{
+			MyImages.initializeImages();
+			game = new Game();
 			
-			if(Game.gameState == Game.START)
-				SwingUtilities.invokeLater(Game.startMenu);
-			
-			//run game updates and render on EDT if not paused
-			else if(Game.gameState == Game.PLAYING)
-				SwingUtilities.invokeLater(game);
-			else if(Game.gameState == Game.PAUSED)
-				SwingUtilities.invokeLater(new PauseButtonListener());
-			else if(Game.gameState == Game.OVER)
-				break;
-			
-			//get fps
-			framesThisSec++;
-			lastFrameTime+=updateLength;
-			if(lastFrameTime>ONE_SECOND)
+			try 
 			{
-				Game.fps=framesThisSec;
-				framesThisSec=0;
-				lastFrameTime=0;
+				SwingUtilities.invokeAndWait(new StartMenuCreator());
+			}
+			catch (InvocationTargetException e1) 
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (InterruptedException e1) 
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Game.startMenu.setIconImage(MyImages.miniMinion);
+			
+			Game.gf = new GameFrame();
+			
+			//time variables for game loop
+			long lastUpdateTime = System.nanoTime();
+			final int TARGET_FPS = 60;
+			final double ONE_SECOND= 1e9;
+			final long TARGET_TIME = (long) (ONE_SECOND/TARGET_FPS);
+			int framesThisSec=0;
+			int lastFrameTime=0;
+			
+			//intentionally infinite loop
+			while (Game.gameState != Game.OVER)
+			{
+				long now = System.nanoTime();
+				long updateLength = now - lastUpdateTime;
+				lastUpdateTime = now;
+				Game.numFramesPassed = (double)updateLength/TARGET_TIME;
 				
-				Game.gf.fpsCounter.setText(Game.fps+" fps");
-				Game.infoPanel.repaint();
+				if(Game.gameState == Game.START)
+					SwingUtilities.invokeLater(Game.startMenu);
+				
+				//run game updates and render on EDT if not paused
+				else if(Game.gameState == Game.PLAYING)
+					SwingUtilities.invokeLater(game);
+				else if(Game.gameState == Game.PAUSED)
+					SwingUtilities.invokeLater(new PauseButtonListener());
+				else if(Game.gameState == Game.OVER)
+					break;
+				
+				//get fps
+				framesThisSec++;
+				lastFrameTime+=updateLength;
+				if(lastFrameTime>ONE_SECOND)
+				{
+					Game.fps=framesThisSec;
+					framesThisSec=0;
+					lastFrameTime=0;
+					
+					Game.gf.fpsCounter.setText(Game.fps+" fps");
+					Game.infoPanel.repaint();
+				}
+				
+				//old debug code, to be removed
+				//System.out.println("update length "+updateLength);
+				//System.out.println(game.numFramesPassed+" frames");
+				
+				try
+				{
+					//remember to convert ns to ms
+					Thread.sleep((TARGET_TIME-(System.nanoTime()-lastUpdateTime))/1000000);
+				}
+				catch(InterruptedException e)
+				{
+					System.out.println("couldn't sleep the thread");
+				}
+				catch(IllegalArgumentException e)
+				{
+					System.out.println("last frame took too long");
+				}
 			}
 			
-			//old debug code, to be removed
-			//System.out.println("update length "+updateLength);
-			//System.out.println(game.numFramesPassed+" frames");
-			
-			try
-			{
-				//remember to convert ns to ms
-				Thread.sleep((TARGET_TIME-(System.nanoTime()-lastUpdateTime))/1000000);
-			}
-			catch(InterruptedException e)
-			{
-				System.out.println("couldn't sleep the thread");
-			}
-			catch(IllegalArgumentException e)
-			{
-				System.out.println("last frame took too long");
-			}
-		}
-		
-		//end of game
-		Game.gf.setVisible(false);
-		JOptionPane.showMessageDialog(null, "You lost on round " + Game.level);
-		System.exit(0);
+			//end of game
+			Game.gf.setVisible(false);
+			JOptionPane.showMessageDialog(null, "You lost on round " + Game.level);
+			System.exit(0);
 		}
 		catch(NullPointerException e)
 		{

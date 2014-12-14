@@ -49,29 +49,32 @@ public class Game extends JFrame implements Runnable
 	public static final int PLAYING = 1;
 	public static final int PAUSED = 2;
 	public static final int OVER = 3;
-	
 	public static int gameState = Game.START;
 	public static int level = 1;
 	public static int fps=60;
 	public static boolean gamePlaying = true;
 	public static boolean endOfRound = true;
 	public static double numFramesPassed = 0;
+	
 	public static int money = 150;
 	public static int lives = 50;
+
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
 	public static int tutorialSlide = 1;
-	
 	public static GameFrame gf;
 	public static StartMenu startMenu;
-
+	
 	//4 areas of screen
 	static public JPanel infoPanel;
 	static public GamePanel gamePanel;
-	static public TechPanel techPanel;
-	static public ShopPanel shopPanel;
-	static public JButton pauseButton;
 	
+	static public TechPanel techPanel;
+	
+	static public ShopPanel shopPanel;
+	
+	static public JButton pauseButton;
+	static public JButton fastForwardButton;
 	public static int widthOfGamePanel;
 	public static int heightOfGamePanel;
 	
@@ -79,11 +82,24 @@ public class Game extends JFrame implements Runnable
 	
 	// track
 	static public JPanel track;
-	
 	public static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	static DisplayMode dm = device.getDisplayMode();
 	
+	/**
+	 * Adds income to the player's balance.
+	 * 
+	 * @param income
+	 */
+	public static void addMoney(int income)
+	{
+		money += income;
+		gf.moneyLabel.setText("$" + money + " money");
+	}
+	public static int getMoney() 
+	{
+		return money;
+	}
 	public static void initializeGame()
 	{
 
@@ -108,20 +124,91 @@ public class Game extends JFrame implements Runnable
 		
 		startMenu.setVisible(false);
 		
+		// if tutorial is on, set up game accordingly
+		if (tutorial)
+		{
+			//just an idea
+		}
+		
 		System.out.println("Game inititalized.");
 	}
-	
-	public void run()
+	/**
+	 * Removes cost from player's balance and returns true if the player as enough money to make 
+	 * the purchase.
+	 * 
+	 * @param cost the cost of the purchase
+	 * @return if user has enough money to make the purchase
+	 */
+	public static boolean makePurchase(int cost)
 	{
-		//each time the game is run, process movements and render
-		processMovements(numFramesPassed);
-		renderGameState();
+		if(money >= cost)
+		{
+			money -= cost;
+			gf.moneyLabel.setText("$" + money + " money");
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
-	public void renderGameState()
+	public static void pauseListener()
 	{
-		//now works with repaint because game loop doesn't hog EDT
-		gamePanel.repaint();
+		//if it's already playing, then pause it
+		if(Game.gameState == Game.PLAYING)
+		{
+			Game.pauseButton.setText("");
+			Game.pauseButton.setIcon(PauseButtonListener.sprite);
+			
+			Game.gameState = Game.PAUSED;
+			
+			//show dialog to quit or resume
+			Object[] options = {"Resume", "Quit"};
+			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
+					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
+			
+			if(choice == 0)
+			{
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				Game.gameState = Game.PLAYING;
+			}
+			else if(choice == 1)
+			{
+				System.exit(0);
+			}
+		}
+		else if(Game.gameState == Game.PAUSED)
+		{
+			//if tutorial is on and user clicks prematurely
+			if(Game.tutorialSlide < 17 && Game.tutorial)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you're ready to start the round?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 0)
+					return;
+				else if(choice == 1)
+					Game.gamePanel.disableTutorial();
+			}
+			
+			//doesn't move on to next level unless it is end of round, 
+			//changed in Virus when game is paused remotely
+			if (Game.endOfRound == true)
+			{
+				Game.endOfRound = false;
+				Game.gamePanel.lvlManager.nextlvl();
+				Game.gamePanel.setVisible(true);
+				Game.techPanel.setVisible(false);
+				
+				//special case for tutorial slide 17
+				if(Game.tutorialSlide == 17)
+					Game.gamePanel.nextSlide();
+			}
+			
+			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+			Game.gameState = Game.PLAYING;
+		}
 	}
 	
 	/**handles all movements that have occurred in the past frame
@@ -212,81 +299,17 @@ public class Game extends JFrame implements Runnable
 			ShopPanel.warned = false;
 		}
 	}
-	
-	/**removes cost from player's balance and returns true if the player as enough money to make 
-	 * the purchase
-	 * @param cost
-	 * @return
-	 */
-	public static boolean makePurchase(int cost)
-	{
-		if(money >= cost)
-		{
-			money -= cost;
-			gf.moneyLabel.setText("$" + money + " money");
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	public static int getMoney() 
-	{
-		return money;
-	}
 
-	/**adds income to the player's balance
-	 * 
-	 * @param income
-	 */
-	public static void addMoney(int income)
+	public void renderGameState()
 	{
-		money += income;
-		gf.moneyLabel.setText("$" + money + " money");
+		//now works with repaint because game loop doesn't hog EDT
+		gamePanel.repaint();
 	}
 	
-	public static void pauseListener()
+	public void run()
 	{
-		if(Game.gameState == Game.PLAYING)
-		{
-			Game.pauseButton.setText("");
-			Game.pauseButton.setIcon(PauseButtonListener.sprite);
-			
-			Game.gameState = Game.PAUSED;
-			
-			Object[] options = {"Resume", "Quit"};
-			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
-					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
-			
-			if(choice == 0)
-			{
-				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-				Game.gameState = Game.PLAYING;
-			}
-			else if(choice == 1)
-			{
-				System.exit(0);
-			}
-		}
-		else if(Game.gameState == Game.PAUSED)
-		{
-			// doesn't close round unless it is end of round, changed in Virus when game is paused remotely
-			if (Game.endOfRound == true)
-			{
-				Game.endOfRound = false;
-				Game.gamePanel.lvlManager.nextlvl();
-				Game.gamePanel.setVisible(true);
-				Game.techPanel.setVisible(false);
-				
-				//special case for tutorial slide 17
-				if(Game.tutorialSlide == 17)
-					Game.gamePanel.nextSlide();
-			}
-			
-			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-			Game.gameState = Game.PLAYING;
-		}
+		//each time the game is run, process movements and render
+		processMovements(numFramesPassed);
+		renderGameState();
 	}
 }

@@ -122,8 +122,10 @@ public class GamePanel extends JPanel
 					case 28:
 						return;
 				}
+				
 				//if it's any other level, move on to the next slide
 				nextSlide();
+				
 				/*Notes:
 				 * Slide 7 requires the user to buy a disc thrower
 				 * Slide 8 requires placing a tower
@@ -352,7 +354,8 @@ public class GamePanel extends JPanel
 		int h = Game.screenSize.height - 110;
 		
 		//move on to next slide of tutorial
-		Game.tutorialSlide++;		
+		Game.tutorialSlide++;
+		
 		switch(Game.tutorialSlide)
 		{
 			case 2:
@@ -452,8 +455,12 @@ public class GamePanel extends JPanel
 				break;
 		}
 	}
+	/**
+	 * Turns off the tutorial.
+	 */
 	public void disableTutorial()
 	{
+		Game.tutorial = false;
 		tutorial.setVisible(false);
 	}
 	

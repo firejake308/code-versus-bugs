@@ -41,7 +41,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	private JButton back = new JButton("Back");
 	private Container c;
 	
-	public StartMenu() 
+	public StartMenu()
 	{
 		c = getContentPane();
 		c.setLayout(null);
@@ -88,8 +88,8 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 		{
 			// changed to paused so it's more fluid
 			Game.gameState = Game.PAUSED;
-			setVisible(false);
 			Game.initializeGame();
+			setVisible(false);
 		}
 		
 		else if (temp == credits)
