@@ -358,7 +358,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				return;
 			}
 			//warn user before buying if tutorial on
-			if(Game.tutorialSlide <= 7)
+			if(Game.tutorial && Game.tutorialSlide <= 7)
 			{
 				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
 				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 

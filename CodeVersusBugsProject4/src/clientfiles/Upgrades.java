@@ -400,6 +400,11 @@ public abstract class Upgrades
 											
 			case 231:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 4;
 											System.out.println("wider range");
+											
+											//update range indicator
+											Tower tower1 = Tower.allTowers[displayedUpgradeID];
+											tower1.rangeIndicator = new Ellipse2D.Double(tower1.getCenterX()-tower1.range, 
+											tower1.getCenterY()-tower1.range, tower1.range*2, tower1.range*2);
 											break;
 		}
 		
