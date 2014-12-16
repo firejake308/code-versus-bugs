@@ -284,7 +284,7 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
-        		if(/*e.getKeyCode()==KeyEvent.VK_ESCAPE ||*/ e.getKeyCode()==KeyEvent.VK_SPACE)
+        		if(e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
         		}
