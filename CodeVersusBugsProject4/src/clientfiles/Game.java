@@ -38,6 +38,7 @@
 package clientfiles;
 
 import java.awt.*;
+import java.util.ListIterator;
 
 import javax.swing.*;
 
@@ -232,7 +233,8 @@ public class Game extends JFrame implements Runnable
 		}
 	}
 	
-	/**handles all movements that have occurred in the past frame
+	/**
+	 * Handles all movements that have occurred in the past frame.
 	 * 
 	 * @param frames
 	 */
@@ -289,7 +291,7 @@ public class Game extends JFrame implements Runnable
 				}
 				else if(worm.timer > 0)
 				{
-					worm.timer--;
+					worm.timer-=speedModifier;
 				}
 				else if(targetTower == null && worm.state == State.ATTACKING)
 				{
@@ -299,14 +301,20 @@ public class Game extends JFrame implements Runnable
 		}
 		
 		//move any projectiles that exist
-		for(int p=0; p<Projectile.allProjectiles.length; p++)
+		for(Projectile p:Projectile.allProjectiles)
 		{
-			if(Projectile.allProjectiles[p] == null)
-				break;
-			else
+			if(p != null)
 			{
-				Projectile.allProjectiles[p].moveProjectile(frames);
+				p.moveProjectile(frames);
 			}
+		}
+		//recycle any dead projectiles
+		ListIterator<Projectile> iterator = Projectile.recycleBin.listIterator();
+		while(iterator.hasNext())
+		{
+			Projectile curr = iterator.next();
+			Projectile.allProjectiles.remove(curr);
+			iterator.remove();
 		}
 		
 		if(ShopPanel.timer > 0)

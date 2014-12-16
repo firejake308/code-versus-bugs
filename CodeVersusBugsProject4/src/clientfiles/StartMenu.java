@@ -1,12 +1,9 @@
 package clientfiles;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 /**StartMenu.java
  * Creates a frame for the start menu.
  * 

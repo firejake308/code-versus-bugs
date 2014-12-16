@@ -451,16 +451,8 @@ public class Worm extends Malware
 		else if (target.getCenterX() >= this.getCenterX() && target.getCenterY() >= this.getCenterY())
 			quadrant = 4;
 		
-		//go through allProjectiles until you hit a null
-		//and create a projectile at that location in the array
-		for (int i = 0; i < Projectile.allProjectiles.length; i++)
-		{
-			if (Projectile.allProjectiles[i] == null)
-			{
-				Projectile.allProjectiles[i] = new Projectile(a, b, quadrant, getCenterX(), getCenterY(), i, damage);
-				break;
-			}
-		}
+		//add a new projectile to list 
+		Projectile.allProjectiles.add(new Projectile(a, b, quadrant, getCenterX(), getCenterY(), id, damage));
 	}
 	
 	public static Tower findTarget(Worm worm)

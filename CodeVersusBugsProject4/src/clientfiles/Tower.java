@@ -321,23 +321,15 @@ public abstract class Tower implements ActionListener
 				angleOfArrow = Math.PI + angle;
 			}
 			
-			//go through allProjectiles until you hit a null
-			//and create a projectile at that location in the array
-			for (int i = 0; i < Projectile.allProjectiles.length; i++)
-			{
-				if (Projectile.allProjectiles[i] == null)
-				{
-					Projectile.allProjectiles[i] = new Projectile(a, b, quadrant, xOfTower, yOfTower, towerType, i, id, damage);
-					
-					// increase shots fired of tower
-					shotsFired++;
-					
-					// re-draw tower panel with updated statistics
-					if (id == Upgrades.displayedUpgradeID)
-						Upgrades.updateStatistics();
-					break;
-				}
-			}
+			//add a new projectile to list 
+			Projectile.allProjectiles.add(new Projectile(a, b, quadrant, xOfTower, yOfTower, towerType, id, damage));
+			
+			// increase shots fired of tower
+			shotsFired++;
+			
+			// re-draw tower panel with updated statistics
+			if (id == Upgrades.displayedUpgradeID)
+				Upgrades.updateStatistics();
 			//return statement seems kind of unnecessary
 			return;
 		}

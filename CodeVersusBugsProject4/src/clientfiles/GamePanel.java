@@ -46,6 +46,8 @@ package clientfiles;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import javax.swing.*;
 
@@ -282,7 +284,7 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
-        		if(e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_SPACE)
+        		if(/*e.getKeyCode()==KeyEvent.VK_ESCAPE ||*/ e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
         		}
@@ -495,13 +497,10 @@ public class GamePanel extends JPanel
 			}
 			
 			//draw all projectiles
-			for(int p = 0; p < Projectile.allProjectiles.length; p++)
+			ListIterator<Projectile> iterator = Projectile.allProjectiles.listIterator();
+			while(iterator.hasNext())
 			{
-				Projectile curr = Projectile.allProjectiles[p];
-				if(curr == null)
-					break;
-				else
-					curr.drawProjectile(g);
+				iterator.next().drawProjectile(g);
 			}
 		}
 	}

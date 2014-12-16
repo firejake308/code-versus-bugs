@@ -34,9 +34,11 @@ public class Minion extends Malware
 	private int w = Game.widthOfGamePanel;
 	public int speed = (int) (w * 0.025);
 	
-	/**creates a virus in the lane specified, at the chosen y value. 
+	/**
+	 * Creates a virus.
 	 * Lanes are numbered from left to right.
 	 * 
+	 * @param lane
 	 * @param y
 	 */
 	public Minion(int lane, int y)

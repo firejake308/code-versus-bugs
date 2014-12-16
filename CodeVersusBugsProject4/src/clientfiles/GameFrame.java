@@ -33,6 +33,8 @@ package clientfiles;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -454,6 +456,36 @@ public class GameFrame extends JFrame implements ActionListener
 				Game.gamePanel.setCursorIcon();
 			}
 		});
+		
+		/*addKeyListener(new KeyAdapter()
+		{
+			//pause the game whenerver escape is pressed
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				{
+					Game.pauseButton.setText("");
+					Game.pauseButton.setIcon(PauseButtonListener.sprite);
+					
+					Game.gameState = Game.PAUSED;
+					
+					//show dialog to quit or resume
+					Object[] options = {"Resume", "Quit"};
+					int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
+							JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
+					
+					if(choice == 0)
+					{
+						Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+						Game.gameState = Game.PLAYING;
+					}
+					else if(choice == 1)
+					{
+						System.exit(0);
+					}
+				}
+			}
+		});*/
 	}
 	
 	@Override

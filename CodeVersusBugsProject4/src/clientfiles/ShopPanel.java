@@ -357,6 +357,17 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.NONE;
 				return;
 			}
+			//warn user before buying if tutorial on
+			if(Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
 			
 			changeInfo("Number Generator Selected",false);
 		}
