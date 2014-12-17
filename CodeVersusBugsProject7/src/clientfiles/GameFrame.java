@@ -33,6 +33,8 @@ package clientfiles;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -49,6 +51,7 @@ public class GameFrame extends JFrame implements ActionListener
 	public JLabel moneyLabel;
 	public JLabel life;
 	public JLabel fpsCounter;
+	public JLabel levelCounter;
 	
 	//the constructor instantiates the panels and sets the layout
 	public GameFrame()
@@ -57,7 +60,7 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		Game.infoPanel = new JPanel(new GridLayout(1,3));
+		Game.infoPanel = new JPanel(new GridLayout(1,4));
 		Game.gamePanel = new GamePanel();
 		Game.techPanel = new TechPanel();
 		Game.shopPanel = new ShopPanel();
@@ -79,24 +82,29 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		mainWindow.add(Game.infoPanel);
 		
-		//Game.fastForwardButton.setBounds(x, y, width, height);
+		Game.fastForwardButton.setBounds(105, 5, 30, 30);
+		Game.fastForwardButton.addActionListener(this);
+		mainWindow.add(Game.fastForwardButton);
 		
-		Game.infoPanel.setBounds(110,5,screenSize.width-110,50);
+		Game.infoPanel.setBounds(145,5,screenSize.width-145,50);
 		
 		//initialize money label and fps counter
 		moneyLabel = new JLabel("$" + Game.money + " money");
 		fpsCounter = new JLabel(Game.fps+" fps");
-		life = new JLabel("Lives: " + Game.lives + ".....Round: " + Game.level);
+		life = new JLabel("Lives: " + Game.lives);
+		levelCounter = new JLabel("Level: " + Game.level);
 		
 		//fix up font size
-		//moneyLabel.setFont(new Font("Monospaced", Font.PLAIN, 50));
-		//fpsCounter.setFont(new Font("Monospaced", Font.PLAIN, 50));
-		//life.setFont(new Font("Monospaced", Font.PLAIN, 50));
+		moneyLabel.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
+		fpsCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
+		life.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
+		levelCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
 		
 		//add fpsCounter to info panel
 		Game.infoPanel.add(life);
 		Game.infoPanel.add(moneyLabel);
 		Game.infoPanel.add(fpsCounter);
+		Game.infoPanel.add(levelCounter);
 		
 		mainWindow.add(Game.shopPanel);
 		Game.shopPanel.setBounds(5,110,100,screenSize.height-110);
@@ -448,12 +456,45 @@ public class GameFrame extends JFrame implements ActionListener
 				Game.gamePanel.setCursorIcon();
 			}
 		});
+		
+		/*addKeyListener(new KeyAdapter()
+		{
+			//pause the game whenerver escape is pressed
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				{
+					Game.pauseButton.setText("");
+					Game.pauseButton.setIcon(PauseButtonListener.sprite);
+					
+					Game.gameState = Game.PAUSED;
+					
+					//show dialog to quit or resume
+					Object[] options = {"Resume", "Quit"};
+					int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
+							JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
+					
+					if(choice == 0)
+					{
+						Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+						Game.gameState = Game.PLAYING;
+					}
+					else if(choice == 1)
+					{
+						System.exit(0);
+					}
+				}
+			}
+		});*/
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		Game.pauseListener();
+		if (e.getSource() == Game.pauseButton)
+			Game.pauseListener();
+		if (e.getSource() == Game.fastForwardButton)
+			Game.fastForwardListener();
 	}
 	
 }

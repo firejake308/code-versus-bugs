@@ -357,8 +357,19 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.NONE;
 				return;
 			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
 			
-			changeInfo(" Number Generator Selected",false);
+			changeInfo("Number Generator Selected",false);
 		}
 		else if (temp == buyScanner)
 		{
@@ -369,7 +380,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				return;
 			}
 			
-			changeInfo(" Scanner Selected",false);
+			changeInfo("Scanner Selected",false);
 		}
 		
 		validateBuy(towerType);
@@ -384,7 +395,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.DISC_THROWER;
 			}
 			else
-				changeInfo("Need $!", true);
+				changeInfo("Not Enough Money", true);
 		}
 		
 		else if(type == TowerType.NUMBER_GENERATOR)
@@ -394,7 +405,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.NUMBER_GENERATOR;
 			}
 			else
-				changeInfo("Need $!", true);
+				changeInfo("Not Enough Money!", true);
 		}
 		
 		else if(type == TowerType.SCANNER)

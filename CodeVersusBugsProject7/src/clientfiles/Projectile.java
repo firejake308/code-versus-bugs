@@ -2,6 +2,7 @@ package clientfiles;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -39,12 +40,14 @@ import javax.swing.ImageIcon;
 
 public class Projectile
 {
-	public static Projectile[] allProjectiles = new Projectile[1000];
+	public static ArrayList<Projectile> allProjectiles = new ArrayList<Projectile>();
+	public static ArrayList<Projectile> recycleBin = new ArrayList<Projectile>();
+	public static int numToRecycle = 0;
+	public static int numProjectiles;
 	
 	private double x;
 	private double y;
 	
-	private int id;
 	private int idOfTower;
 	
 	private int quadrant;
@@ -73,7 +76,7 @@ public class Projectile
 	private final int WORM = 342;
 	private int owner;
 	
-	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, TowerType towerType, int location, int towerID, double damageToSet)
+	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, TowerType towerType, int towerID, double damageToSet)
 	{
 		owner = TOWER;
 		
@@ -129,7 +132,6 @@ public class Projectile
 		quadrant = quadrantToSet;
 		x = xToSet - sprite.getWidth(null)/2;
 		y = yToSet - sprite.getHeight(null)/2;
-		id = location;
 		damage = damageToSet;
 		uses = Tower.allTowers[idOfTower].projectileDurability;
 		splashEffect = Tower.allTowers[idOfTower].splashEffect;
@@ -164,7 +166,6 @@ public class Projectile
 		quadrant = quadrantToSet;
 		x = xToSet - sprite.getWidth(null)/2;
 		y = yToSet - sprite.getHeight(null)/2;
-		id = location;
 		damage = damageToSet;
 		
 		uses = 1;
@@ -191,10 +192,13 @@ public class Projectile
 	{
 		return y + sprite.getHeight(null)/2;
 	}
+	/**
+	 * @deprecated
+	 */
 	public static void initializeProjectiles()
 	{
-		for (int i = 0; i < allProjectiles.length; i++)
-			allProjectiles[i] = null;
+		/*for (int i = 0; i < allProjectiles.length; i++)
+			allProjectiles[i] = null;*/
 	}
 	// I removed parameter p since this is an object method
 	public void moveProjectile(double elapsedTime)
@@ -202,37 +206,32 @@ public class Projectile
 		double oldX = getX();
 		double oldY = getY();
 		
-		//debug code, to be removed
-		//System.out.println("old x "+oldX);
-		//System.out.println("a: "+a+", b: "+b);
-		
 		double yOfNewLocation = 0;
 		double xOfNewLocation = 0;
 		
 		if (quadrant == 1)
 		{
-			xOfNewLocation = oldX + (b * elapsedTime * speed);
-			yOfNewLocation = oldY - (a * elapsedTime * speed);
+			xOfNewLocation = oldX + (b * elapsedTime * speed * Game.speedModifier);
+			yOfNewLocation = oldY - (a * elapsedTime * speed * Game.speedModifier);
 		}
 		
 		else if (quadrant == 2)
 		{
-			xOfNewLocation = oldX - (b * elapsedTime * speed);
-			yOfNewLocation = oldY - (a * elapsedTime * speed);
+			xOfNewLocation = oldX - (b * elapsedTime * speed * Game.speedModifier);
+			yOfNewLocation = oldY - (a * elapsedTime * speed * Game.speedModifier);
 		}
 		
 		else if (quadrant == 3)
 		{
-			xOfNewLocation = oldX - (b * elapsedTime * speed);
-			yOfNewLocation = oldY + (a * elapsedTime * speed);
+			xOfNewLocation = oldX - (b * elapsedTime * speed * Game.speedModifier);
+			yOfNewLocation = oldY + (a * elapsedTime * speed * Game.speedModifier);
 		}
 		
 		else if (quadrant == 4)
 		{
-			xOfNewLocation = oldX + (b * elapsedTime * speed);
-			yOfNewLocation = oldY + (a * elapsedTime * speed);
+			xOfNewLocation = oldX + (b * elapsedTime * speed * Game.speedModifier);
+			yOfNewLocation = oldY + (a * elapsedTime * speed * Game.speedModifier);
 		}
-		
 		x = xOfNewLocation;
 		y = yOfNewLocation;
 		
@@ -248,27 +247,27 @@ public class Projectile
 				double xOfVirus = Malware.allMalware[v].getCenterX();
 				double yOfVirus = Malware.allMalware[v].getCenterY();
 				
+				//each projectile can only hit a virus once
+				//*necessary for re-usable projectiles
 				for (int i = 0; i < numOfVirusesHit; i++)
 				{
 					if (virusesHit[i] == Malware.allMalware[v])
 					{
 						virusHit = true;
-						//System.out.println(Virus.allViruses[v] + "Virus already hit!");
 					}
 				}
 				
-				double distFromVirus  = Math.sqrt(Math.pow(xOfVirus - getCenterX(), 2) + Math.pow(yOfVirus - getCenterY(), 2));
+				double distFromMalware  = Math.sqrt(Math.pow(xOfVirus - getCenterX(), 2) + Math.pow(yOfVirus - getCenterY(), 2));
 				
-				if (splashEffectActivated && distFromVirus <= Malware.allMalware[v].sprite.getHeight(null) * splashRange)
+				//get any malwares in the splash range
+				if (splashEffectActivated && distFromMalware <= Malware.allMalware[v].sprite.getHeight(null) * splashRange)
 				{
-					//System.out.println(Virus.allViruses[v] + "Virus hit!");
-					
 					uses--;
 					
 					Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
 				}
 				
-				else if(distFromVirus <= Malware.allMalware[v].sprite.getHeight(null) / 2 && !virusHit)
+				else if(distFromMalware <= Malware.allMalware[v].sprite.getHeight(null) / 2 && !virusHit)
 				{
 					if (splashEffect)
 					{
@@ -285,12 +284,12 @@ public class Projectile
 						virusesHit[numOfVirusesHit] = Malware.allMalware[v];
 						numOfVirusesHit++;
 						
-						//System.out.println(Virus.allViruses[v] + "Virus hit!");
-						
 						Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
 						
-						if (uses <= 0)
-							this.deleteProjectile();
+						/*if (uses <= 0)
+						{
+							deleteProjectile();
+						}*/
 						break;
 					}
 				}
@@ -311,25 +310,27 @@ public class Projectile
 				if(distFromTower < Tower.sprites[t].getWidth())
 				{
 					current.dealDamage((int)damage);
-					deleteProjectile();
-					//debug code, to be removed`
-					//System.out.println("hit a tower!\t now have "+uses+" uses remaining");
+					recycleBin.add(this);
+					numToRecycle++;
 				}
 			}
 		}
 		//delete used projectiles
 		if (uses <= 0)
-			this.deleteProjectile();
+		{
+			/*recycleBin[numToRecycle] = this;
+			numToRecycle++;*/
+			addToRecycleBin();
+		}
 		
 		//also delete projectile if it goes off the screen
-		if(x<-50 || x>1500 || y<-50 || y>800)
+		else if(x<-50 || x>1500 || y<-50 || y>800)
 		{
-			this.deleteProjectile();
-			//System.out.println("A projectile went out of bounds");
+			addToRecycleBin();
 		}
 		else if (x == 0 && y == 0)
 		{
-			this.deleteProjectile();
+			addToRecycleBin();
 			System.out.println("A projectile in the top left corner was deleted");
 		}
 	}
@@ -339,23 +340,9 @@ public class Projectile
 		g.drawImage(sprite, (int)x + GamePanel.getMapX(), (int)y + GamePanel.getMapY(), null);
 	}
 	
-	public void deleteProjectile()
+	public void addToRecycleBin()
 	{
-		//save the dead projectile's ID and kill it off
-		int deadProjectileID=id;
-		
-		//move all other projectiles in array
-		for(int v=deadProjectileID; v<allProjectiles.length; v++)
-		{
-			allProjectiles[v] = allProjectiles[v+1];
-			
-			//break once reaches the nulls
-			if(allProjectiles[v]==null)
-				break;
-			
-			//change the projectile's id to match its new location in the array
-			allProjectiles[v].id = v;
-		}
+		recycleBin.add(this);
 	}
 }
 

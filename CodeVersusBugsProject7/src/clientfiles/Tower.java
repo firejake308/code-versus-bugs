@@ -65,8 +65,9 @@ public abstract class Tower implements ActionListener
 	public static Tower[] allTowers = new Tower[100];
 	protected static JButton[] sprites = new JButton[100];
 	protected  int[] costsOfUpgrades = new int[27];
-	private ImageIcon icon;
+	public ImageIcon icon;
 	private static Random generator = new Random();
+	public static boolean backedUp = false;
 	
 	protected int id;
 	protected int x;
@@ -81,7 +82,7 @@ public abstract class Tower implements ActionListener
 	protected double damage;
 	protected int level = 1;
 	protected int health = 50;
-	private boolean infected = false;
+	public boolean infected = false;
 	
 	protected Ellipse2D rangeIndicator;
 	public boolean rangeOn = true;
@@ -321,23 +322,15 @@ public abstract class Tower implements ActionListener
 				angleOfArrow = Math.PI + angle;
 			}
 			
-			//go through allProjectiles until you hit a null
-			//and create a projectile at that location in the array
-			for (int i = 0; i < Projectile.allProjectiles.length; i++)
-			{
-				if (Projectile.allProjectiles[i] == null)
-				{
-					Projectile.allProjectiles[i] = new Projectile(a, b, quadrant, xOfTower, yOfTower, towerType, i, id, damage);
-					
-					// increase shots fired of tower
-					shotsFired++;
-					
-					// re-draw tower panel with updated statistics
-					if (id == Upgrades.displayedUpgradeID)
-						Upgrades.updateStatistics();
-					break;
-				}
-			}
+			//add a new projectile to list 
+			Projectile.allProjectiles.add(new Projectile(a, b, quadrant, xOfTower, yOfTower, towerType, id, damage));
+			
+			// increase shots fired of tower
+			shotsFired++;
+			
+			// re-draw tower panel with updated statistics
+			if (id == Upgrades.displayedUpgradeID)
+				Upgrades.updateStatistics();
 			//return statement seems kind of unnecessary
 			return;
 		}

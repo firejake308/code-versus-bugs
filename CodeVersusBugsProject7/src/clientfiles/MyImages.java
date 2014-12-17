@@ -100,9 +100,9 @@ public class MyImages
 			//frames and buttons
 			miniMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon.png"));
 			pause = ImageIO.read(MyImages.class.getResourceAsStream("resources/pausePauseButton.png"));
-			play = ImageIO.read(MyImages.class.getResourceAsStream("resources/playPauseButton.png"));
-			fastForwardOff = ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOff.png"));
-			fastForwardOn = ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOn.png"));
+			play 			= ImageIO.read(MyImages.class.getResourceAsStream("resources/playPauseButton.png"));
+			fastForwardOff 	= ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOff.png"));
+			fastForwardOn 	= ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOn.png"));
 			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
 			
 			//malware

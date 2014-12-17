@@ -193,56 +193,56 @@ public class Worm extends Malware
 		//move down for first stretch
 		if(getDistance()<path[0]) //if distance traveled is less than 2st item in array, then move down
 		{
-			setY(getY()+directions[0]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setY(getY()+directions[0]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance()<path[1])
 		{
-			setX(getX()+directions[1]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setX(getX()+directions[1]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance()<path[2])
 		{
-			setY(getY()+directions[2]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setY(getY()+directions[2]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance()<path[3])
 		{
-			setX(getX()+directions[3]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setX(getX()+directions[3]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move up
 		else if(getDistance()<path[4])
 		{
-			setY(getY()+directions[4]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setY(getY()+directions[4]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance()<path[5])
 		{
-			setX(getX()+directions[5]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setX(getX()+directions[5]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance()<path[6])
 		{
-			setY(getY()+directions[6]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setY(getY()+directions[6]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move left
 		else if(getDistance()<path[7])
 		{
-			setX(getX()+directions[7]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setX(getX()+directions[7]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance()<path[8])
 		{
-			setY(getY()+directions[8]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
+			setY(getY()+directions[8]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		
 		/********************now for x2, y2 and distance2**************************/	
@@ -250,56 +250,56 @@ public class Worm extends Malware
 		//move down for first stretch
 		if(getDistance2()<path[0]) //if distance traveled is less than 2st item in array, then move down
 		{
-			setY2(getY2()+directions[0]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setY2(getY2()+directions[0]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance2()<path[1])
 		{
-			setX2(getX2()+directions[1]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setX2(getX2()+directions[1]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance2()<path[2])
 		{
-			setY2(getY2()+directions[2]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setY2(getY2()+directions[2]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance2()<path[3])
 		{
-			setX2(getX2()+directions[3]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setX2(getX2()+directions[3]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move up
 		else if(getDistance2()<path[4])
 		{
-			setY2(getY2()+directions[4]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setY2(getY2()+directions[4]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance2()<path[5])
 		{
-			setX2(getX2()+directions[5]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setX2(getX2()+directions[5]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance2()<path[6])
 		{
-			setY2(getY2()+directions[6]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setY2(getY2()+directions[6]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move left
 		else if(getDistance2()<path[7])
 		{
-			setX2(getX2()+directions[7]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setX2(getX2()+directions[7]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance2()<path[8])
 		{
-			setY2(getY2()+directions[8]*speed*frames/60*manipulator);
-			setDistance2(getDistance2()+speed*frames/60*manipulator);
+			setY2(getY2()+directions[8]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance2(getDistance2()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		
 		/************************now for x3, y3, distance3*******************************/
@@ -307,56 +307,56 @@ public class Worm extends Malware
 		//move down for first stretch
 		if(getDistance3()<path[0]) //if distance traveled is less than 2st item in array, then move down
 		{
-			setY3(getY3()+directions[0]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setY3(getY3()+directions[0]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance3()<path[1])
 		{
-			setX3(getX3()+directions[1]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setX3(getX3()+directions[1]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance3()<path[2])
 		{
-			setY3(getY3()+directions[2]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setY3(getY3()+directions[2]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance3()<path[3])
 		{
-			setX3(getX3()+directions[3]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setX3(getX3()+directions[3]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move up
 		else if(getDistance3()<path[4])
 		{
-			setY3(getY3()+directions[4]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setY3(getY3()+directions[4]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance3()<path[5])
 		{
-			setX3(getX3()+directions[5]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setX3(getX3()+directions[5]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance3()<path[6])
 		{
-			setY3(getY3()+directions[6]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setY3(getY3()+directions[6]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move left
 		else if(getDistance3()<path[7])
 		{
-			setX3(getX3()+directions[7]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setX3(getX3()+directions[7]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance3()<path[8])
 		{
-			setY3(getY3()+directions[8]*speed*frames/60*manipulator);
-			setDistance3(getDistance3()+speed*frames/60*manipulator);
+			setY3(getY3()+directions[8]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance3(getDistance3()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		
 		/***********************now for x4, y4, distance4*****************/
@@ -364,56 +364,56 @@ public class Worm extends Malware
 		//move down for first stretch
 		if(getDistance4()<path[0]) //if distance traveled is less than 2st item in array, then move down
 		{
-			setY4(getY4()+directions[0]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setY4(getY4()+directions[0]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance4()<path[1])
 		{
-			setX4(getX4()+directions[1]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setX4(getX4()+directions[1]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance4()<path[2])
 		{
-			setY4(getY4()+directions[2]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setY4(getY4()+directions[2]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance4()<path[3])
 		{
-			setX4(getX4()+directions[3]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setX4(getX4()+directions[3]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move up
 		else if(getDistance4()<path[4])
 		{
-			setY4(getY4()+directions[4]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setY4(getY4()+directions[4]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move right
 		else if(getDistance4()<path[5])
 		{
-			setX4(getX4()+directions[5]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setX4(getX4()+directions[5]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance4()<path[6])
 		{
-			setY4(getY4()+directions[6]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setY4(getY4()+directions[6]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move left
 		else if(getDistance4()<path[7])
 		{
-			setX4(getX4()+directions[7]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setX4(getX4()+directions[7]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		//move down again
 		else if(getDistance4()<path[8])
 		{
-			setY4(getY4()+directions[8]*speed*frames/60*manipulator);
-			setDistance4(getDistance4()+speed*frames/60*manipulator);
+			setY4(getY4()+directions[8]*speed*frames/60*manipulator * Game.speedModifier);
+			setDistance4(getDistance4()+speed*frames/60*manipulator * Game.speedModifier);
 		}
 		
 		//if virus makes it across the map, then despawn virus
@@ -422,7 +422,7 @@ public class Worm extends Malware
 			System.out.println("a virus made it across");
 			
 			Game.lives--;
-			Game.gf.life.setText("Lives: " + Game.lives + ".....Round: " + Game.level);
+			Game.gf.life.setText("Lives: " + Game.lives);
 			
 			if (Game.lives <= 0)
 			{
@@ -451,16 +451,8 @@ public class Worm extends Malware
 		else if (target.getCenterX() >= this.getCenterX() && target.getCenterY() >= this.getCenterY())
 			quadrant = 4;
 		
-		//go through allProjectiles until you hit a null
-		//and create a projectile at that location in the array
-		for (int i = 0; i < Projectile.allProjectiles.length; i++)
-		{
-			if (Projectile.allProjectiles[i] == null)
-			{
-				Projectile.allProjectiles[i] = new Projectile(a, b, quadrant, getCenterX(), getCenterY(), i, damage);
-				break;
-			}
-		}
+		//add a new projectile to list 
+		Projectile.allProjectiles.add(new Projectile(a, b, quadrant, getCenterX(), getCenterY(), id, damage));
 	}
 	
 	public static Tower findTarget(Worm worm)

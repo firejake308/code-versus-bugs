@@ -38,6 +38,7 @@
 package clientfiles;
 
 import java.awt.*;
+import java.util.ListIterator;
 
 import javax.swing.*;
 
@@ -50,20 +51,25 @@ public class Game extends JFrame implements Runnable
 	public static final int PAUSED = 2;
 	public static final int OVER = 3;
 	public static int gameState = Game.START;
-	public static int level = 1;
 	public static int fps=60;
 	public static boolean gamePlaying = true;
 	public static boolean endOfRound = true;
 	public static double numFramesPassed = 0;
 	
+	//common debugging parameters
 	public static int money = 150;
 	public static int lives = 50;
+	public static int level = 1;
 
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
 	public static int tutorialSlide = 1;
 	public static GameFrame gf;
 	public static StartMenu startMenu;
+	
+	// for use with fast forwarding
+	public static double speedModifier = 1.0;
+	public static boolean fastForward = false;
 	
 	//4 areas of screen
 	static public JPanel infoPanel;
@@ -186,10 +192,9 @@ public class Game extends JFrame implements Runnable
 				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
 				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you're ready to start the round?", 
 						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
-				if(choice == 0)
-					return;
-				else if(choice == 1)
+				if(choice == 1)
 					Game.gamePanel.disableTutorial();
+				return;
 			}
 			
 			//doesn't move on to next level unless it is end of round, 
@@ -211,7 +216,25 @@ public class Game extends JFrame implements Runnable
 		}
 	}
 	
-	/**handles all movements that have occurred in the past frame
+	public static void fastForwardListener()
+	{
+		if (!fastForward)
+		{
+			fastForwardButton.setIcon(new ImageIcon(MyImages.fastForwardOn));
+			fastForward = true;
+			speedModifier = 2.0;
+		}
+		
+		else if (fastForward)
+		{
+			fastForwardButton.setIcon(new ImageIcon(MyImages.fastForwardOff));
+			fastForward = false;
+			speedModifier = 1.0;
+		}
+	}
+	
+	/**
+	 * Handles all movements that have occurred in the past frame.
 	 * 
 	 * @param frames
 	 */
@@ -240,16 +263,16 @@ public class Game extends JFrame implements Runnable
 				
 				//if there is a virus to attack and timer is at 0,
 				//then attack and reset timer
-				if(target != null && tower.timer == 0)
+				if(target != null && tower.timer <= 0)
 				{
-					//debug code:      System.out.println("tried to attack "+target);
-					//System.out.println("Attacked: " + target);
 					tower.attack(target, tower.getType());
 					tower.timer = tower.timerReset;
 				}
-				//if timer has been reset, decrement timer once per frame
+				//if timer has been reset, decrement timer once (or twice if ff on) per frame
 				else if(tower.timer>0)
-					tower.timer--;
+					tower.timer-=speedModifier;
+				if (fastForward)
+					tower.timer-=speedModifier;
 			}
 		}
 		
@@ -268,7 +291,7 @@ public class Game extends JFrame implements Runnable
 				}
 				else if(worm.timer > 0)
 				{
-					worm.timer--;
+					worm.timer-=speedModifier;
 				}
 				else if(targetTower == null && worm.state == State.ATTACKING)
 				{
@@ -278,14 +301,20 @@ public class Game extends JFrame implements Runnable
 		}
 		
 		//move any projectiles that exist
-		for(int p=0; p<Projectile.allProjectiles.length; p++)
+		for(Projectile p:Projectile.allProjectiles)
 		{
-			if(Projectile.allProjectiles[p] == null)
-				break;
-			else
+			if(p != null)
 			{
-				Projectile.allProjectiles[p].moveProjectile(frames);
+				p.moveProjectile(frames);
 			}
+		}
+		//recycle any dead projectiles
+		ListIterator<Projectile> iterator = Projectile.recycleBin.listIterator();
+		while(iterator.hasNext())
+		{
+			Projectile curr = iterator.next();
+			Projectile.allProjectiles.remove(curr);
+			iterator.remove();
 		}
 		
 		if(ShopPanel.timer > 0)

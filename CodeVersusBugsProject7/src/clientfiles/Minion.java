@@ -34,9 +34,11 @@ public class Minion extends Malware
 	private int w = Game.widthOfGamePanel;
 	public int speed = (int) (w * 0.025);
 	
-	/**creates a virus in the lane specified, at the chosen y value. 
+	/**
+	 * Creates a virus.
 	 * Lanes are numbered from left to right.
 	 * 
+	 * @param lane
 	 * @param y
 	 */
 	public Minion(int lane, int y)
@@ -47,98 +49,4 @@ public class Minion extends Malware
 		health = 100;
 		reward = 4;
 	}
-	
-	/**
-	 * call this method on a virus object to move the virus
-	 * where frames is the interpolation
-	 * 
-	 * @param frames
-	 */
-	@Override
-	public void moveVirus(double frames)
-	{
-		// timer for frozen viruses
-		if (state == State.FROZEN && elapsedTime < 5)
-		{
-			elapsedTime += frames/60;
-		}
-		// to be changed later
-		else // reseting
-		{
-			manipulator = 1;
-			elapsedTime = 0;
-			state = State.NORMAL;
-		}
-		
-		//move down for first stretch
-		if(getDistance()<path[0]) //if distance traveled is less than 2st item in array, then move down
-		{
-			setY(getY()+directions[0]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move right
-		else if(getDistance()<path[1])
-		{
-			setX(getX()+directions[1]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move down again
-		else if(getDistance()<path[2])
-		{
-			setY(getY()+directions[2]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move right
-		else if(getDistance()<path[3])
-		{
-			setX(getX()+directions[3]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move up
-		else if(getDistance()<path[4])
-		{
-			setY(getY()+directions[4]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move right
-		else if(getDistance()<path[5])
-		{
-			setX(getX()+directions[5]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move down again
-		else if(getDistance()<path[6])
-		{
-			setY(getY()+directions[6]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move left
-		else if(getDistance()<path[7])
-		{
-			setX(getX()+directions[7]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//move down again
-		else if(getDistance()<path[8])
-		{
-			setY(getY()+directions[8]*speed*frames/60*manipulator);
-			setDistance(getDistance()+speed*frames/60*manipulator);
-		}
-		//if virus makes it across the map, then despawn virus
-		else
-		{
-			System.out.println("a virus made it across");
-			
-			Game.lives--;
-			Game.gf.life.setText("Lives: " + Game.lives + ".....Round: " + Game.level);
-			
-			if (Game.lives <= 0)
-			{
-				Game.gameState = Game.OVER;
-			}
-			System.out.println(this.toString());
-			despawn();
-		}
-	}
-	
 }
