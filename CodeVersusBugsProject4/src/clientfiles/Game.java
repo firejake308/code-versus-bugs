@@ -69,7 +69,7 @@ public class Game extends JFrame implements Runnable
 	
 	// for use with fast forwarding
 	public static double speedModifier = 1.0;
-	private static boolean fastForward = false;
+	public static boolean fastForward = false;
 	
 	//4 areas of screen
 	static public JPanel infoPanel;

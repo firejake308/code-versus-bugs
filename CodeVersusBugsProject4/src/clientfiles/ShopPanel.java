@@ -133,9 +133,9 @@ public class ShopPanel extends JPanel implements ActionListener
 			
 			// second iteration
 			if(i == 1 && towerToPlace == TowerType.DISC_THROWER)
-				offset = 25;
+				offset = (int)(Game.scaleOfSprites*DiscThrower.icon.getIconHeight()/2);
 			else if(i == 1 && towerToPlace == TowerType.NUMBER_GENERATOR)
-				offset = 25;
+				offset = (int)(Game.scaleOfSprites*NumberGenerator.icon.getIconWidth()/2);
 			
 			// 3rd iteration
 			else if(i == 2 && towerToPlace == TowerType.DISC_THROWER)

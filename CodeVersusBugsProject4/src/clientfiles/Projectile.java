@@ -326,15 +326,10 @@ public class Projectile
 		//also delete projectile if it goes off the screen
 		else if(x<-50 || x>1500 || y<-50 || y>800)
 		{
-			/*recycleBin[numToRecycle] = this;
-			numToRecycle++;*/
-			//System.out.println("A projectile went out of bounds");
 			addToRecycleBin();
 		}
 		else if (x == 0 && y == 0)
 		{
-			/*recycleBin[numToRecycle] = this;
-			numToRecycle++;*/
 			addToRecycleBin();
 			System.out.println("A projectile in the top left corner was deleted");
 		}
@@ -347,26 +342,6 @@ public class Projectile
 	
 	public void addToRecycleBin()
 	{
-		/*//save the dead projectile's ID and kill it off
-		int deadProjectileID=id;
-		int v = deadProjectileID;
-		//move all other projectiles in array
-		for(int v = deadProjectileID; v < allProjectiles.length; v++)
-		{
-			allProjectiles[v] = allProjectiles[v+1];
-			
-			//break once reaches the nulls
-			if(allProjectiles[v]==null)
-				return;
-			
-			//change the projectile's id to match its new location in the array
-			try{allProjectiles[v].id = v;}
-			catch(NullPointerException e)
-			{
-				System.out.println("v:"+v);
-			}
-		}*/
-		System.out.println("i was of tower "+idOfTower+" with "+uses+" uses left");
 		recycleBin.add(this);
 	}
 }

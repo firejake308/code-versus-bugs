@@ -65,8 +65,9 @@ public abstract class Tower implements ActionListener
 	public static Tower[] allTowers = new Tower[100];
 	protected static JButton[] sprites = new JButton[100];
 	protected  int[] costsOfUpgrades = new int[27];
-	private ImageIcon icon;
+	public ImageIcon icon;
 	private static Random generator = new Random();
+	public static boolean backedUp = false;
 	
 	protected int id;
 	protected int x;
@@ -81,7 +82,7 @@ public abstract class Tower implements ActionListener
 	protected double damage;
 	protected int level = 1;
 	protected int health = 50;
-	private boolean infected = false;
+	public boolean infected = false;
 	
 	protected Ellipse2D rangeIndicator;
 	public boolean rangeOn = true;

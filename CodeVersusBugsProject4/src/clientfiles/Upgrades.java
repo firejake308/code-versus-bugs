@@ -1,17 +1,10 @@
 package clientfiles;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 /**
  * Purpose: To deal with upgrades, all the upgrades and visuals
  * 
@@ -28,6 +21,8 @@ import javax.swing.JTextArea;
  * 		deleting towers fixed - Adel
  * 12/6/14:
  * 		fixed overlapping delete button
+ * 12/16/2014:
+ * 		More upgrades added, a cure button is added
  * 
  * @author Patrick Kenney
  * 
@@ -50,6 +45,7 @@ import javax.swing.JTextArea;
 public abstract class Upgrades
 {
 	public static JButton   deleteTower         = new JButton();
+	public static JButton	cureTower			= new JButton();
 	public static JPanel    upgrade             = new JPanel();
 	public static int       displayedUpgradeID  = 1000;
 	
@@ -82,8 +78,11 @@ public abstract class Upgrades
 		upgradesInfo.setBounds((int) (width / 1.5) - 75, 10, 150, height - 20);
 		upgradesInfo.setBackground(Color.CYAN);
 		
-		deleteTower.setBounds(105+(width/10-25)/2-37, 10, 75, 25);
+		deleteTower.setBounds(105+(width/10-25)/2-37, 10, 100, 25);
 		deleteTower.setText("Delete");
+		
+		cureTower.setBounds(105+(width/10-25)/2-37, 35, 100, 25);
+		cureTower.setText("Cure Tower");
 		
 		upgrade.addMouseListener(new MouseAdapter()
 		{
@@ -156,6 +155,23 @@ public abstract class Upgrades
 		    	deleteTower();
 		    }
 		});
+		
+		cureTower.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				showCureInfo();
+			}
+		});
+		
+		cureTower.addActionListener(new ActionListener()
+		{
+			
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	cureTower();
+		    }
+		});
 	}
 	
 	public static void showUpgradePanel(int id)
@@ -166,6 +182,7 @@ public abstract class Upgrades
 		
 		updateStatistics();
 		upgrade.add(deleteTower);
+		upgrade.add(cureTower);
 		
 		if (typeOfTower == TowerType.DISC_THROWER)
 			DiscThrower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
@@ -251,11 +268,37 @@ public abstract class Upgrades
 		}
 		displayedUpgradeID = 98;
 	}
+	
+	public static void cureTower()
+	{
+		if (Tower.allTowers[displayedUpgradeID].isInfected() && Tower.allTowers[displayedUpgradeID].backedUp && Game.makePurchase(50))
+		{
+			Tower.allTowers[displayedUpgradeID].infected = false;
+			Tower.sprites[displayedUpgradeID].setIcon(Tower.allTowers[displayedUpgradeID].icon);
+		}
+	}
+	
+	public static void showCureInfo()
+	{
+		upgradesInfo.setText(" Cure Tower:\n $50\n Requires Back Up\n Cures infected towers");
+	}
 
 	public static void getUpgradeID(int upgradePath)
 	{
 		int upgradeID = 0;
 		/**Explanation for upgradeID in upgradeTower(int upgradeID)**/
+		
+		//warn user if in tutorial
+		if(Game.tutorial && Game.tutorialSlide < 13)
+		{
+			Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+			int choice = JOptionPane.showOptionDialog(Game.gf, "That's the wrong upgrade!", 
+					"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+			if(choice == 0)
+				return;
+			else if(choice == 1)
+				Game.gamePanel.disableTutorial();
+		}
 		
 		System.out.println("CLICK REGISTERED");
 			
@@ -275,18 +318,6 @@ public abstract class Upgrades
 			
 			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath1;
 			
-			//warn user if in tutorial
-			if(Game.tutorial && Game.tutorialSlide <= 13)
-			{
-				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
-				int choice = JOptionPane.showOptionDialog(Game.gf, "That's the wrong upgrade!", 
-						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
-				if(choice == 0)
-					return;
-				else if(choice == 1)
-					Game.gamePanel.disableTutorial();
-			}
-			
 			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1)))
 			{
 				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1);
@@ -304,18 +335,6 @@ public abstract class Upgrades
 			upgradeID += 20;
 			
 			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath2;
-			
-			//warn user if in tutorial
-			if(Game.tutorial && Game.tutorialSlide <= 13)
-			{
-				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
-				int choice = JOptionPane.showOptionDialog(Game.gf, "That's the wrong upgrade!", 
-						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
-				if(choice == 0)
-					return;
-				else if(choice == 1)
-					Game.gamePanel.disableTutorial();
-			}
 			
 			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(2)))
 			{
@@ -357,14 +376,29 @@ public abstract class Upgrades
 	
 	public static void upgradeTower(int upgradeID)
 	{
+		Tower tower = Tower.allTowers[displayedUpgradeID];
+		
 		/**UPGARADE ID == (TowerType + upgrade path + upgrade number)**/
 		switch (upgradeID) 
 		{
-			case 111:						Tower.allTowers[displayedUpgradeID].projectileDurability = 2;
+			case 111:						//Harder Discs
+											Tower.allTowers[displayedUpgradeID].projectileDurability = 2;
 											System.out.println("projectile durability++");
 											break;
+			case 112:						//Even Harder Discs?
+											Tower.allTowers[displayedUpgradeID].projectileDurability = 3;
+											System.out.println("projectile durability++");
+											break;
+			case 113:						//Faster attack speed?,etc.
+											Tower.allTowers[displayedUpgradeID].timerReset = 24;
+											System.out.println("attack speed++");
+											break;
 											
-			case 121:						Tower.allTowers[displayedUpgradeID].damage = 40;
+			case 121:						//increase damage
+											Tower.allTowers[displayedUpgradeID].damage += 15;
+											System.out.println("damage++");
+											break;
+			case 122:						Tower.allTowers[displayedUpgradeID].damage += 10;
 											System.out.println("damage++");
 											break;
 											
@@ -376,12 +410,21 @@ public abstract class Upgrades
 												Game.gamePanel.nextSlide();
 											
 											//update range indicator
-											Tower tower = Tower.allTowers[displayedUpgradeID];
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
-													tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 										
+			case 132:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 6;
+											System.out.println("range++");
 											
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+											
+			case 133:						Tower.allTowers[displayedUpgradeID].backedUp = true;
+											System.out.println("Backups Added");
+											break;
 											
 			case 211:						Tower.allTowers[displayedUpgradeID].splashEffect = true;
 											Tower.allTowers[displayedUpgradeID].rangeOfSplash = 1.2;
@@ -402,9 +445,8 @@ public abstract class Upgrades
 											System.out.println("wider range");
 											
 											//update range indicator
-											Tower tower1 = Tower.allTowers[displayedUpgradeID];
-											tower1.rangeIndicator = new Ellipse2D.Double(tower1.getCenterX()-tower1.range, 
-											tower1.getCenterY()-tower1.range, tower1.range*2, tower1.range*2);
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 		}
 		
