@@ -49,12 +49,12 @@ public class Worm extends Malware
 	public int timer=0;
 	public final int TIMER_RESET = 60;
 	
-	public int speed = (int) (w * 0.020);
+	public int speed;
 	
 	public Worm(int lane, int y) 
 	{
 		//create a worm in specified lane at specified y value
-		super(lane, y);
+		super(0, lane, y);
 		
 		//set secondary positions
 		x2 = x;
@@ -72,6 +72,7 @@ public class Worm extends Malware
 		reward = 10;
 		range = 120;
 		damage = 10;
+		speed = (int) (w * 0.020);
 	}
 	
 	private double getX2() 

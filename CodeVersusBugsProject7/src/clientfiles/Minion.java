@@ -29,10 +29,10 @@ import javax.swing.ImageIcon;
 
 public class Minion extends Malware
 {
-	
 	public static Image sprite = MyImages.minion;
+	public static Image tankSprite = MyImages.tankMinion;
+	public static Image rushSprite = MyImages.rushMinion;
 	private int w = Game.widthOfGamePanel;
-	public int speed = (int) (w * 0.025);
 	
 	/**
 	 * Creates a virus.
@@ -41,12 +41,32 @@ public class Minion extends Malware
 	 * @param lane
 	 * @param y
 	 */
-	public Minion(int lane, int y)
+	public Minion(int typeToSet, int lane, int y)
 	{
-		super(lane, y);
+		super(typeToSet, lane, y);
 		
-		//initialize instance variables
-		health = 100;
-		reward = 4;
+		//set type
+		type = typeToSet;
+		switch(type)
+		{
+			case NORMAL:
+				//initialize instance variables
+				health = 100;
+				reward = 1;
+				speed = (int) (w * 0.025);
+				break;
+			case TANK:
+				//initialize instance variables
+				health = 150;
+				reward = 3;
+				speed = (int) (w * 0.025 * 0.85);
+				break;
+			case RUSH:
+				//initialize instance variables
+				health = 75;
+				reward = 2;
+				speed = (int) (w * 0.025 * 1.15);
+				break;
+		}
 	}
 }

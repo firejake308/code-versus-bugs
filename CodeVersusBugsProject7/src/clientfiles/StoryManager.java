@@ -51,7 +51,7 @@ public class StoryManager implements LevelManager
 	private int malwaresForLevel3 = 60;
 	private int malwaresForLevel4 = 5;
 	private int malwaresForLevel5 = 55;
-	private int malwaresForLevel6 = 120;
+	private int malwaresForLevel6 = 125;
 	private int malwaresForLevel7 = 25;
 	
 	public StoryManager()  
@@ -90,7 +90,7 @@ public class StoryManager implements LevelManager
 			// l == lane
 			for(int l = 1; l < 6; l++)
 			{
-				Malware.allMalware[v] = new Minion(l, startY);
+				Malware.allMalware[v] = new Minion(Minion.NORMAL, l, startY);
 				v++;
 			}
 			startY -= 70;
@@ -102,7 +102,7 @@ public class StoryManager implements LevelManager
 			// l == lane
 			for(int l = 1; l < 6; l++)
 			{
-				//Malware.allMalware[v] = new Minion(l, startY);
+				Malware.allMalware[v] = new Minion(Minion.TANK, l, startY);
 				v++;
 			}
 			startY -= 70;
@@ -114,7 +114,7 @@ public class StoryManager implements LevelManager
 			// l == lane
 			for(int l = 1; l < 6; l++)
 			{
-				//Malware.allMalware[v] = new Minion(l, startY);
+				Malware.allMalware[v] = new Minion(Minion.RUSH, l, startY);
 				v++;
 			}
 			startY -= 70;
@@ -151,7 +151,7 @@ public class StoryManager implements LevelManager
 				malwaresThisLevel = malwaresForLevel2;
 				break;
 			case 3:	
-				setMalwaresForLevel(60, 0, 0, 0);
+				setMalwaresForLevel(40, 10, 10, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel3;
 				break;
@@ -161,11 +161,12 @@ public class StoryManager implements LevelManager
 				malwaresThisLevel = malwaresForLevel4;
 				break;
 			case 5:	
-				setMalwaresForLevel(50, 0, 0, 5);
+				setMalwaresForLevel(30, 10, 10, 5);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel5;
 				break;
-			case 6:setMalwaresForLevel(115, 0, 0, 5);
+			case 6:
+				setMalwaresForLevel(40, 40, 40, 5);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel6;
 				break;
