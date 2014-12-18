@@ -39,6 +39,8 @@ public class MyImages
 	public static BufferedImage redArrow;
 	//malware
 	public static BufferedImage minion;
+	public static BufferedImage tankMinion;
+	public static BufferedImage rushMinion;
 	public static BufferedImage wormHead;
 	public static BufferedImage wormBody;
 	//towers
@@ -89,7 +91,7 @@ public class MyImages
 	public static BufferedImage modem;
 	public static BufferedImage router;
 	
-	/**
+	/*
 	 * I believe I need the method due to the need for a try-catch
 	 * 
 	 */
@@ -107,6 +109,8 @@ public class MyImages
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
+			tankMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusRed.png"));
+			rushMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusGreen.png"));
 			wormHead = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormHead.png"));
 			wormBody = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormBody.png"));
 			

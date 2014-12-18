@@ -477,6 +477,8 @@ public class GamePanel extends JPanel
 		{
 			super.paintComponent(g);
 			
+			g.drawImage(MyImages.modem, (int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - Game.scaleOfSprites*MyImages.modem.getWidth()/2), (int) ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 - Game.scaleOfSprites*MyImages.modem.getHeight()/2), null);
+			
 			//draw all viruses
 			for(int v=0; v<lvlManager.getMalwaresThisLevel(); v++)
 			{

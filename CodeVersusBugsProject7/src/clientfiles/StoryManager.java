@@ -40,6 +40,11 @@ public class StoryManager implements LevelManager
 {
 	public int malwaresThisLevel = 15;
 	
+	private int minions = 15;
+	private int rushMinions = 0;
+	private int tankMinions = 0;
+	private int worms = 0;
+	
 	// malwares per level
 	private int malwaresForLevel1 = 15;
 	private int malwaresForLevel2 = 30;
@@ -54,6 +59,15 @@ public class StoryManager implements LevelManager
 		
 	}
 	
+	// set number of malwares per type that are in the level
+	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms)
+	{
+		minions = numOfMinions;
+		rushMinions = numOfFastMinions;
+		tankMinions = numOfSlowMinions;
+		worms = numOfWorms;
+	}
+	
 	public int getMalwaresThisLevel()
 	{
 		return malwaresThisLevel;
@@ -64,84 +78,58 @@ public class StoryManager implements LevelManager
 	 * 
 	 * @param malwaresToAddThisLevel the total number of malwares in this level.
 	 */
-	public void addMalwares(int malwaresToAddThisLevel)
+	public void addMalwares()
 	{
 		// v is the counter for malwares input
 		int v = 0;
 		int startY = -75;
 		
-		switch(Game.level)
+		// i is the number of normal minions per route, as minions to add is / 5 (5 = routes)
+		for (int i = 0; i < minions / 5; i++)
 		{
-			//all minions only levels
-			case 1:
-			case 2:
-			case 3:
-				// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
-				for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
-				{
-					// l == lane
-					for(int l = 1; l < 6; l++)
-					{
-						Malware.allMalware[v] = new Minion(l, startY);
-						v++;
-					}
-					startY -= 70;
-				}
-				break;
-				
-			//worms only levels
-			case 4:
-			case 7:
-				// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
-				for (int i = 0; i < malwaresToAddThisLevel / 5; i++)
-				{
-					// l == lane
-					for(int l = 1; l < 6; l++)
-					{
-						Malware.allMalware[v] = new Worm(l, startY);
-						v++;
-					}
-					startY -= 70;
-				}
-				break;
-				
-			//mostly minions followed by 5 worms
-			case 5:
-			case 6:
-				
-				//initialize all but 5 of malwares in this level to minions
-				for (int i = 0; i < (malwaresToAddThisLevel - 5) / 5; i++)
-				{
-					// l == lane
-					for(int l = 1; l < 6; l++)
-					{
-						Malware.allMalware[v] = new Minion(l, startY);
-						v++;
-					}
-					startY -= 70;
-				}
-				startY -= 70;
-				
-				//last 5 malwares should be worms
-				for(int l = 1; l < 6; l++)
-				{
-					Malware.allMalware[v] = new Worm(l, startY);
-					v++;
-				}
-				break;
-				/*
-			case 7:
-				for(int i = 0; i < malwaresToAddThisLevel / 5; i++)
-				{
-					for (int l = 1; l < 6; l++)
-					{
-						Malware.allMalware[v] = new Worm(l, startY);
-						v++;
-					}
-					startY-=70;
-					
-				}
-				break;*/
+			// l == lane
+			for(int l = 1; l < 6; l++)
+			{
+				Malware.allMalware[v] = new Minion(l, startY);
+				v++;
+			}
+			startY -= 70;
+		}
+		
+		// i is the number of tank minions per route, as tankMinions is / 5 (5 = routes)
+		for (int i = 0; i < tankMinions / 5; i++)
+		{
+			// l == lane
+			for(int l = 1; l < 6; l++)
+			{
+				//Malware.allMalware[v] = new Minion(l, startY);
+				v++;
+			}
+			startY -= 70;
+		}
+		
+		// i is the number of rush minions per route, as rushMinions to add is / 5 (5 = routes)
+		for (int i = 0; i < rushMinions / 5; i++)
+		{
+			// l == lane
+			for(int l = 1; l < 6; l++)
+			{
+				//Malware.allMalware[v] = new Minion(l, startY);
+				v++;
+			}
+			startY -= 70;
+		}
+		
+		// i is the number of worms per route, as worms is / 5 (5 = routes)
+		for (int i = 0; i < worms / 5; i++)
+		{
+			// l == lane
+			for(int l = 1; l < 6; l++)
+			{
+				Malware.allMalware[v] = new Worm(l, startY);
+				v++;
+			}
+			startY -= 70;
 		}
 	}
 	
@@ -153,31 +141,37 @@ public class StoryManager implements LevelManager
 		switch(Game.level)
 		{
 			case 1:	
-				addMalwares(malwaresForLevel1);
+				setMalwaresForLevel(15, 0, 0, 0);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel1;
 				break;
-			case 2: 
-				addMalwares(malwaresForLevel2);
+			case 2:
+				setMalwaresForLevel(30, 0, 0, 0);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel2;
 				break;
 			case 3:	
-				addMalwares(malwaresForLevel3);
+				setMalwaresForLevel(60, 0, 0, 0);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel3;
 				break;
 			case 4:	
-				addMalwares(malwaresForLevel4);
+				setMalwaresForLevel(0, 0, 0, 5);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel4;
 				break;
 			case 5:	
-				addMalwares(malwaresForLevel5);
+				setMalwaresForLevel(50, 0, 0, 5);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel5;
 				break;
-			case 6:
-				addMalwares(malwaresForLevel6);
+			case 6:setMalwaresForLevel(115, 0, 0, 5);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel6;
 				break;
 			case 7:
-				addMalwares(malwaresForLevel7);
+				setMalwaresForLevel(0, 0, 0, 25);
+				addMalwares();
 				malwaresThisLevel = malwaresForLevel7;
 				break;
 			case 8:

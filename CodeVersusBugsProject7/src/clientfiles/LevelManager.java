@@ -8,7 +8,9 @@ public interface LevelManager
 	
 	
 	// extra methods removed to get rid of errors, replaced by:
-	public void addMalwares(int virusesThisLevel);
+	public void addMalwares();
+	
+	public void setMalwaresForLevel(int a, int b, int c, int d);
 	
 	public void nextlvl();
 	
