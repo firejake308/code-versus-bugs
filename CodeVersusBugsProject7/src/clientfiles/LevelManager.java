@@ -10,7 +10,7 @@ public interface LevelManager
 	// extra methods removed to get rid of errors, replaced by:
 	public void addMalwares();
 	
-	public void setMalwaresForLevel(int a, int b, int c, int d);
+	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms);
 	
 	public void nextlvl();
 	

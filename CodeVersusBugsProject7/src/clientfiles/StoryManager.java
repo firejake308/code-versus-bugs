@@ -41,8 +41,8 @@ public class StoryManager implements LevelManager
 	public int malwaresThisLevel = 15;
 	
 	private int minions = 15;
-	private int rushMinions = 0;
-	private int tankMinions = 0;
+	private int fastMinions = 0;
+	private int slowMinions = 0;
 	private int worms = 0;
 	
 	// malwares per level
@@ -63,8 +63,8 @@ public class StoryManager implements LevelManager
 	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms)
 	{
 		minions = numOfMinions;
-		rushMinions = numOfFastMinions;
-		tankMinions = numOfSlowMinions;
+		fastMinions = numOfFastMinions;
+		slowMinions = numOfSlowMinions;
 		worms = numOfWorms;
 	}
 	
@@ -84,7 +84,7 @@ public class StoryManager implements LevelManager
 		int v = 0;
 		int startY = -75;
 		
-		// i is the number of normal minions per route, as minions to add is / 5 (5 = routes)
+		// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
 		for (int i = 0; i < minions / 5; i++)
 		{
 			// l == lane
@@ -96,8 +96,8 @@ public class StoryManager implements LevelManager
 			startY -= 70;
 		}
 		
-		// i is the number of tank minions per route, as tankMinions is / 5 (5 = routes)
-		for (int i = 0; i < tankMinions / 5; i++)
+		// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
+		for (int i = 0; i < slowMinions / 5; i++)
 		{
 			// l == lane
 			for(int l = 1; l < 6; l++)
@@ -108,8 +108,8 @@ public class StoryManager implements LevelManager
 			startY -= 70;
 		}
 		
-		// i is the number of rush minions per route, as rushMinions to add is / 5 (5 = routes)
-		for (int i = 0; i < rushMinions / 5; i++)
+		// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
+		for (int i = 0; i < fastMinions / 5; i++)
 		{
 			// l == lane
 			for(int l = 1; l < 6; l++)
@@ -120,7 +120,7 @@ public class StoryManager implements LevelManager
 			startY -= 70;
 		}
 		
-		// i is the number of worms per route, as worms is / 5 (5 = routes)
+		// i is the number of malwares per route, as malwares to add is / 5 (5 = routes)
 		for (int i = 0; i < worms / 5; i++)
 		{
 			// l == lane
