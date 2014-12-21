@@ -119,7 +119,7 @@ public class Projectile
 			
 			splashRange = Tower.allTowers[idOfTower].rangeOfSplash;
 			
-			//change icon of the number generator
+			//change normalIcon of the number generator
 			int r1 = NumberGenerator.rand.nextInt(NumberGenerator.icons.length);
 			Tower.sprites[idOfTower].setIcon(NumberGenerator.icons[r1]);
 			
@@ -316,7 +316,7 @@ public class Projectile
 		}
 		
 		//also delete projectile if it goes off the screen
-		else if(x<-50 || x>1500 || y<-50 || y>800)
+		else if(x<-50 || x>Game.widthOfGamePanel + 50 || y<-50 || y>Game.heightOfGamePanel + 50)
 		{
 			addToRecycleBin();
 		}

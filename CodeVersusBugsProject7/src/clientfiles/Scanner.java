@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 
 public class Scanner extends Tower
 {
-	public static int cost = 100;
+	public static int cost = 1000;
 	
 	public static ImageIcon icon = new ImageIcon(MyImages.scanner0);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidScanner);
@@ -39,6 +39,7 @@ public class Scanner extends Tower
 		splashEffect = false;
 		
 		diameterOfTower = 50;
+		health = 100;
 		
 		x=0;
 		y=0;
@@ -61,9 +62,9 @@ public class Scanner extends Tower
 	 */
 	public void scan(double elapsedTime)
 	{
-		scanDegree += elapsedTime;
+		scanDegree += elapsedTime * 0.7;
 		if (Game.fastForward)
-			scanDegree += elapsedTime;
+			scanDegree += elapsedTime * 0.7;
 	}
 	
 	public static void increaseDamage(int increase)

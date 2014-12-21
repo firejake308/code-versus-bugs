@@ -78,7 +78,7 @@ public class GamePanel extends JPanel
 	private Point scHotspot = new Point(15, 15);
 	private Cursor scannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scSprite,scHotspot,"Scanner");
 	private Cursor invalidScannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scInvalidSprite, scHotspot, "Scanner");
-	private Image fwSprite = FireWall.icon.getImage();
+	private Image fwSprite = FireWall.normalIcon.getImage();
 	private Image fwInvalidSprite = FireWall.invalidIcon.getImage();
 	private Point fwHotspot = new Point(15, 15);
 	private Cursor firewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwSprite,fwHotspot,"Firewall");
@@ -302,6 +302,18 @@ public class GamePanel extends JPanel
                 //if the mouse is moved, reset mouseX & mouseY variables
             	setMouseXY(e.getX(),e.getY());
             	setCursorIcon();
+            	
+            	//turn mouseOnTrack on or off
+            	for(int trackPart = 0; trackPart < path.length; trackPart++)
+            	{
+            		if(path[trackPart].contains(e.getPoint()))
+            		{
+            			ShopPanel.mouseOnTrack = true;
+            			return;
+            		}
+            	}
+            	//if no track part contains mouse position
+            	ShopPanel.mouseOnTrack = false;
             }
         });
         
@@ -350,9 +362,6 @@ public class GamePanel extends JPanel
         	public void keyReleased(KeyEvent e){}
         	public void keyTyped(KeyEvent e){}
         });
-        
-        //initialize instance variables
-        path = new Rectangle[3];
 	}
 	public void setMouseXY(int x, int y)
 	{
@@ -548,25 +557,6 @@ public class GamePanel extends JPanel
 		{
 			setBackground(Color.GREEN);
 			setOpaque(false);
-			
-			//make path parts
-			path[0] = new Rectangle();
-			path[0].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42),
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-					Game.widthOfGamePanel/3,
-					Game.widthOfGamePanel/42);
-			
-			path[1] = new Rectangle();
-			path[1].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
-					Game.heightOfGamePanel/6,
-					Game.widthOfGamePanel/42,
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - Game.heightOfGamePanel / 6);
-			
-			path[2] = new Rectangle();
-			path[2].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-					Game.widthOfGamePanel / 42,
-					(int)(Game.heightOfGamePanel * .15));
 		}
 		public void paintComponent(Graphics g)
 		{
@@ -575,9 +565,10 @@ public class GamePanel extends JPanel
 			//draw path
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(Color.YELLOW);
-			g2d.fill(path[0]);
-			g2d.fill(path[1]);
-			g2d.fill(path[2]);
+			for(int trackPart = 0; trackPart < path.length; trackPart++)
+			{
+				g2d.fill(path[trackPart]);
+			}
 			
 			//draw all viruses
 			for(int v=0; v<lvlManager.getMalwaresThisLevel(); v++)

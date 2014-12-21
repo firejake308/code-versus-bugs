@@ -437,9 +437,6 @@ public class Worm extends Malware
 	}
 	public void attack(Tower target)
 	{
-		if (!offensive)
-			return;
-		
 		//calculate the angle at which the projectile should move
 		double slope = (double)(target.getCenterY() - this.getCenterY()) / (target.getCenterX() - this.getCenterX());
 		//absolute value of arctan, so angle is always positive

@@ -39,7 +39,7 @@ public class NumberGenerator extends Tower
 	public static ImageIcon icon = new ImageIcon(MyImages.random);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidRandom);
 	public static ImageIcon lethalIcon = new ImageIcon(MyImages.randomlethal);
-	public static int cost = 60;
+	public static int cost = 600;
 	static Random rand = new Random(31415);
 	public static ImageIcon[] icons = {new ImageIcon(MyImages.random0), new ImageIcon(MyImages.random1),
 										new ImageIcon(MyImages.random2), new ImageIcon(MyImages.random3),

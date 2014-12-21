@@ -43,6 +43,7 @@ public class MyImages
 	public static BufferedImage rushMinion;
 	public static BufferedImage wormHead;
 	public static BufferedImage wormBody;
+	public static BufferedImage trojan;
 	//towers
 	public static BufferedImage dt0;
 	public static BufferedImage dt1;
@@ -73,6 +74,7 @@ public class MyImages
 	public static BufferedImage invalidScanner;
 	public static BufferedImage firewall;
 	public static BufferedImage firewallShopImage;
+	public static BufferedImage firewallBroken;
 	//projectiles
 	public static BufferedImage cd;
 	public static BufferedImage r0;
@@ -122,6 +124,7 @@ public class MyImages
 			rushMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusGreen.png"));
 			wormHead = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormHead.png"));
 			wormBody = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormBody.png"));
+			trojan = ImageIO.read(MyImages.class.getResourceAsStream("resources/trojan1.png"));
 			
 			//towers
 			dt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower0.png"));
@@ -153,6 +156,7 @@ public class MyImages
 			invalidScanner = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidScanner.png"));
 			firewall = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall1.png"));
 			firewallShopImage = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall2.png"));
+			firewallBroken = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewallBroken.png"));
 			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));

@@ -92,9 +92,9 @@ public class ShopPanel extends JPanel implements ActionListener
 				if (!warned)
 				{
             		if (Game.money < NumberGenerator.cost)
-            			changeInfo("$60", true);
+            			changeInfo("$600", true);
             		else
-            			changeInfo("$60", false);
+            			changeInfo("$600", false);
             	}
 			}
 		});
@@ -106,9 +106,9 @@ public class ShopPanel extends JPanel implements ActionListener
 				if (!warned)
 				{
             		if (Game.money < Scanner.cost)
-            			changeInfo("$100", true);
+            			changeInfo("$1000", true);
             		else
-            			changeInfo("$100", false);
+            			changeInfo("$1000", false);
             	}
 			}
 		});
@@ -120,9 +120,9 @@ public class ShopPanel extends JPanel implements ActionListener
 				if (!warned)
 				{
             		if (Game.money < FireWall.cost)
-            			changeInfo("$50", true);
+            			changeInfo("$200", true);
             		else
-            			changeInfo("$50", false);
+            			changeInfo("$200", false);
             	}
 			}
 		});
@@ -139,7 +139,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			info.setBackground(Color.red);
 		}
 		//reset timer so that text fades after 2 seconds
-		timer = 120;
+		timer = 60;
 		
 	}
 	

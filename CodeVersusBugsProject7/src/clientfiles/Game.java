@@ -8,7 +8,7 @@
  * 		removed game loop so that it wouldn't hog EDT
  * 		commented out most println()s
  * 11/8/14:
- * 		gave the frame an icon
+ * 		gave the frame an normalIcon
  * 11/15/14:
  * 		you can now pause the game using the gameState variable
  * 11/24/14:
@@ -57,7 +57,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	public static int money = 150;
+	public static int money = 500;
 	public static int lives = 5000;
 	public static int level = 1;
 
@@ -267,16 +267,30 @@ public class Game extends JFrame implements Runnable
 					{
 						Point malware = new Point(Malware.allMalware[m].getCenterX(), Malware.allMalware[m].getCenterY());
 						
-						if(tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 1)
+						if(tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 1  && !tower.infected)
 						{
 							Malware.allMalware[m].dealDamage(tower.damage, 1, t);
 							((Scanner) tower).tickCounter = 0;
 							
 							if (Malware.allMalware[m] instanceof Worm && ((Scanner)tower).disableWorms)
 							{
-								Malware.allMalware[m].offensive = false;
+								Malware.allMalware[m].state = State.BENIGN;
+							}
+							if (Malware.allMalware[m] instanceof Trojan)
+								Malware.allMalware[m].state = State.NORMAL;
+						}
+						
+						else if (tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 3  && tower.infected)
+						{
+							Malware.allMalware[m].dealDamage(tower.damage, 1, t);
+							((Scanner) tower).tickCounter = 0;
+							
+							if (Malware.allMalware[m] instanceof Worm && ((Scanner)tower).disableWorms)
+							{
+								Malware.allMalware[m].state = State.BENIGN;
 							}
 						}
+						
 						((Scanner) tower).tickCounter++;
 						if (fastForward)
 							((Scanner) tower).tickCounter++;
@@ -313,7 +327,11 @@ public class Game extends JFrame implements Runnable
 			if(Malware.allMalware[m] instanceof Worm)
 			{
 				Worm worm = (Worm) Malware.allMalware[m];
-				targetTower = Worm.findTarget(worm);
+				if (worm.state != State.BENIGN)
+					targetTower = Worm.findTarget(worm);
+				else
+					targetTower = null;
+				
 				if(worm.timer==0 && targetTower != null)
 				{
 					worm.attack(targetTower);

@@ -64,7 +64,8 @@ public class TechPanel extends JPanel implements ActionListener
 		livesPoints = 0;
 		moneyPoints = 0;
 	}
-	/**all GUI initializing goes in this pseudo-constructor
+	/**
+	 * All GUI initializing goes in this pseudo-constructor
 	 * 
 	 */
 	public void initializeTechPanel()
@@ -79,7 +80,7 @@ public class TechPanel extends JPanel implements ActionListener
 		
 		//initialize the buttons
 		damage = new JButton("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
-		speed= new JButton("<html><div style = \"text-align:center\">Speed<br>"+damagePoints+"/5"+"</html>");
+		speed = new JButton("<html><div style = \"text-align:center\">Speed<br>"+damagePoints+"/5"+"</html>");
 		lives = new JButton("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
 		money = new JButton("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
 		
@@ -145,9 +146,13 @@ public class TechPanel extends JPanel implements ActionListener
 				Tower curr = Tower.allTowers[t];
 				if(curr == null)
 					break;
-				else if(curr.getType() == TowerType.DISC_THROWER || curr.getType() == TowerType.SCANNER)
+				else if(curr.getType() == TowerType.DISC_THROWER)
 				{
 					curr.damage += 5; //only increases damage on dt's and scanners by 5
+				}
+				else if(curr.getType() == TowerType.SCANNER)
+				{
+					curr.damage += .5;
 				}
 			}
 			
@@ -182,7 +187,7 @@ public class TechPanel extends JPanel implements ActionListener
 			defensePoints++;
 			
 			//add 20 lives
-			Game.lives += 20;
+			Game.lives += 1000;
 			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
 		}
 		
@@ -205,6 +210,9 @@ public class TechPanel extends JPanel implements ActionListener
 		speed.setEnabled(false);
 		lives.setEnabled(false);
 		money.setEnabled(false);
+		
+		setVisible(false);
+		Game.gamePanel.setVisible(true);
 	}
 	
 	public void paintComponent(Graphics g)

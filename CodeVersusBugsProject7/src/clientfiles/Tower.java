@@ -137,7 +137,7 @@ public abstract class Tower implements ActionListener
 		this.icon = icon;
 		
 		sprites[id] = new JButton(icon);
-		sprites[id].setBounds(getX(), getY(), (int)(50*Game.scaleOfSprites), (int)(50*Game.scaleOfSprites));
+		sprites[id].setBounds(getX(), getY(), (int)(icon.getIconWidth()*Game.scaleOfSprites), (int)(icon.getIconHeight()*Game.scaleOfSprites));
 		sprites[id].addActionListener(this);
 		
 		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
@@ -202,7 +202,7 @@ public abstract class Tower implements ActionListener
 	 */
 	public void setCenterX(int xToSet)
 	{
-		x=xToSet-25;
+		x = xToSet - (int) (Game.scaleOfSprites * sprites[id].getWidth() / 2);
 	}
 	/**sets the y-coordinate of the center of the tower
 	 * 
@@ -210,11 +210,12 @@ public abstract class Tower implements ActionListener
 	 */
 	public void setCenterY(int yToSet)
 	{
-		y=yToSet-25;
+		y = yToSet - (int) (Game.scaleOfSprites * sprites[id].getHeight() / 2);
 	}
 	/**
 	 * Returns the location of the tower on the game panel. Use this for drawing.
 	 * 
+	 * @deprecated
 	 * @return
 	 */
 	public int getScreenX()
@@ -224,6 +225,7 @@ public abstract class Tower implements ActionListener
 	/**
 	 * Returns the location of the tower on the game panel. Use this for drawing.
 	 * 
+	 * @deprecated
 	 * @return
 	 */
 	public int getScreenY()
@@ -268,6 +270,37 @@ public abstract class Tower implements ActionListener
 			else if(health <= 40)
 			{
 				setIcon(new ImageIcon(MyImages.dt1));
+			}
+		}
+		else if(this instanceof Scanner)
+		{
+			if(health <= 0)
+			{
+				//kill a worm-ed tower
+				//Upgrades.displayedUpgradeID = id;
+				//Upgrades.deleteTower();
+				
+				//or, just infect it
+				infected = true;
+				health = 100;
+				setIcon(new ImageIcon(MyImages.scanner5));
+			}
+			else if(health <= 10)
+			{
+				setIcon(new ImageIcon(MyImages.scanner4));
+			}
+			else if(health <= 20)
+			{
+				setIcon(new ImageIcon(MyImages.scanner3));
+			}
+			else if(health <=30)
+			{
+				setIcon(new ImageIcon(MyImages.scanner2));
+			}
+			else if(health <= 40)
+			{
+				System.out.println("DAMAGED");
+				setIcon(new ImageIcon(MyImages.scanner1));
 			}
 		}
 		
@@ -385,7 +418,7 @@ public abstract class Tower implements ActionListener
 				
 				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
 				
-				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.FROZEN && distanceFromTower <= range && yOfVirus >= 0)
+				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.FROZEN && Malware.allMalware[i].state != State.INVISIBLE && distanceFromTower <= range && yOfVirus >= 0)
 				{
 					virusToAttack = Malware.allMalware[i];
 					virusesDistance = virusToAttack.getRelativeDistance();
@@ -412,7 +445,7 @@ public abstract class Tower implements ActionListener
 				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
 				//System.out.println(distanceFromTower + " " + Virus.allViruses[i]);
 				
-				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && distanceFromTower <= range && yOfVirus >= 0)
+				if (Malware.allMalware[i].state != State.INVISIBLE  && Malware.allMalware[i].getRelativeDistance() >= virusesDistance && distanceFromTower <= range && yOfVirus >= 0)
 				{
 					virusToAttack = Malware.allMalware[i];
 					virusesDistance = virusToAttack.getRelativeDistance();

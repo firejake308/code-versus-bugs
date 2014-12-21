@@ -12,8 +12,8 @@ import javax.swing.ImageIcon;
 
 public class FireWall extends Tower
 {	
-	public static int cost = 50;
-	public static ImageIcon icon = new ImageIcon(MyImages.firewall);
+	public static int cost = 200;
+	public static ImageIcon normalIcon = new ImageIcon(MyImages.firewall);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
 	public static int damageToSet = 100;
 	public static int speedToSet = 0;
@@ -25,7 +25,7 @@ public class FireWall extends Tower
 	
 	public FireWall(int xToSet, int yToSet, int idToSet) 
 	{
-		super(icon, idToSet);
+		super(normalIcon, idToSet);
 		
 		// to be edited later
 		int [] costsOfUpgradesGoBetween = {50, 200, 250, 1000000, 0, 0, 0, 0, 0, 40, 100, 10000000, 0, 0, 0, 0, 0, 0, 30, 60, 30, 10000000, 0, 0, 0, 0, 0};
@@ -196,6 +196,11 @@ public class FireWall extends Tower
 							break;
 						}
 					}
+				}
+				
+				if(killsLeft <= 0)
+				{
+					icon = new ImageIcon(MyImages.firewallBroken);
 				}
 			}
 		}
