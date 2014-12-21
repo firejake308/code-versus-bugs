@@ -90,7 +90,6 @@ public abstract class Tower implements ActionListener
 	public boolean rangeOn = true;
 	protected double angleOfArrow;
 	protected double scanDegree;
-	private int shadeOfBlue = 1;
 	
 	//upgrades
 	protected int projectileDurability;

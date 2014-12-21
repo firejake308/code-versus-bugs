@@ -59,7 +59,7 @@ public class GamePanel extends JPanel
 	public static int numTowers=0;
 	public LevelManager lvlManager;
 	
-	public boolean mouseInUpgradePanel = false;
+	public static boolean mouseInUpgradePanel = false;
 	public Rectangle[] path;
 	
 	//cursors
@@ -78,6 +78,11 @@ public class GamePanel extends JPanel
 	private Point scHotspot = new Point(15, 15);
 	private Cursor scannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scSprite,scHotspot,"Scanner");
 	private Cursor invalidScannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scInvalidSprite, scHotspot, "Scanner");
+	private Image fwSprite = FireWall.icon.getImage();
+	private Image fwInvalidSprite = FireWall.invalidIcon.getImage();
+	private Point fwHotspot = new Point(15, 15);
+	private Cursor firewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwSprite,fwHotspot,"Firewall");
+	private Cursor invalidFirewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwInvalidSprite, fwHotspot, "Firewall");
 	
 	
 	static private final long serialVersionUID = 1;
@@ -85,7 +90,7 @@ public class GamePanel extends JPanel
 	private JLabel tutorial;
 	private JLayeredPane layeredPane;
 	private Ellipse2D.Double tempRangeIndicator;
-	private boolean rangeOn;
+	public static boolean rangeOn;
 	
 	public GamePanel()
 	{
@@ -242,6 +247,23 @@ public class GamePanel extends JPanel
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
             			break;
+            		case FIREWALL:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new FireWall(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;
+            			
             		case NONE:
             		default:
             			                        	
@@ -260,6 +282,9 @@ public class GamePanel extends JPanel
             			break;
             		case SCANNER:
             			setCursor(scannerCursor);
+            			break;
+            		case FIREWALL:
+            			setCursor(firewallCursor);
             			break;
             		case NONE:
             		default:
@@ -375,6 +400,15 @@ public class GamePanel extends JPanel
 					            		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-Scanner.rangeToSet, getMouseY()-Scanner.rangeToSet, 
 					            					Scanner.rangeToSet*2, Scanner.rangeToSet*2);
 					            		break;
+    		case FIREWALL:				if (!ShopPanel.checkPlacement())
+											setCursor(invalidFirewallCursor);
+										else
+											setCursor(firewallCursor);
+										rangeOn = true;
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-Scanner.rangeToSet, getMouseY()-Scanner.rangeToSet, 
+							    					Scanner.rangeToSet*2, Scanner.rangeToSet*2);
+							    		break;
+							    		
 			default:					setCursor(Cursor.getDefaultCursor());
 										break;
     	}
@@ -514,6 +548,25 @@ public class GamePanel extends JPanel
 		{
 			setBackground(Color.GREEN);
 			setOpaque(false);
+			
+			//make path parts
+			path[0] = new Rectangle();
+			path[0].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42),
+					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+					Game.widthOfGamePanel/3,
+					Game.widthOfGamePanel/42);
+			
+			path[1] = new Rectangle();
+			path[1].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
+					Game.heightOfGamePanel/6,
+					Game.widthOfGamePanel/42,
+					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - Game.heightOfGamePanel / 6);
+			
+			path[2] = new Rectangle();
+			path[2].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
+					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+					Game.widthOfGamePanel / 42,
+					(int)(Game.heightOfGamePanel * .15));
 		}
 		public void paintComponent(Graphics g)
 		{
@@ -521,26 +574,9 @@ public class GamePanel extends JPanel
 			
 			//draw path
 			Graphics2D g2d = (Graphics2D) g;
-			path[0] = new Rectangle();
-			path[0].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42),
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-					Game.widthOfGamePanel/3,
-					Game.widthOfGamePanel/42);
 			g2d.setColor(Color.YELLOW);
 			g2d.fill(path[0]);
-			
-			path[1] = new Rectangle();
-			path[1].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
-					Game.heightOfGamePanel/6,
-					Game.widthOfGamePanel/42,
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - Game.heightOfGamePanel / 6);
 			g2d.fill(path[1]);
-			
-			path[2] = new Rectangle();
-			path[2].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-					Game.widthOfGamePanel / 42,
-					(int)(Game.heightOfGamePanel * .15));
 			g2d.fill(path[2]);
 			
 			//draw all viruses

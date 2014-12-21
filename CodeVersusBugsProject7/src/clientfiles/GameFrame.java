@@ -155,6 +155,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// for 2nd to left entrance
@@ -175,6 +226,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		
@@ -203,6 +305,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// for last to left entrance
@@ -223,6 +376,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		
@@ -245,6 +449,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// for connector, top right entrances
@@ -265,6 +520,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		
@@ -287,6 +593,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// goes right from the one above on left side(lowest)
@@ -307,6 +664,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		
@@ -330,6 +738,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// goes right from one above on left side, middle height
@@ -350,6 +809,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		
@@ -372,6 +882,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// goes down from connector of top right entrances
@@ -392,6 +953,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		
@@ -415,6 +1027,57 @@ public class GameFrame extends JFrame implements ActionListener
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
 			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
+			}
 		});
 		
 		// goes left from point of connection of sides, 2nd to last track
@@ -432,6 +1095,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = true;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 			
 			public void mouseExited(MouseEvent e)
@@ -460,6 +1174,57 @@ public class GameFrame extends JFrame implements ActionListener
 			{
 				ShopPanel.mouseOnTrack = false;
 				Game.gamePanel.setCursorIcon();
+			}
+			
+			public void mousePressed(MouseEvent e)
+			{
+				if(!GamePanel.mouseInUpgradePanel)
+            	{
+            		for (int i = 0; i < Tower.allTowers.length; i++)
+            		{
+            			if (Tower.allTowers[i] == null)
+            				break;
+            			else if (i == Upgrades.displayedUpgradeID)
+            			{
+            				Upgrades.removeUpgradePanel();
+            			}
+            			//hide range indicator for all towers
+        				Tower.allTowers[i].rangeOn = false;	
+            		}
+            	}
+            	
+            	requestFocusInWindow();
+            	
+            	if (ShopPanel.towerToPlace == TowerType.NONE)
+            	{
+            		System.out.println("You must select a type first!");
+            		return;
+            	}
+            	
+            	// check if valid placement
+            	if (!ShopPanel.checkPlacement())
+            	{
+            		ShopPanel.changeInfo("Invalid Location!", true); 
+            		return;
+            	}
+            	
+            	if (ShopPanel.towerToPlace == TowerType.FIREWALL)
+            	{
+            		// create a new number generator in the static array
+	                    Tower.allTowers[GamePanel.numTowers] = new FireWall(e.getX(), e.getY(), GamePanel.numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[GamePanel.numTowers];
+	                    GamePanel.numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        GamePanel.rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            	}
 			}
 		});
 		

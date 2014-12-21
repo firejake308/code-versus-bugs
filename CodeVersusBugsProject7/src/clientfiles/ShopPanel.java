@@ -30,6 +30,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private JButton buyDiscThrower;
 	private JButton buyNumberGenerator;
 	private JButton buyScanner;
+	private JButton buyFireWall;
 	
 	public static JLabel info = new JLabel("");
 	public static boolean warned = false;
@@ -38,6 +39,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon dtImage = DiscThrower.icon;
 	private Icon ngImage = NumberGenerator.icon;
 	private Icon scImage = Scanner.icon;
+	private Icon fwImage = new ImageIcon(MyImages.firewallShopImage);
 	
 	public static int timer=0;
 	
@@ -46,6 +48,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyDiscThrower = new JButton(dtImage);
 		buyNumberGenerator = new JButton(ngImage);
 		buyScanner = new JButton(scImage);
+		buyFireWall = new JButton(fwImage);
 		
 		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -54,17 +57,19 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyDiscThrower.setBounds(20, 75, 50, 63);
 		buyNumberGenerator.setBounds(20, 150, 50, 50);
 		buyScanner.setBounds(20, 215, 50, 63);
+		buyFireWall.setBounds(20, 305, 50, 50);
 		
 		buyDiscThrower.addActionListener(this);
 		buyNumberGenerator.addActionListener(this);
 		buyScanner.addActionListener(this);
-		
+		buyFireWall.addActionListener(this);
 		
 		setLayout(null);
 		add(info);
 		add(buyDiscThrower);
 		add(buyNumberGenerator);
 		add(buyScanner);
+		add(buyFireWall);
 		
 		buyDiscThrower.addMouseListener(new MouseAdapter()
 		{
@@ -100,10 +105,24 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.money < NumberGenerator.cost)
+            		if (Game.money < Scanner.cost)
             			changeInfo("$100", true);
             		else
             			changeInfo("$100", false);
+            	}
+			}
+		});
+		
+		buyFireWall.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				if (!warned)
+				{
+            		if (Game.money < FireWall.cost)
+            			changeInfo("$50", true);
+            		else
+            			changeInfo("$50", false);
             	}
 			}
 		});
@@ -134,7 +153,36 @@ public class ShopPanel extends JPanel implements ActionListener
 		int centerOfOtherTowerY;
 		int radiusOfOtherTower;
 		
-		if (mouseOnTrack)
+		if (mouseOnTrack && towerToPlace != TowerType.FIREWALL)
+			return false;
+		else if (mouseOnTrack && towerToPlace == TowerType.FIREWALL)
+		{
+			boolean comparingToFireWall = false;
+			
+			/**For checking proximity to other towers*/
+			for (int j = 0; j < Tower.allTowers.length; j++)
+			{
+				if (Tower.allTowers[j] == null)
+					break;
+				
+				// get centers of other towers
+				centerOfOtherTowerX = Tower.allTowers[j].getCenterX();
+				centerOfOtherTowerY = Tower.allTowers[j].getCenterY();
+				radiusOfOtherTower = Tower.allTowers[j].getRadius();
+				
+				if (Tower.allTowers[j] instanceof FireWall)
+					comparingToFireWall = true;
+				
+				// check top left and bottom right corners
+				if (comparingToFireWall && x + offset >= centerOfOtherTowerX - radiusOfOtherTower && x + offset <= centerOfOtherTowerX + radiusOfOtherTower && y + offset >= centerOfOtherTowerY - radiusOfOtherTower && y + offset <= centerOfOtherTowerY + radiusOfOtherTower)
+					return false;
+				// check top right and bottom left corners
+				else if (comparingToFireWall && x + offset >= centerOfOtherTowerX - radiusOfOtherTower && x + offset <= centerOfOtherTowerX + radiusOfOtherTower && y - offset >= centerOfOtherTowerY - radiusOfOtherTower && y - offset <= centerOfOtherTowerY + radiusOfOtherTower)
+					return false;
+			}
+			return true;
+		}
+		else if (!mouseOnTrack && towerToPlace == TowerType.FIREWALL)
 			return false;
 		
 		//testing code for simplified bounds checking
@@ -440,6 +488,29 @@ public class ShopPanel extends JPanel implements ActionListener
 			
 			changeInfo("Scanner Selected",false);
 		}
+		else if (temp == buyFireWall)
+		{
+			towerType = TowerType.FIREWALL;
+			
+			if (towerToPlace == TowerType.FIREWALL)
+			{
+				towerToPlace = TowerType.NONE;
+				return;
+			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
+			
+			changeInfo("Firewall Selected",false);
+		}
 		
 		validateBuy(towerType);
 	}
@@ -471,6 +542,16 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.money >= Scanner.cost)
 			{
 				towerToPlace = TowerType.SCANNER;
+			}
+			else
+				changeInfo("Not Enough Money!", true);
+		}
+		
+		else if(type == TowerType.FIREWALL)
+		{
+			if(Game.money >= FireWall.cost)
+			{
+				towerToPlace = TowerType.FIREWALL;
 			}
 			else
 				changeInfo("Not Enough Money!", true);

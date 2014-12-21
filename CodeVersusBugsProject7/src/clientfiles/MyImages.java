@@ -71,6 +71,8 @@ public class MyImages
 	public static BufferedImage scanner4;
 	public static BufferedImage scanner5;
 	public static BufferedImage invalidScanner;
+	public static BufferedImage firewall;
+	public static BufferedImage firewallShopImage;
 	//projectiles
 	public static BufferedImage cd;
 	public static BufferedImage r0;
@@ -149,6 +151,8 @@ public class MyImages
 			scanner4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner4.png"));
 			scanner5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner5.png"));
 			invalidScanner = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidScanner.png"));
+			firewall = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall1.png"));
+			firewallShopImage = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall2.png"));
 			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));

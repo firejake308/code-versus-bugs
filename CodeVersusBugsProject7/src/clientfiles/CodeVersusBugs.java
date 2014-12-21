@@ -125,7 +125,8 @@ public class CodeVersusBugs
 		catch(NullPointerException e)
 		{
 			JOptionPane.showMessageDialog(null,"something was null");
-			JOptionPane.showMessageDialog(null, e);
+			//JOptionPane.showMessageDialog(null, e);
+			e.printStackTrace();
 		}
 		catch(Exception e)
 		{

@@ -138,6 +138,15 @@ public class StoryManager implements LevelManager
 	 */
 	public void nextlvl()
 	{	
+		// reset kills available per round for FireWalls
+		for (int t = 0; t < GamePanel.numTowers; t++)
+		{
+			if (Tower.allTowers[t] == null)
+				break;
+			if (Tower.allTowers[t] instanceof FireWall)
+				((FireWall) Tower.allTowers[t]).killsLeft = ((FireWall) Tower.allTowers[t]).killsPerRound;
+		}
+		
 		switch(Game.level)
 		{
 			case 1:	

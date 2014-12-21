@@ -283,6 +283,10 @@ public class Game extends JFrame implements Runnable
 					}
 				}
 			}
+			else if (tower instanceof FireWall)
+			{
+				((FireWall) tower).dealDamage();
+			}
 			else
 			{
 				target = Tower.findTarget(tower);
