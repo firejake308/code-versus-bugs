@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImageOp;
 import java.util.Random;
@@ -67,7 +68,7 @@ public abstract class Tower implements ActionListener
 	protected  int[] costsOfUpgrades = new int[27];
 	public ImageIcon icon;
 	private static Random generator = new Random();
-	public static boolean backedUp = false;
+	public boolean backedUp = false;
 	
 	protected int id;
 	protected int x;
@@ -85,8 +86,11 @@ public abstract class Tower implements ActionListener
 	public boolean infected = false;
 	
 	protected Ellipse2D rangeIndicator;
+	protected Arc2D.Double scan;
 	public boolean rangeOn = true;
 	protected double angleOfArrow;
+	protected double scanDegree;
+	private int shadeOfBlue = 1;
 	
 	//upgrades
 	protected int projectileDurability;
@@ -161,10 +165,14 @@ public abstract class Tower implements ActionListener
 	public void setX(int xToSet)
 	{
 		x=xToSet;
+		if(this instanceof Scanner)
+			scan = new Arc2D.Double(x, y, range, range, 0, 90, Arc2D.PIE);
 	}
 	public void setY(int yToSet)
 	{
 		y=yToSet;
+		if(this instanceof Scanner)
+			scan = new Arc2D.Double(x, y, range, range, 0, 90, Arc2D.PIE);
 	}
 	
 	public void setIcon(ImageIcon i)
@@ -205,21 +213,23 @@ public abstract class Tower implements ActionListener
 	{
 		y=yToSet-25;
 	}
-	/**Returns the location of the tower on the game panel. Use this for drawing.
+	/**
+	 * Returns the location of the tower on the game panel. Use this for drawing.
 	 * 
 	 * @return
 	 */
 	public int getScreenX()
 	{
-		return x + GamePanel.getMapX();
+		return x;
 	}
-	/**Returns the location of the tower on the game panel. Use this for drawing.
+	/**
+	 * Returns the location of the tower on the game panel. Use this for drawing.
 	 * 
 	 * @return
 	 */
 	public int getScreenY()
 	{
-		return y + GamePanel.getMapY();
+		return y;
 	}
 	public TowerType getType()
 	{
@@ -451,10 +461,18 @@ public abstract class Tower implements ActionListener
 		{
 			AffineTransform op = new AffineTransform();
 			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
-					getCenterY()-MyImages.redArrow.getHeight()/2);
+				getCenterY()-MyImages.redArrow.getHeight()/2);
 			op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
 			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
 			g2d.drawImage(MyImages.redArrow, op, null);
+		}
+		//rotate scanner for scanners
+		else if(this instanceof Scanner)
+		{
+			scan.setAngleStart(scanDegree);
+			scan.setFrame(getCenterX()-range, getCenterY()-range, range*2, range*2);
+			g2d.setColor(new Color(131, 252, 201, 150));
+			g2d.fill(scan);
 		}
 	}
 	

@@ -46,6 +46,7 @@ package clientfiles;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.geom.Ellipse2D.Double;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -55,12 +56,11 @@ public class GamePanel extends JPanel
 {
 	private static int mouseX;
 	private static int mouseY;
-	private static int mapX=0;
-	private static int mapY=0;
 	public static int numTowers=0;
 	public LevelManager lvlManager;
 	
 	public boolean mouseInUpgradePanel = false;
+	public Rectangle[] path;
 	
 	//cursors
 	private Image dtSprite = DiscThrower.icon.getImage();
@@ -73,11 +73,19 @@ public class GamePanel extends JPanel
 	private Cursor invalidNumberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngInvalidSprite, ngHotspot, "Number Generator");
 	private Image dtInvalidSprite = DiscThrower.invalidIcon.getImage();
 	private Cursor invalidDiscThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtInvalidSprite, dtHotspot, "Number Generator");
+	private Image scSprite = Scanner.icon.getImage();
+	private Image scInvalidSprite = Scanner.invalidIcon.getImage();
+	private Point scHotspot = new Point(15, 15);
+	private Cursor scannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scSprite,scHotspot,"Scanner");
+	private Cursor invalidScannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scInvalidSprite, scHotspot, "Scanner");
+	
 	
 	static private final long serialVersionUID = 1;
 	
 	private JLabel tutorial;
 	private JLayeredPane layeredPane;
+	private Ellipse2D.Double tempRangeIndicator;
+	private boolean rangeOn;
 	
 	public GamePanel()
 	{
@@ -190,11 +198,12 @@ public class GamePanel extends JPanel
 	                    DiscThrower currDT = (DiscThrower) Tower.allTowers[numTowers];
 	                    numTowers++; //now there's 1 more tower
 	                    
-	                    currDT.setCenterX(e.getX()-mapX);
-	                    currDT.setCenterY(e.getY()-mapY);
+	                    currDT.setCenterX(e.getX());
+	                    currDT.setCenterY(e.getY());
             			
             			//reset cursor to default and tower to place to none
                         setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
                         
                         //special case for tutorial slide 8
@@ -209,11 +218,28 @@ public class GamePanel extends JPanel
 	                    Tower currT = Tower.allTowers[numTowers];
 	                    numTowers++; //now there's 1 more tower
 	                    
-	                    currT.setCenterX(e.getX()-mapX);
-	                    currT.setCenterY(e.getY()-mapY);
+	                    currT.setCenterX(e.getX());
+	                    currT.setCenterY(e.getY());
 	                        
             			//reset cursor to default and tower to place to none
                         setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;
+            		case SCANNER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new Scanner(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currST = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currST.setCenterX(e.getX());
+	                    currST.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
             			break;
             		case NONE:
@@ -228,16 +254,16 @@ public class GamePanel extends JPanel
             	{
             		case DISC_THROWER:
             			setCursor(discThrowerCursor);
-                    	//System.out.println("cursor set to dt");
                     	break;
             		case NUMBER_GENERATOR:
             			setCursor(numberGeneratorCursor);
-            			//System.out.println("cursor set to ng");
+            			break;
+            		case SCANNER:
+            			setCursor(scannerCursor);
             			break;
             		case NONE:
             		default:
             			setCursor(Cursor.getDefaultCursor());
-            			//System.out.println("cursor set to normal");
             			break;
             			
             	}
@@ -284,6 +310,13 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
+        		if(e.getKeyCode()==KeyEvent.VK_S)
+        		{
+        			TowerType towerToPlace = TowerType.SCANNER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
         		if(e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
@@ -293,21 +326,13 @@ public class GamePanel extends JPanel
         	public void keyTyped(KeyEvent e){}
         });
         
+        //initialize instance variables
+        path = new Rectangle[3];
 	}
 	public void setMouseXY(int x, int y)
 	{
 		mouseX=x;
 		mouseY=y;
-	}
-	
-	public static int getMapX()
-	{
-		return mapX;
-	}
-	
-	public static int getMapY()
-	{
-		return mapY;
 	}
 	public static int getMouseX()
 	{
@@ -317,25 +342,39 @@ public class GamePanel extends JPanel
 	{
 		return mouseY;
 	}
-	/**updates the cursor based on the current towerToPlace
+	/**
+	 * Updates the cursor based on the current towerToPlace
 	 * 
 	 */
 	public void setCursorIcon()
 	{
+		//set correct cursor and draw range
 		switch (ShopPanel.towerToPlace)
     	{
     		case DISC_THROWER:			if (!ShopPanel.checkPlacement())
     										setCursor(invalidDiscThrowerCursor);
-					            		else
-											setCursor(discThrowerCursor);
+    									else
+					            			setCursor(discThrowerCursor);
+					            		rangeOn = true;
+					            		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-DiscThrower.rangeToSet, getMouseY()-DiscThrower.rangeToSet, 
+					            					DiscThrower.rangeToSet*2, DiscThrower.rangeToSet*2);
     									break;
     									
     		case NUMBER_GENERATOR:		if (!ShopPanel.checkPlacement())
 											setCursor(invalidNumberGeneratorCursor);
     									else
     										setCursor(numberGeneratorCursor);
-										break;
-										
+    									rangeOn = true;
+    									tempRangeIndicator = new Ellipse2D.Double(getMouseX()-NumberGenerator.rangeToSet, getMouseY()-NumberGenerator.rangeToSet, 
+    											NumberGenerator.rangeToSet*2, NumberGenerator.rangeToSet*2);
+    		case SCANNER:				if (!ShopPanel.checkPlacement())
+											setCursor(invalidScannerCursor);
+										else
+											setCursor(scannerCursor);
+										rangeOn = true;
+					            		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-Scanner.rangeToSet, getMouseY()-Scanner.rangeToSet, 
+					            					Scanner.rangeToSet*2, Scanner.rangeToSet*2);
+					            		break;
 			default:					setCursor(Cursor.getDefaultCursor());
 										break;
     	}
@@ -349,6 +388,9 @@ public class GamePanel extends JPanel
 	{
 		layeredPane.remove(c);
 	}
+	/**
+	 * Moves to next slide of tutorial.
+	 */
 	public void nextSlide()
 	{
 		//shortcuts used in bounds calculation of tutorial
@@ -477,7 +519,29 @@ public class GamePanel extends JPanel
 		{
 			super.paintComponent(g);
 			
-			g.drawImage(MyImages.modem, (int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - Game.scaleOfSprites*MyImages.modem.getWidth()/2), (int) ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 - Game.scaleOfSprites*MyImages.modem.getHeight()/2), null);
+			//draw path
+			Graphics2D g2d = (Graphics2D) g;
+			path[0] = new Rectangle();
+			path[0].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42),
+					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+					Game.widthOfGamePanel/3,
+					Game.widthOfGamePanel/42);
+			g2d.setColor(Color.YELLOW);
+			g2d.fill(path[0]);
+			
+			path[1] = new Rectangle();
+			path[1].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
+					Game.heightOfGamePanel/6,
+					Game.widthOfGamePanel/42,
+					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - Game.heightOfGamePanel / 6);
+			g2d.fill(path[1]);
+			
+			path[2] = new Rectangle();
+			path[2].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
+					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+					Game.widthOfGamePanel / 42,
+					(int)(Game.heightOfGamePanel * .15));
+			g2d.fill(path[2]);
 			
 			//draw all viruses
 			for(int v=0; v<lvlManager.getMalwaresThisLevel(); v++)
@@ -504,6 +568,28 @@ public class GamePanel extends JPanel
 			{
 				iterator.next().drawProjectile(g);
 			}
+			
+			//draw temporary range indicator
+			if(rangeOn)
+			{
+				g2d.setColor(new Color(0, 0, 0, 50));
+				g2d.fill(tempRangeIndicator);
+				//System.out.println("drew range circle at "+tempRangeIndicator.getBounds());
+			}
+			
+			//draw map images
+			//modem
+			AffineTransform at = new AffineTransform();
+			at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - Game.scaleOfSprites*MyImages.modem.getWidth()/2)/Game.scaleOfSprites, 
+					 ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 42 - Game.scaleOfSprites*MyImages.modem.getHeight()/2)/Game.scaleOfSprites);
+			g2d.drawImage(MyImages.modem, at, null);
+			//cpu
+			at = new AffineTransform();
+			at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) + Game.widthOfGamePanel / 3 - (Game.widthOfGamePanel / 84) - MyImages.cpu.getWidth()/2)/Game.scaleOfSprites, 
+					(Game.heightOfGamePanel/6 - MyImages.cpu.getHeight()/2)/Game.scaleOfSprites);
+			g2d.drawImage(MyImages.cpu, at, null);
 		}
 	}
 }

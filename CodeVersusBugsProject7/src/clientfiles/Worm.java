@@ -56,6 +56,8 @@ public class Worm extends Malware
 		//create a worm in specified lane at specified y value
 		super(0, lane, y);
 		
+		offensive = true;
+		
 		//set secondary positions
 		x2 = x;
 		y2 = y - sprite.getHeight(null);
@@ -68,7 +70,7 @@ public class Worm extends Malware
 		distance4 = distance - 3*sprite.getHeight(null);
 		
 		//initialize instance variables
-		health = 200;
+		health = 600;
 		reward = 10;
 		range = 120;
 		damage = 10;
@@ -422,8 +424,8 @@ public class Worm extends Malware
 		{
 			System.out.println("a virus made it across");
 			
-			Game.lives--;
-			Game.gf.life.setText("Lives: " + Game.lives);
+			Game.lives-=health;
+			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
 			
 			if (Game.lives <= 0)
 			{
@@ -435,6 +437,9 @@ public class Worm extends Malware
 	}
 	public void attack(Tower target)
 	{
+		if (!offensive)
+			return;
+		
 		//calculate the angle at which the projectile should move
 		double slope = (double)(target.getCenterY() - this.getCenterY()) / (target.getCenterX() - this.getCenterX());
 		//absolute value of arctan, so angle is always positive
@@ -497,19 +502,19 @@ public class Worm extends Malware
 	{
 		if(health>0)
 		{
-			g.drawImage(sprite, (int)getX()+GamePanel.getMapX(), (int)getY()+GamePanel.getMapY(), null);
-		}
-		if(health>50)
-		{
-			g.drawImage(sprite2, (int)getX2()+GamePanel.getMapX(), (int)getY2()+GamePanel.getMapY(), null);
+			g.drawImage(sprite, (int)getX(), (int)getY(), null);
 		}
 		if(health>100)
 		{
-			g.drawImage(sprite2, (int)getX3()+GamePanel.getMapX(), (int)getY3()+GamePanel.getMapY(), null);
+			g.drawImage(sprite2, (int)getX2(), (int)getY2(), null);
 		}
-		if(health>150)
+		if(health>200)
 		{
-			g.drawImage(sprite2, (int)getX4()+GamePanel.getMapX(), (int)getY4()+GamePanel.getMapY(), null);
+			g.drawImage(sprite2, (int)getX3(), (int)getY3(), null);
+		}
+		if(health>300)
+		{
+			g.drawImage(sprite2, (int)getX4(), (int)getY4(), null);
 
 		}
 	}

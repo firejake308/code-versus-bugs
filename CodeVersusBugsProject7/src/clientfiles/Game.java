@@ -58,7 +58,7 @@ public class Game extends JFrame implements Runnable
 	
 	//common debugging parameters
 	public static int money = 150;
-	public static int lives = 50;
+	public static int lives = 5000;
 	public static int level = 1;
 
 	private static final long serialVersionUID = 1L;
@@ -124,8 +124,6 @@ public class Game extends JFrame implements Runnable
 		}
 		gamePanel.requestFocusInWindow();
 		System.out.println(gamePanel.isFocusOwner());
-		
-		Projectile.initializeProjectiles();
 		Upgrades.initializeUpgrades();
 		
 		startMenu.setVisible(false);
@@ -257,6 +255,34 @@ public class Game extends JFrame implements Runnable
 			Tower tower = Tower.allTowers[t];
 			if(tower == null)
 				break;
+			else if (tower instanceof Scanner)
+			{
+				((Scanner) tower).scan(frames);
+				
+				for (int m = 0; m < Malware.numMalwares; m++)
+				{
+					if(Malware.allMalware[m] == null)
+						break;
+					else
+					{
+						Point malware = new Point(Malware.allMalware[m].getCenterX(), Malware.allMalware[m].getCenterY());
+						
+						if(tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 1)
+						{
+							Malware.allMalware[m].dealDamage(tower.damage, 1, t);
+							((Scanner) tower).tickCounter = 0;
+							
+							if (Malware.allMalware[m] instanceof Worm && ((Scanner)tower).disableWorms)
+							{
+								Malware.allMalware[m].offensive = false;
+							}
+						}
+						((Scanner) tower).tickCounter++;
+						if (fastForward)
+							((Scanner) tower).tickCounter++;
+					}
+				}
+			}
 			else
 			{
 				target = Tower.findTarget(tower);

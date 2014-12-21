@@ -64,6 +64,13 @@ public class MyImages
 	public static BufferedImage random8;
 	public static BufferedImage random9;
 	public static BufferedImage invalidRandom;
+	public static BufferedImage scanner0;
+	public static BufferedImage scanner1;
+	public static BufferedImage scanner2;
+	public static BufferedImage scanner3;
+	public static BufferedImage scanner4;
+	public static BufferedImage scanner5;
+	public static BufferedImage invalidScanner;
 	//projectiles
 	public static BufferedImage cd;
 	public static BufferedImage r0;
@@ -135,6 +142,13 @@ public class MyImages
 			random8 = ImageIO.read(MyImages.class.getResourceAsStream("resources/random8.png"));
 			random9 = ImageIO.read(MyImages.class.getResourceAsStream("resources/random9.png"));
 			invalidRandom = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidRandom.png"));
+			scanner0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner0.png"));
+			scanner1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner1.png"));
+			scanner2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner2.png"));
+			scanner3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner3.png"));
+			scanner4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner4.png"));
+			scanner5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner5.png"));
+			invalidScanner = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidScanner.png"));
 			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));

@@ -47,6 +47,7 @@ public class DiscThrower extends Tower
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
 	public static int damageToSet = 25;
 	public static int speedToSet = 30;
+	public static int rangeToSet = (int) (Game.widthOfGamePanel * .12);
 	
 	public DiscThrower(int xToSet, int yToSet, int idToSet) 
 	{
@@ -66,7 +67,7 @@ public class DiscThrower extends Tower
 		x=0;
 		y=0;
 		
-		range = (int) Game.widthOfGamePanel * .12;
+		range = rangeToSet;
 		timerReset = speedToSet;
 		
 		type = TowerType.DISC_THROWER;

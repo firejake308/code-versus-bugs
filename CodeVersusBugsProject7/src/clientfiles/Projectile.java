@@ -192,14 +192,6 @@ public class Projectile
 	{
 		return y + sprite.getHeight(null)/2;
 	}
-	/**
-	 * @deprecated
-	 */
-	public static void initializeProjectiles()
-	{
-		/*for (int i = 0; i < allProjectiles.length; i++)
-			allProjectiles[i] = null;*/
-	}
 	// I removed parameter p since this is an object method
 	public void moveProjectile(double elapsedTime)
 	{
@@ -337,7 +329,7 @@ public class Projectile
 	
 	public void drawProjectile(Graphics g)
 	{
-		g.drawImage(sprite, (int)x + GamePanel.getMapX(), (int)y + GamePanel.getMapY(), null);
+		g.drawImage(sprite, (int)x, (int)y, null);
 	}
 	
 	public void addToRecycleBin()

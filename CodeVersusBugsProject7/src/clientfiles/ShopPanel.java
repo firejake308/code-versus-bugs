@@ -37,7 +37,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	
 	private Icon dtImage = DiscThrower.icon;
 	private Icon ngImage = NumberGenerator.icon;
-	//private Icon scImage;
+	private Icon scImage = Scanner.icon;
 	
 	public static int timer=0;
 	
@@ -45,7 +45,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	{
 		buyDiscThrower = new JButton(dtImage);
 		buyNumberGenerator = new JButton(ngImage);
-		buyScanner = new JButton();
+		buyScanner = new JButton(scImage);
 		
 		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -53,14 +53,18 @@ public class ShopPanel extends JPanel implements ActionListener
 		info.setBounds(5, 10, 75, 55);
 		buyDiscThrower.setBounds(20, 75, 50, 63);
 		buyNumberGenerator.setBounds(20, 150, 50, 50);
+		buyScanner.setBounds(20, 215, 50, 63);
 		
 		buyDiscThrower.addActionListener(this);
 		buyNumberGenerator.addActionListener(this);
+		buyScanner.addActionListener(this);
+		
 		
 		setLayout(null);
 		add(info);
 		add(buyDiscThrower);
 		add(buyNumberGenerator);
+		add(buyScanner);
 		
 		buyDiscThrower.addMouseListener(new MouseAdapter()
 		{
@@ -89,6 +93,20 @@ public class ShopPanel extends JPanel implements ActionListener
             	}
 			}
 		});
+		
+		buyScanner.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				if (!warned)
+				{
+            		if (Game.money < NumberGenerator.cost)
+            			changeInfo("$100", true);
+            		else
+            			changeInfo("$100", false);
+            	}
+			}
+		});
 	}
 	public static void changeInfo(String text, boolean warning)
 	{
@@ -111,12 +129,36 @@ public class ShopPanel extends JPanel implements ActionListener
 		int x = GamePanel.getMouseX();
 		int y = GamePanel.getMouseY();
 		int offset = 0;
+		Rectangle proposedTower = new Rectangle();
 		int centerOfOtherTowerX;
 		int centerOfOtherTowerY;
 		int radiusOfOtherTower;
 		
 		if (mouseOnTrack)
 			return false;
+		
+		//testing code for simplified bounds checking
+		if(towerToPlace == TowerType.DISC_THROWER)
+		{
+			proposedTower = new Rectangle(x-DiscThrower.icon.getIconWidth()/2, y-DiscThrower.icon.getIconHeight()/2, 
+					DiscThrower.icon.getIconWidth(), DiscThrower.icon.getIconHeight());
+		}
+		else if(towerToPlace == TowerType.NUMBER_GENERATOR)
+		{
+			proposedTower = new Rectangle(x-NumberGenerator.icon.getIconWidth()/2, y-NumberGenerator.icon.getIconHeight()/2, 
+					NumberGenerator.icon.getIconWidth(), NumberGenerator.icon.getIconHeight());
+		}
+		else if(towerToPlace == TowerType.SCANNER)
+		{
+			proposedTower = new Rectangle(x-Scanner.icon.getIconWidth()/2, y-Scanner.icon.getIconHeight()/2, 
+					Scanner.icon.getIconWidth(), Scanner.icon.getIconHeight());
+		}
+		//loop through all path parts and check for intersection with proposed tower
+		for(int pathPart = 0; pathPart < Game.gamePanel.path.length; pathPart++)
+		{
+			if(Game.gamePanel.path[pathPart].intersects(proposedTower))
+				return false;
+		}
 		
 		/* 
 		 * Reason for iterations:
@@ -136,12 +178,16 @@ public class ShopPanel extends JPanel implements ActionListener
 				offset = (int)(Game.scaleOfSprites*DiscThrower.icon.getIconWidth()/2);
 			else if(i == 1 && towerToPlace == TowerType.NUMBER_GENERATOR)
 				offset = (int)(Game.scaleOfSprites*NumberGenerator.icon.getIconWidth()/2);
+			else if(i == 1 && towerToPlace == TowerType.SCANNER)
+				offset = (int)(Game.scaleOfSprites*Scanner.icon.getIconWidth()/2);
 			
 			// 3rd iteration
 			else if(i == 2 && towerToPlace == TowerType.DISC_THROWER)
 				offset = -(int)(Game.scaleOfSprites*DiscThrower.icon.getIconWidth()/2);
 			else if(i == 2 && towerToPlace == TowerType.NUMBER_GENERATOR)
 				offset = -(int)(Game.scaleOfSprites*NumberGenerator.icon.getIconWidth()/2);
+			else if(i == 2 && towerToPlace == TowerType.SCANNER)
+				offset = -(int)(Game.scaleOfSprites*Scanner.icon.getIconWidth()/2);
 			
 			// vertical top far left
 			if(y < Game.heightOfGamePanel / 4 && x + offset < Game.widthOfGamePanel / 14 + Game.widthOfGamePanel / 42 && x + offset > Game.widthOfGamePanel / 14)
@@ -374,10 +420,22 @@ public class ShopPanel extends JPanel implements ActionListener
 		else if (temp == buyScanner)
 		{
 			towerType = TowerType.SCANNER;
+			
 			if (towerToPlace == TowerType.SCANNER)
 			{
 				towerToPlace = TowerType.NONE;
 				return;
+			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
 			}
 			
 			changeInfo("Scanner Selected",false);
@@ -409,7 +467,14 @@ public class ShopPanel extends JPanel implements ActionListener
 		}
 		
 		else if(type == TowerType.SCANNER)
-		{}
+		{
+			if(Game.money >= Scanner.cost)
+			{
+				towerToPlace = TowerType.SCANNER;
+			}
+			else
+				changeInfo("Not Enough Money!", true);
+		}
 	}
 	
 	public void paintComponent(Graphics g)

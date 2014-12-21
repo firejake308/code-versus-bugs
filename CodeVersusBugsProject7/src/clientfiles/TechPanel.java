@@ -183,7 +183,7 @@ public class TechPanel extends JPanel implements ActionListener
 			
 			//add 20 lives
 			Game.lives += 20;
-			Game.gf.life.setText("Lives: " + Game.lives);
+			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
 		}
 		
 		else if(clicked == money)

@@ -47,6 +47,7 @@ public class NumberGenerator extends Tower
 										new ImageIcon(MyImages.random6), new ImageIcon(MyImages.random7),
 										new ImageIcon(MyImages.random8), new ImageIcon(MyImages.random9)};
 	public static int speedToSet = 80;
+	public static int rangeToSet = (int) (Game.widthOfGamePanel * .15);
 	
 	public NumberGenerator(int xToSet, int yToSet, int idToSet) 
 	{
@@ -65,7 +66,7 @@ public class NumberGenerator extends Tower
 		
 		x=0;
 		y=0;
-		range = (int) Game.widthOfGamePanel * .15;
+		range = rangeToSet;
 		timerReset = speedToSet;
 		
 		type = TowerType.NUMBER_GENERATOR;

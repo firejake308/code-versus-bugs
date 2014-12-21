@@ -23,6 +23,8 @@ import javax.swing.*;
  * 		fixed overlapping delete button
  * 12/16/2014:
  * 		More upgrades added, a cure button is added
+ * 12/20/2014:
+ * 		Scanner upgrades added (first ones)
  * 
  * @author Patrick Kenney
  * 
@@ -177,8 +179,8 @@ public abstract class Upgrades
 	public static void showUpgradePanel(int id)
 	{
 		typeOfTower = Tower.allTowers[id].type;
+		
 		displayedUpgradeID = id;
-		System.out.println("Dispalyed upgrade id == " + displayedUpgradeID);
 		
 		updateStatistics();
 		upgrade.add(deleteTower);
@@ -188,6 +190,8 @@ public abstract class Upgrades
 			DiscThrower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.NUMBER_GENERATOR)
 			NumberGenerator.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.SCANNER)
+			Scanner.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		
 		upgrade.add(upgradePath1);
 		upgrade.add(upgradePath2);
@@ -215,11 +219,11 @@ public abstract class Upgrades
 	
 	public static void updateStatistics()
 	{
-		Tower.allTowers[displayedUpgradeID].accuracy = Tower.allTowers[displayedUpgradeID].hits / Tower.allTowers[displayedUpgradeID].shotsFired;
+		//Tower.allTowers[displayedUpgradeID].accuracy = Tower.allTowers[displayedUpgradeID].hits / Tower.allTowers[displayedUpgradeID].shotsFired;
 		
 		statistics.setText("    Kills: " + Tower.allTowers[displayedUpgradeID].kills + "\n   Shots Fired: " 
-										+ Tower.allTowers[displayedUpgradeID].shotsFired + "\n   Hits: " + Tower.allTowers[displayedUpgradeID].hits 
-										+ "\n   Accuracy: " + Tower.allTowers[displayedUpgradeID].accuracy);
+										 + Tower.allTowers[displayedUpgradeID].shotsFired /* + "\n   Hits: " + Tower.allTowers[displayedUpgradeID].hits 
+										 + "\n   Accuracy: " + Tower.allTowers[displayedUpgradeID].accuracy*/);
 		upgrade.add(statistics);
 	}
 	
@@ -443,6 +447,33 @@ public abstract class Upgrades
 											
 			case 231:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 4;
 											System.out.println("wider range");
+											
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+											
+											
+			case 311:						Tower.allTowers[displayedUpgradeID].damage = .45;
+											System.out.println("damage++");
+											break;
+			case 312:						Tower.allTowers[displayedUpgradeID].damage = .55;
+											System.out.println("damage++");
+											break;
+											
+			case 321:						((Scanner)Tower.allTowers[displayedUpgradeID]).disableWorms = true;
+											System.out.println("disable worms");
+											break;
+			
+			case 331:						Tower.allTowers[displayedUpgradeID].range = Game.widthOfGamePanel * .12;
+											System.out.println("range++");
+											
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+			case 332:						Tower.allTowers[displayedUpgradeID].range = Game.widthOfGamePanel * .15;
+											System.out.println("range++");
 											
 											//update range indicator
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 

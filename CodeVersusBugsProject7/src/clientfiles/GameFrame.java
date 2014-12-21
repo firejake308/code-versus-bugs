@@ -91,13 +91,13 @@ public class GameFrame extends JFrame implements ActionListener
 		//initialize money label and fps counter
 		moneyLabel = new JLabel("$" + Game.money + " money");
 		fpsCounter = new JLabel(Game.fps+" fps");
-		life = new JLabel("Lives: " + Game.lives);
+		life = new JLabel("Bytes Remaining: " + Game.lives);
 		levelCounter = new JLabel("Level: " + Game.level);
 		
 		//fix up font size
 		moneyLabel.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
 		fpsCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
-		life.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
+		life.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*14)));
 		levelCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
 		
 		//add fpsCounter to info panel
@@ -129,6 +129,10 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
 		Game.scaleOfSprites = (Game.widthOfGamePanel / 50) / 26.44;	
+		
+		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .12);
+		NumberGenerator.rangeToSet = (int) (Game.widthOfGamePanel * .15);
+		Scanner.rangeToSet = (int) (Game.widthOfGamePanel * .10);
 		
 		int lowest = JLayeredPane.FRAME_CONTENT_LAYER;
 		
@@ -415,8 +419,10 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		// goes left from point of connection of sides, 2nd to last track
 		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-				(int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42, Game.widthOfGamePanel / 42);
+		Game.track.setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), 
+				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+				(int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42, 
+				Game.widthOfGamePanel / 42);
 		Game.track.setBackground(Color.YELLOW);
 		Game.gamePanel.addToLayeredPane(Game.track, lowest);
 		
