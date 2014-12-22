@@ -470,6 +470,7 @@ public class Worm extends Malware
 		Tower towerToAttack = null;
 		
 		i = 0;
+		boolean attackingFireWall = false;
 		
 		while (i < Tower.allTowers.length)
 		{
@@ -477,13 +478,16 @@ public class Worm extends Malware
 			if(Tower.allTowers[i] == null)
 				break;
 			
+			if (Tower.allTowers[i] instanceof FireWall)
+				attackingFireWall = true;
+			
 			//compare tower and worm x to get distance between them
 			xOfTower = Tower.allTowers[i].getCenterX();
 			yOfTower = Tower.allTowers[i].getCenterY();
 			distanceFromWorm = Math.sqrt(Math.pow(xOfWorm - xOfTower, 2) + Math.pow(yOfWorm - yOfTower, 2));
 			
 			//if tower is close enough and not infected, stop moving and attack it
-			if(distanceFromWorm < range && !Tower.allTowers[i].isInfected())
+			if(distanceFromWorm < range && !Tower.allTowers[i].isInfected() && !attackingFireWall)
 			{
 				towerToAttack = Tower.allTowers[i];
 				worm.state = State.ATTACKING;

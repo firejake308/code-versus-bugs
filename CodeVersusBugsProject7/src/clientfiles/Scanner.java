@@ -30,7 +30,7 @@ public class Scanner extends Tower
 		super(icon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {80, 160, 1000000, 1000000, 0, 0, 0, 0, 0, 250, 10000000, 10000000, 0, 0, 0, 0, 0, 0, 50, 100, 10000000, 10000000, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {500, 1000, 1000000, 1000000, 0, 0, 0, 0, 0, 500, 750, 10000000, 0, 0, 0, 0, 0, 0, 400, 600, 10000000, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		//cost = 50;
@@ -89,9 +89,9 @@ public class Scanner extends Tower
 		
 		switch (allTowers[idOfTower].upgradesInPath2)
 		{
-			case 1:					Upgrades.upgradePath2.setText("Disarm Worms");
+			case 1:					Upgrades.upgradePath2.setText("Backup Tower");
 									break;
-			case 2:					Upgrades.upgradePath2.setText("Path Closed");
+			case 2:					Upgrades.upgradePath2.setText("Disarm Worms");
 									break;
 			case 3:					Upgrades.upgradePath2.setText("Path Closed");
 									break;
@@ -118,9 +118,9 @@ public class Scanner extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Stronger Scan:\n   $80\n Scans deal more\n damage at a time");
+				case 1:					Upgrades.upgradesInfo.setText(" Stronger Scan:\n   $500\n Scans deal more\n damage at a time");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Legendary Scan:\n   $160\n Scans deal an\n immense amount of\n damage at a time");
+				case 2:					Upgrades.upgradesInfo.setText(" Legendary Scan:\n   $1000\n Scans deal an\n immense amount of\n damage at a time");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -133,9 +133,9 @@ public class Scanner extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Disarm Worms:\n    $250\n Disables worm's\n offensive abilities");
+				case 1:					Upgrades.upgradesInfo.setText(" Backup Tower:\n    $500\n Allows the tower to\n be cured");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 2:					Upgrades.upgradesInfo.setText(" Disarm Worms:\n    $750\n Disables worm's\n offensive abilities");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -146,9 +146,9 @@ public class Scanner extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $50\n Increases scan\n range");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $400\n Increases scan\n range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $100\n Greatly increases\n scan range");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $600\n Greatly increases\n scan range");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

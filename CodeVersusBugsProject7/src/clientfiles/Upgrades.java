@@ -310,6 +310,8 @@ public abstract class Upgrades
 		switch(typeOfTower)
 		{
 			case NONE:						return;
+			case COMMUNICATIONS_TOWER:		upgradeID += 100;
+			case FIREWALL:					upgradeID += 100;
 			case SCANNER:					upgradeID += 100;
 			case NUMBER_GENERATOR:			upgradeID += 100;
 			case DISC_THROWER:				upgradeID += 100;
@@ -460,8 +462,10 @@ public abstract class Upgrades
 			case 312:						Tower.allTowers[displayedUpgradeID].damage = .55;
 											System.out.println("damage++");
 											break;
-											
-			case 321:						((Scanner)Tower.allTowers[displayedUpgradeID]).disableWorms = true;
+			case 321:						Tower.allTowers[displayedUpgradeID].backedUp = true;
+											System.out.println("Backups Added");
+											break;
+			case 322:						((Scanner)Tower.allTowers[displayedUpgradeID]).disableWorms = true;
 											System.out.println("disable worms");
 											break;
 			
@@ -479,7 +483,23 @@ public abstract class Upgrades
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
-		}
+											
+			case 411:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 20;
+											break;
+			case 412:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 25;
+											break;
+			case 413:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 40;
+											break;
+			case 421:						((FireWall)Tower.allTowers[displayedUpgradeID]).damage = 200;
+											break;
+			case 422:						((FireWall)Tower.allTowers[displayedUpgradeID]).damage = 300;
+											break;
+			case 431:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerate = true;
+											((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 300;
+											break;
+			case 432:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 240;
+											break;
+			}
 		
 		Tower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 	}

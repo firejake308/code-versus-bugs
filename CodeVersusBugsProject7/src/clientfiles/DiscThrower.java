@@ -54,7 +54,7 @@ public class DiscThrower extends Tower
 		super(icon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {50, 200, 250, 1000000, 0, 0, 0, 0, 0, 40, 100, 10000000, 0, 0, 0, 0, 0, 0, 30, 60, 30, 10000000, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {300, 600, 500, 1000000, 0, 0, 0, 0, 0, 300, 500, 10000000, 0, 0, 0, 0, 0, 0, 200, 400, 500, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		//cost = 50;
@@ -118,7 +118,7 @@ public class DiscThrower extends Tower
 									break;
 			case 2:					Upgrades.upgradePath3.setText("Extreme Range");
 									break;
-			case 3:					Upgrades.upgradePath3.setText("Cure Tower");
+			case 3:					Upgrades.upgradePath3.setText("Backup Tower");
 									break;
 			case 4:					Upgrades.upgradePath3.setText("Path Closed");
 									break;
@@ -132,11 +132,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Harder Discs:\n   $50\n Discs can attack 2\n viruses before being\n  destroyed");
+				case 1:					Upgrades.upgradesInfo.setText(" Harder Discs:\n   $300\n Discs can attack 2\n viruses before being\n  destroyed");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs:\n   $200\n Discs can attack 3\n viruses before being\n  destroyed");
+				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs:\n   $600\n Discs can attack 3\n viruses before being\n  destroyed");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing:\n    $250\n Attack speed\n increase");
+				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing:\n    $500\n Attack speed\n increase");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -147,9 +147,9 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs:\n    $40\n Discs are more\n powerful");
+				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs:\n    $300\n Discs are more\n powerful");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs:\n    $100\n Discs are even\n more pawerful");
+				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs:\n    $500\n Discs are even\n more pawerful");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -160,11 +160,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $30\n Increases tower\n range");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $200\n Increases tower\n range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $60\n Greatly increases\n tower range");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $400\n Greatly increases\n tower range");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Cure tower:\n     $30\n Cures tower if it is\n infected by a worm");
+				case 3:					Upgrades.upgradesInfo.setText(" Backup Tower:\n     $500\n Allows the tower to\n be cured");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

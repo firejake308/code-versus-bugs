@@ -36,6 +36,8 @@
  */
 package clientfiles;
 
+import javax.swing.ImageIcon;
+
 public class StoryManager implements LevelManager
 {
 	public int malwaresThisLevel = 15;
@@ -62,6 +64,11 @@ public class StoryManager implements LevelManager
 	private int malwaresForLevel13 = 615;
 	private int malwaresForLevel14 = 625;
 	private int malwaresForLevel15 = 60;
+	private int malwaresForLevel16 = 140;
+	private int malwaresForLevel17 = 310;
+	private int malwaresForLevel18 = 440;
+	private int malwaresForLevel19 = 615;
+	private int malwaresForLevel20 = 535;
 	
 	public StoryManager()  
 	{
@@ -163,7 +170,10 @@ public class StoryManager implements LevelManager
 			if (Tower.allTowers[t] == null)
 				break;
 			if (Tower.allTowers[t] instanceof FireWall)
+			{
 				((FireWall) Tower.allTowers[t]).killsLeft = ((FireWall) Tower.allTowers[t]).killsPerRound;
+				Tower.allTowers[t].icon = new ImageIcon(MyImages.firewall);
+			}
 		}
 		
 		switch(Game.level)
@@ -244,29 +254,29 @@ public class StoryManager implements LevelManager
 				malwaresThisLevel = malwaresForLevel15;
 				break;
 			case 16:
-				setMalwaresForLevel(40, 10, 10, 40, 0);
+				setMalwaresForLevel(40, 30, 30, 40, 0);
 				addMalwares();
-				malwaresThisLevel = malwaresForLevel15;
+				malwaresThisLevel = malwaresForLevel16;
 				break;
 			case 17:
-				setMalwaresForLevel(10, 10, 10, 40, 0);
+				setMalwaresForLevel(100, 80, 80, 50, 0);
 				addMalwares();
-				malwaresThisLevel = malwaresForLevel15;
+				malwaresThisLevel = malwaresForLevel17;
 				break;
 			case 18:
-				setMalwaresForLevel(10, 10, 10, 40, 0);
+				setMalwaresForLevel(150, 120, 120, 50, 0);
 				addMalwares();
-				malwaresThisLevel = malwaresForLevel15;
+				malwaresThisLevel = malwaresForLevel18;
 				break;
 			case 19:
-				setMalwaresForLevel(10, 10, 10, 40, 0);
+				setMalwaresForLevel(175, 150, 150, 60, 0);
 				addMalwares();
-				malwaresThisLevel = malwaresForLevel15;
+				malwaresThisLevel = malwaresForLevel19;
 				break;
 			case 20:
-				setMalwaresForLevel(10, 10, 10, 40, 0);
+				setMalwaresForLevel(0, 0, 0, 0, 10);
 				addMalwares();
-				malwaresThisLevel = malwaresForLevel15;
+				malwaresThisLevel = malwaresForLevel20;
 				break;
 			case 21:
 				Game.gameState = Game.OVER;

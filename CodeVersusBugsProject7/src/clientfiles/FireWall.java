@@ -20,6 +20,9 @@ public class FireWall extends Tower
 	public static int rangeToSet = 0;
 	public int killsLeft;
 	public int killsPerRound = 10;
+	public boolean regenerate = false;
+	public int timeSinceLastRegen = 0;
+	public int regenerationInterval = 0;
 	
 	private Malware[] malwaresHit = new Malware[1000];
 	
@@ -28,7 +31,7 @@ public class FireWall extends Tower
 		super(normalIcon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {50, 200, 250, 1000000, 0, 0, 0, 0, 0, 40, 100, 10000000, 0, 0, 0, 0, 0, 0, 30, 60, 30, 10000000, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {150, 250, 400, 1000000, 0, 0, 0, 0, 0, 150, 300, 10000000, 0, 0, 0, 0, 0, 0, 500, 400, 10000000, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		//cost = 50;
@@ -53,6 +56,8 @@ public class FireWall extends Tower
 		
 		realValue += cost;
 		
+		damage = 150;
+		
 		//make user pay for towers
 		Game.makePurchase(cost);
 	}
@@ -66,11 +71,11 @@ public class FireWall extends Tower
 	{
 		switch (allTowers[idOfTower].upgradesInPath1)
 		{
-			case 1:					Upgrades.upgradePath1.setText("Harder Discs");
+			case 1:					Upgrades.upgradePath1.setText("Stronger Wall");
 									break;
-			case 2:					Upgrades.upgradePath1.setText("Impervious Discs");
+			case 2:					Upgrades.upgradePath1.setText("Extreme Wall");
 									break;
-			case 3:					Upgrades.upgradePath1.setText("Quicker Firing");
+			case 3:					Upgrades.upgradePath1.setText("Invincible Wall");
 									break;
 			case 4:					Upgrades.upgradePath1.setText("Path Closed");
 									break;
@@ -79,9 +84,9 @@ public class FireWall extends Tower
 		
 		switch (allTowers[idOfTower].upgradesInPath2)
 		{
-			case 1:					Upgrades.upgradePath2.setText("Powerful Discs");
+			case 1:					Upgrades.upgradePath2.setText("Dangerous Wall");
 									break;
-			case 2:					Upgrades.upgradePath2.setText("Stronger Discs");
+			case 2:					Upgrades.upgradePath2.setText("Killer Wall");
 									break;
 			case 3:					Upgrades.upgradePath2.setText("Path Closed");
 									break;
@@ -90,11 +95,11 @@ public class FireWall extends Tower
 		
 		switch (allTowers[idOfTower].upgradesInPath3)
 		{
-			case 1:					Upgrades.upgradePath3.setText("Wider Range");
+			case 1:					Upgrades.upgradePath3.setText("Regenerate Wall");
 									break;
-			case 2:					Upgrades.upgradePath3.setText("Extreme Range");
+			case 2:					Upgrades.upgradePath3.setText("Faster Rejuvination");
 									break;
-			case 3:					Upgrades.upgradePath3.setText("Cure Tower");
+			case 3:					Upgrades.upgradePath3.setText("Path Closed");
 									break;
 			case 4:					Upgrades.upgradePath3.setText("Path Closed");
 									break;
@@ -108,11 +113,11 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Harder Discs:\n   $50\n Discs can attack 2\n viruses before being\n  destroyed");
+				case 1:					Upgrades.upgradesInfo.setText(" Stronger Wall:\n   $150\n Wall can block 20\n viruses before being\n  destroyed");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs:\n   $200\n Discs can attack 3\n viruses before being\n  destroyed");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Wall:\n   $250\n Wall can block 25\n viruses before being\n  destroyed");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing:\n    $250\n Attack speed\n increase");
+				case 3:					Upgrades.upgradesInfo.setText(" Invincible Wall:\n    $400\n Wall can block 40\n viruses before being\n  destroyed");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -123,9 +128,9 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs:\n    $40\n Discs are more\n powerful");
+				case 1:					Upgrades.upgradesInfo.setText(" Dangerous Wall:\n    $150\n Wall deals more damage\n to worms and trojans");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs:\n    $100\n Discs are even\n more pawerful");
+				case 2:					Upgrades.upgradesInfo.setText(" Killer Wall:\n    $300\n Wall deals even more damage\n to worms and trojans");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -136,11 +141,11 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $30\n Increases tower\n range");
+				case 1:					Upgrades.upgradesInfo.setText(" Regenerate Wall:\n     $500\n Allows the wall to rebuild\n overtime, can attack more");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $60\n Greatly increases\n tower range");
+				case 2:					Upgrades.upgradesInfo.setText(" Faster Rejuvination:\n     $400\n Increases regeneration\n speeds");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Cure tower:\n     $30\n Cures tower if it is\n infected by a worm");
+				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -151,6 +156,19 @@ public class FireWall extends Tower
 	public void dealDamage()
 	{
 		boolean virusHit = false;
+		
+		if (regenerate && timeSinceLastRegen > 0 && killsLeft < killsPerRound)
+		{
+			timeSinceLastRegen--;
+		}
+		else if (regenerate && timeSinceLastRegen <= 0 && killsLeft < killsPerRound)
+		{
+			if (killsLeft == 0)
+				icon = new ImageIcon(MyImages.firewall);
+			killsLeft++;
+			
+			timeSinceLastRegen = regenerationInterval;
+		}
 		
 		if (killsLeft == 0)
 			return;
@@ -164,7 +182,7 @@ public class FireWall extends Tower
 			double xOfVirus = Malware.allMalware[m].getCenterX();
 			double yOfVirus = Malware.allMalware[m].getCenterY();
 			
-			for (int i = 0; i < killsPerRound; i++)
+			for (int i = 0; i < 1000; i++)
 			{
 				if (malwaresHit[i] == null)
 					break;
@@ -185,7 +203,7 @@ public class FireWall extends Tower
 				}
 				else
 				{
-					type.dealDamage(150, 1, id);
+					type.dealDamage(damage, 1, id);
 					killsLeft--;
 					
 					for (int i = 0; i < killsPerRound; i++)
@@ -201,9 +219,9 @@ public class FireWall extends Tower
 				if(killsLeft <= 0)
 				{
 					icon = new ImageIcon(MyImages.firewallBroken);
+					return;
 				}
 			}
 		}
 	}
-	
 }
