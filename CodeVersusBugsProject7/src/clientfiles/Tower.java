@@ -140,6 +140,7 @@ public abstract class Tower implements ActionListener
 		sprites[id].setBounds(getX(), getY(), (int)(icon.getIconWidth()*Game.scaleOfSprites), (int)(icon.getIconHeight()*Game.scaleOfSprites));
 		sprites[id].addActionListener(this);
 		
+		
 		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
 		
 		Game.gamePanel.addToLayeredPane(sprites[id], 0);

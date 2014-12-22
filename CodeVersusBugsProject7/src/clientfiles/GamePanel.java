@@ -266,7 +266,7 @@ public class GamePanel extends JPanel
             			
             		case NONE:
             		default:
-            			                        	
+            			rangeOn = false;                   	
             	}
             }
             //when the mouse enters the game panel, change the cursor to towerToPlace
@@ -289,6 +289,7 @@ public class GamePanel extends JPanel
             		case NONE:
             		default:
             			setCursor(Cursor.getDefaultCursor());
+            			rangeOn = false; 
             			break;
             			
             	}
@@ -413,9 +414,6 @@ public class GamePanel extends JPanel
 											setCursor(invalidFirewallCursor);
 										else
 											setCursor(firewallCursor);
-										rangeOn = true;
-							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-Scanner.rangeToSet, getMouseY()-Scanner.rangeToSet, 
-							    					Scanner.rangeToSet*2, Scanner.rangeToSet*2);
 							    		break;
 							    		
 			default:					setCursor(Cursor.getDefaultCursor());

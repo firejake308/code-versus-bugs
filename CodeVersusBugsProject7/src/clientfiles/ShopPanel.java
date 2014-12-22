@@ -437,6 +437,17 @@ public class ShopPanel extends JPanel implements ActionListener
 				towerToPlace = TowerType.NONE;
 				return;
 			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide < 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Disc Thrower?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
 			//special case if user is on tutorial slide 6
 			if(Game.tutorialSlide == 7)
 				Game.gamePanel.nextSlide();
@@ -478,7 +489,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.tutorial && Game.tutorialSlide <= 7)
 			{
 				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
-				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Scanner?", 
 						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
 				if(choice == 1)
 					Game.gamePanel.disableTutorial();
@@ -501,7 +512,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.tutorial && Game.tutorialSlide <= 7)
 			{
 				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
-				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Firewall?", 
 						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
 				if(choice == 1)
 					Game.gamePanel.disableTutorial();

@@ -90,12 +90,12 @@ public abstract class Upgrades
 		{
 			public void mouseEntered(MouseEvent e)
 			{
-				Game.gamePanel.mouseInUpgradePanel = true;
+				GamePanel.mouseInUpgradePanel = true;
 			}
 			
 			public void mouseExited(MouseEvent e)
 			{
-				Game.gamePanel.mouseInUpgradePanel = false;
+				GamePanel.mouseInUpgradePanel = false;
 			}
 		});
 		
@@ -191,6 +191,8 @@ public abstract class Upgrades
 		else if (typeOfTower == TowerType.NUMBER_GENERATOR)
 			NumberGenerator.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.SCANNER)
+			Scanner.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.FIREWALL)
 			Scanner.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		
 		upgrade.add(upgradePath1);
