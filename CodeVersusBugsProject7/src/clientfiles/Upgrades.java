@@ -280,7 +280,8 @@ public abstract class Upgrades
 		if (Tower.allTowers[displayedUpgradeID].isInfected() && Tower.allTowers[displayedUpgradeID].backedUp && Game.makePurchase(50))
 		{
 			Tower.allTowers[displayedUpgradeID].infected = false;
-			Tower.sprites[displayedUpgradeID].setIcon(Tower.allTowers[displayedUpgradeID].icon);
+			Tower.allTowers[displayedUpgradeID].health = 50;
+			Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.dt0));
 		}
 	}
 	

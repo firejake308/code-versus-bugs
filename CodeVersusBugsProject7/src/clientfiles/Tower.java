@@ -247,10 +247,6 @@ public abstract class Tower implements ActionListener
 		{
 			if(health <= 0)
 			{
-				//kill a worm-ed tower
-				//Upgrades.displayedUpgradeID = id;
-				//Upgrades.deleteTower();
-				
 				//or, just infect it
 				infected = true;
 				health = 100;
@@ -308,10 +304,6 @@ public abstract class Tower implements ActionListener
 		//for ng's, just infect 'em for now
 		else if(health <= 0)
 		{
-			//kill a worm-ed tower
-			//Upgrades.displayedUpgradeID = id;
-			//Upgrades.deleteTower();
-			
 			//or, just infect it
 			infected = true;
 			health = 100;
@@ -322,7 +314,10 @@ public abstract class Tower implements ActionListener
 		return infected;
 	}
 	/**
-	 * creates a projectile to attack opponents
+	 * Creates a projectile to attack opponents
+	 * 
+	 * @param target the malware to direct the cd at
+	 * @param toerType the type of the attacking tower
 	 */
 	public void attack(Malware target, TowerType towerType)
 	{
@@ -495,7 +490,7 @@ public abstract class Tower implements ActionListener
 			AffineTransform op = new AffineTransform();
 			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
 				getCenterY()-MyImages.redArrow.getHeight()/2);
-			op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
+			op.rotate(angleOfArrow, getCenterX() - getX(), y + (int) (Game.scaleOfSprites * sprites[id].getWidth() / 2) - getY());
 			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
 			g2d.drawImage(MyImages.redArrow, op, null);
 		}

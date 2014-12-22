@@ -289,7 +289,7 @@ public class GamePanel extends JPanel
             		case NONE:
             		default:
             			setCursor(Cursor.getDefaultCursor());
-            			rangeOn = false; 
+            			rangeOn = false;
             			break;
             			
             	}
@@ -606,7 +606,7 @@ public class GamePanel extends JPanel
 			//modem
 			AffineTransform at = new AffineTransform();
 			at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - Game.scaleOfSprites*MyImages.modem.getWidth()/2)/Game.scaleOfSprites, 
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) - Game.scaleOfSprites*MyImages.modem.getWidth()/2)/Game.scaleOfSprites, 
 					 ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 42 - Game.scaleOfSprites*MyImages.modem.getHeight()/2)/Game.scaleOfSprites);
 			g2d.drawImage(MyImages.modem, at, null);
 			//cpu
