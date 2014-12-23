@@ -41,6 +41,7 @@ public class TechPanel extends JPanel implements ActionListener
 	private JButton damage;
 	private JButton speed;
 	private JButton lives;
+	private JButton buffer;
 	private JButton money;
 	
 	//number of points spent in each area
@@ -51,6 +52,7 @@ public class TechPanel extends JPanel implements ActionListener
 	//number of points spent on each upgrade
 	private int damagePoints;
 	private int speedPoints;
+	private int bufferPoints;
 	private int livesPoints;
 	private int moneyPoints;
 	
@@ -80,25 +82,38 @@ public class TechPanel extends JPanel implements ActionListener
 		
 		//initialize the buttons
 		damage = new JButton("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
-		speed = new JButton("<html><div style = \"text-align:center\">Speed<br>"+damagePoints+"/5"+"</html>");
+		speed = new JButton("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
+		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
 		lives = new JButton("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
 		money = new JButton("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
 		
 		//set bounds using fractions of width and height*
 		damage.setBounds(width/6-50, 25, 100, height/15);
 		speed.setBounds(width/6-50, height/15+35, 100, height/15);
-		lives.setBounds(width/2-50, 25, 100, height/15);
+		buffer.setBounds(width/2-50, 25, 100, height/15);
+		lives.setBounds(width/2-50, height/15+35, 100, height/15);
 		money.setBounds(5*width/6-50, 25,100, height/15);
+		
+		//set descriptions
+		damage.setToolTipText("Increases the damage on all Disc Throwers and Scanners. Disc Throwers get 5 extra damage, "
+				+ "and Scanners get 0.5 damage per tick.");
+		speed.setToolTipText("Increases the attack speed of Disc Throwers and Number Generators.");
+		buffer.setToolTipText("Increases the size of your towers' buffers, making them more resistant to worm attacks."
+				+ " This allows each tower to take 1 more hit.");
+		lives.setToolTipText("Boost your uncorrupted data by 1000 bytes.");
+		money.setToolTipText("Boost your money by $100");
 		
 		//add action listeners
 		damage.addActionListener(this);
 		speed.addActionListener(this);
+		buffer.addActionListener(this);
 		lives.addActionListener(this);
 		money.addActionListener(this);
 		
 		//add buttons to panel
 		add(damage);
 		add(speed);
+		add(buffer);
 		add(lives);
 		add(money);
 	}
@@ -114,9 +129,11 @@ public class TechPanel extends JPanel implements ActionListener
 			//make the buttons clickable again if user can spend more points on them
 			if(damagePoints < 5)
 				damage.setEnabled(true);
-			if(speedPoints < 5)
+			if(attackPoints > 3 && speedPoints < 5)
 				speed.setEnabled(true);
-			if(livesPoints < 5)
+			if(bufferPoints < 5)
+				buffer.setEnabled(true);
+			if(bufferPoints > 3 && livesPoints < 5)
 				lives.setEnabled(true);
 			if(moneyPoints < 5)
 				money.setEnabled(true);
@@ -148,7 +165,11 @@ public class TechPanel extends JPanel implements ActionListener
 					break;
 				else if(curr.getType() == TowerType.DISC_THROWER)
 				{
-					curr.damage += 5; //only increases damage on dt's and scanners by 5
+					curr.damage += 5;
+				}
+				else if(curr.getType() == TowerType.NUMBER_GENERATOR)
+				{
+					curr.damage += 1;
 				}
 				else if(curr.getType() == TowerType.SCANNER)
 				{
@@ -158,6 +179,7 @@ public class TechPanel extends JPanel implements ActionListener
 			
 			//update damage for future towers
 			DiscThrower.increaseDamage(5);
+			//TODO NumberGenerator.increaseDamage(1);
 		}
 		
 		else if(clicked == speed)
@@ -171,22 +193,42 @@ public class TechPanel extends JPanel implements ActionListener
 				Tower curr = Tower.allTowers[t];
 				if(curr == null)
 					break;
-				else if(curr.getType() == TowerType.DISC_THROWER || curr.getType() == TowerType.SCANNER)
+				else if(curr.getType() == TowerType.DISC_THROWER || curr.getType() == TowerType.NUMBER_GENERATOR)
 				{
-					curr.timerReset -= 3; //only decreases timer reset on dt's and scanners by 3
+					curr.timerReset -= 3; //only decreases timer reset on dt's and num gens by 3
 				}
 			}
 			
 			DiscThrower.speedToSet -= 3;
 			NumberGenerator.speedToSet -= 3;
 		}
-		
+		else if (clicked == buffer)
+		{
+			//update point values
+			bufferPoints++;
+			defensePoints++;
+			
+			//increase health of existing towers
+			for(int t=0; t < Tower.allTowers.length; t++)
+			{
+				Tower curr = Tower.allTowers[t];
+				if(curr == null)
+					break;
+				else if(curr.getType() != TowerType.FIREWALL)
+				{
+					curr.health += 10; //only decreases timer reset on dt's and num gens by 3
+				}
+			}
+			
+			//increase health of all future towers
+			Tower.increaseHealth(10);
+		}
 		else if(clicked == lives)
 		{
 			livesPoints++;
 			defensePoints++;
 			
-			//add 20 lives
+			//add 1000 lives
 			Game.lives += 1000;
 			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
 		}
@@ -196,18 +238,20 @@ public class TechPanel extends JPanel implements ActionListener
 			moneyPoints++;
 			supportPoints++;
 			
-			Game.addMoney(25);
+			Game.addMoney(100);
 		}
 		
 		//update point values
 		damage.setText("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
-		speed.setText("<html><div style = \"text-align:center\">Speed<br>"+speedPoints+"/5"+"</html>");
+		speed.setText("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
+		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
 		lives.setText("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
 		money.setText("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
 		
 		//disable all buttons after a point is spent
 		damage.setEnabled(false);
 		speed.setEnabled(false);
+		buffer.setEnabled(false);
 		lives.setEnabled(false);
 		money.setEnabled(false);
 		

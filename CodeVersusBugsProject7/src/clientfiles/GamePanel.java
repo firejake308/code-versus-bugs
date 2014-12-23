@@ -568,6 +568,13 @@ public class GamePanel extends JPanel
 				g2d.fill(path[trackPart]);
 			}
 			
+			//draw all files
+			ListIterator<BonusFile> iter = BonusFile.allFiles.listIterator();
+			while(iter.hasNext())
+			{
+				iter.next().draw(g);
+			}
+			
 			//draw all viruses
 			for(int v=0; v<lvlManager.getMalwaresThisLevel(); v++)
 			{

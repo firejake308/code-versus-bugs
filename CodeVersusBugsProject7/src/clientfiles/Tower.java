@@ -82,8 +82,10 @@ public abstract class Tower implements ActionListener
 	protected TowerType type;
 	protected double damage;
 	protected int level = 1;
-	protected int health = 50;
+	protected int health;
+	protected int maxHealth;
 	public boolean infected = false;
+	private static int healthToSet = 50;
 	
 	protected Ellipse2D rangeIndicator;
 	protected Arc2D.Double scan;
@@ -129,6 +131,8 @@ public abstract class Tower implements ActionListener
 		hits = 0;
 		
 		accuracy = 1;
+		maxHealth = healthToSet;
+		health = maxHealth;
 		
 		id = idToSet;
 		
@@ -237,7 +241,10 @@ public abstract class Tower implements ActionListener
 	{
 		return type;
 	}
-	
+	public static void increaseHealth(int increase)
+	{
+		healthToSet += increase;
+	}
 	public void dealDamage(int damage)
 	{
 		health -= damage;
@@ -252,19 +259,19 @@ public abstract class Tower implements ActionListener
 				health = 100;
 				setIcon(new ImageIcon(MyImages.dt5));
 			}
-			else if(health <= 10)
+			else if(health <= maxHealth/5)
 			{
 				setIcon(new ImageIcon(MyImages.dt4));
 			}
-			else if(health <= 20)
+			else if(health <= 2*maxHealth/5)
 			{
 				setIcon(new ImageIcon(MyImages.dt3));
 			}
-			else if(health <=30)
+			else if(health <= 3*maxHealth/5)
 			{
 				setIcon(new ImageIcon(MyImages.dt2));
 			}
-			else if(health <= 40)
+			else if(health <= 4*maxHealth/5)
 			{
 				setIcon(new ImageIcon(MyImages.dt1));
 			}

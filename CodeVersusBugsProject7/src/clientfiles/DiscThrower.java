@@ -48,6 +48,7 @@ public class DiscThrower extends Tower
 	public static int damageToSet = 25;
 	public static int speedToSet = 30;
 	public static int rangeToSet = (int) (Game.widthOfGamePanel * .12);
+	public static int healthToSet = 50;
 	
 	public DiscThrower(int xToSet, int yToSet, int idToSet) 
 	{

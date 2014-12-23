@@ -57,9 +57,9 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	public static int money = 7500;
+	public static int money = 750;
 	public static int lives = 5000;
-	public static int level = 10;
+	public static int level = 1;
 
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
@@ -375,6 +375,16 @@ public class Game extends JFrame implements Runnable
 			ShopPanel.info.setBackground(Color.white);
 			ShopPanel.warned = false;
 		}
+		
+		//move any files that exist
+		for(BonusFile p:BonusFile.allFiles)
+		{
+			if(p != null)
+			{
+				p.move(frames);
+			}
+		}
+		BonusFile.emptyBin();
 	}
 
 	public void renderGameState()

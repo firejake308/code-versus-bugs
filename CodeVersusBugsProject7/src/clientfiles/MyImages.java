@@ -44,6 +44,10 @@ public class MyImages
 	public static BufferedImage wormHead;
 	public static BufferedImage wormBody;
 	public static BufferedImage trojan;
+	public static BufferedImage dataFile;
+	public static BufferedImage exeFile;
+	public static BufferedImage virus;
+	public static BufferedImage spy;
 	//towers
 	public static BufferedImage dt0;
 	public static BufferedImage dt1;
@@ -125,6 +129,10 @@ public class MyImages
 			wormHead = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormHead.png"));
 			wormBody = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormBody.png"));
 			trojan = ImageIO.read(MyImages.class.getResourceAsStream("resources/trojan1.png"));
+			dataFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/datafile.png"));
+			exeFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/exefile.png"));
+			virus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus3.png"));
+			spy = ImageIO.read(MyImages.class.getResourceAsStream("resources/spy.png"));
 			
 			//towers
 			dt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower0.png"));

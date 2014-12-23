@@ -41,6 +41,7 @@ import javax.swing.ImageIcon;
 public class StoryManager implements LevelManager
 {
 	public int malwaresThisLevel = 15;
+	public int filesThisLevel = 15;
 	
 	private int minions = 15;
 	private int rushMinions = 0;
@@ -75,7 +76,15 @@ public class StoryManager implements LevelManager
 		
 	}
 	
-	// set number of malwares per type that are in the level
+	/**
+	 *  Sets number of malwares per type that are in the level.
+	 *  
+	 *  @param numOfMinions
+	 *  @param numOfFastMinions
+	 *  @param numOfSlowMinions
+	 *  @param numnOfWorms
+	 *  @param numOfTrojans
+	 */
 	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms, int numOfTrojans)
 	{
 		minions = numOfMinions;
@@ -85,6 +94,11 @@ public class StoryManager implements LevelManager
 		trojans = numOfTrojans;
 	}
 	
+	@Override
+	public void setFilesForLevel(int numFiles) 
+	{
+		filesThisLevel = numFiles;
+	}
 	public int getMalwaresThisLevel()
 	{
 		return malwaresThisLevel;
@@ -157,6 +171,17 @@ public class StoryManager implements LevelManager
 			v++;
 			startY += 70;
 		}
+		
+		//make files if necessary
+		startY = Game.heightOfGamePanel + 750;
+		for (int i = 0; i < filesThisLevel; i ++)
+		{
+			if(i % 2 == 0)
+				BonusFile.allFiles.add(new BonusFile(startY, BonusFile.DATA));
+			else if(i % 2 == 1)
+				BonusFile.allFiles.add(new BonusFile(startY, BonusFile.EXE));
+			startY+=75;
+		}
 	}
 	
 	/**
@@ -180,6 +205,7 @@ public class StoryManager implements LevelManager
 		{
 			case 1:	
 				setMalwaresForLevel(15, 0, 0, 0, 0);
+				setFilesForLevel(15);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel1;
 				break;
