@@ -239,7 +239,7 @@ public class Game extends JFrame implements Runnable
 	public void processMovements(double frames)
 	{
 		//move all of the viruses
-		for(int v=0; v<gamePanel.lvlManager.getMalwaresThisLevel(); v++)
+		for(int v=0; v<Malware.numMalwares; v++)
 		{
 			if(Malware.allMalware[v]==null)
 				break;

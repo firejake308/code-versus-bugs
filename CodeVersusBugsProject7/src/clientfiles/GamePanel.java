@@ -576,7 +576,7 @@ public class GamePanel extends JPanel
 			}
 			
 			//draw all viruses
-			for(int v=0; v<lvlManager.getMalwaresThisLevel(); v++)
+			for(int v=0; v<Malware.numMalwares; v++)
 			{
 				if(Malware.allMalware[v] == null)
 					break;

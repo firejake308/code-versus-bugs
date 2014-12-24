@@ -41,15 +41,21 @@ import javax.swing.ImageIcon;
 public class StoryManager implements LevelManager
 {
 	public int malwaresThisLevel = 15;
-	public int filesThisLevel = 15;
+	private int filesThisLevel = 0;
 	
 	private int minions = 15;
 	private int rushMinions = 0;
 	private int tankMinions = 0;
 	private int worms = 0;
 	private int trojans = 0;
+	private int viruses = 0;
+	private int spywares = 0;
 	
-	// malwares per level
+	// malwares per level.
+	/**
+	 * All of these are deprecated. Nobody needs them.
+	 * @deprecated
+	 */
 	private int malwaresForLevel1 = 15;
 	private int malwaresForLevel2 = 30;
 	private int malwaresForLevel3 = 50;
@@ -71,21 +77,24 @@ public class StoryManager implements LevelManager
 	private int malwaresForLevel19 = 615;
 	private int malwaresForLevel20 = 535;
 	
+	/**
+	 * @deprecated
+	 */
 	public StoryManager()  
 	{
 		
 	}
 	
 	/**
-	 *  Sets number of malwares per type that are in the level.
+	 * Sets number of malwares per type that are in the level.
 	 *  
-	 *  @param numOfMinions
-	 *  @param numOfFastMinions
-	 *  @param numOfSlowMinions
-	 *  @param numnOfWorms
-	 *  @param numOfTrojans
+	 * @param numOfMinions
+	 * @param numOfFastMinions
+	 * @param numOfSlowMinions
+	 * @param numOfTrojans
+	 * @param numnOfWorms
 	 */
-	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms, int numOfTrojans)
+	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms, int numOfTrojans, int numOfViruses, int numOfSpyware)
 	{
 		minions = numOfMinions;
 		rushMinions = numOfFastMinions;
@@ -99,6 +108,9 @@ public class StoryManager implements LevelManager
 	{
 		filesThisLevel = numFiles;
 	}
+	/**
+	 * @deprecated
+	 */
 	public int getMalwaresThisLevel()
 	{
 		return malwaresThisLevel;
@@ -107,7 +119,6 @@ public class StoryManager implements LevelManager
 	/**
 	 * Creates the malwares for story mode levels.
 	 * 
-	 * @param malwaresToAddThisLevel the total number of malwares in this level.
 	 */
 	public void addMalwares()
 	{
@@ -163,6 +174,28 @@ public class StoryManager implements LevelManager
 			startY -= 70;
 		}
 		
+		//make viruses, where i is number of viruses per route
+		for(int i = 0; i < viruses / 5; i++)
+		{
+			for(int l = 1; l <= 5; l++)
+			{
+				Malware.allMalware[v] = new Virus(l, startY);
+				v++;
+			}
+			startY -= 70;
+		}
+		
+		//make spywares, where i is number of spywares per route
+		for(int i = 0; i < spywares / 5; i++)
+		{
+			for(int l = 1; l <= 5; l++)
+			{
+				Malware.allMalware[v] = new Spyware(l, startY);
+				v++;
+			}
+			startY -= 70;
+		}
+		
 		startY = Game.heightOfGamePanel + 10;
 		// i is the number of trojans per route, as worms is / 5 (5 = routes)
 		for (int i = 0; i < trojans; i++)
@@ -180,12 +213,13 @@ public class StoryManager implements LevelManager
 				BonusFile.allFiles.add(new BonusFile(startY, BonusFile.DATA));
 			else if(i % 2 == 1)
 				BonusFile.allFiles.add(new BonusFile(startY, BonusFile.EXE));
-			startY+=75;
+			startY += 100;
 		}
 	}
 	
 	/**
 	 * Takes the user to the next level.
+	 * 
 	 */
 	public void nextlvl()
 	{	
@@ -204,103 +238,103 @@ public class StoryManager implements LevelManager
 		switch(Game.level)
 		{
 			case 1:	
-				setMalwaresForLevel(15, 0, 0, 0, 0);
-				setFilesForLevel(15);
+				setMalwaresForLevel(15, 0, 0, 0, 0, 0, 0);
+				//setFilesForLevel(15);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel1;
 				break;
 			case 2:
-				setMalwaresForLevel(30, 0, 0, 0, 0);
+				setMalwaresForLevel(30, 0, 0, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel2;
 				break;
 			case 3:	
-				setMalwaresForLevel(50, 0, 0, 0, 0);
+				setMalwaresForLevel(50, 0, 0, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel3;
 				break;
 			case 4:	
-				setMalwaresForLevel(80, 00, 00, 0, 0);
+				setMalwaresForLevel(80, 00, 00, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel4;
 				break;
 			case 5:	
-				setMalwaresForLevel(100, 20, 20, 0, 0);
+				setMalwaresForLevel(100, 20, 20, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel5;
 				break;
 			case 6:
-				setMalwaresForLevel(120, 40, 40, 0, 0);
+				setMalwaresForLevel(120, 40, 40, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel6;
 				break;
 			case 7:
-				setMalwaresForLevel(150, 60, 60, 0, 0);
+				setMalwaresForLevel(150, 60, 60, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel7;
 				break;
 			case 8:
-				setMalwaresForLevel(250, 100, 100, 0, 0);
+				setMalwaresForLevel(250, 100, 100, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel8;
 				break;
 			case 9:
-				setMalwaresForLevel(400, 150, 150, 0, 0);
+				setMalwaresForLevel(400, 150, 150, 0, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel9;
 				break;
 			case 10:
-				setMalwaresForLevel(0, 0, 0, 10, 0);
+				setMalwaresForLevel(0, 0, 0, 10, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel10;
 				break;
 			case 11:
-				setMalwaresForLevel(150, 60, 60, 10, 0);
+				setMalwaresForLevel(150, 60, 60, 10, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel11;
 				break;
 			case 12:
-				setMalwaresForLevel(200, 120, 120, 15, 0);
+				setMalwaresForLevel(200, 120, 120, 15, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel12;
 				break;
 			case 13:
-				setMalwaresForLevel(250, 175, 175, 15, 0);
+				setMalwaresForLevel(250, 175, 175, 15, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel13;
 				break;
 			case 14:
-				setMalwaresForLevel(300, 250, 60, 15, 0);
+				setMalwaresForLevel(300, 250, 60, 15, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel14;
 				break;
 			case 15:
-				setMalwaresForLevel(10, 10, 10, 40, 0);
+				setMalwaresForLevel(10, 10, 10, 40, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel15;
 				break;
 			case 16:
-				setMalwaresForLevel(40, 30, 30, 40, 0);
+				setMalwaresForLevel(40, 30, 30, 40, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel16;
 				break;
 			case 17:
-				setMalwaresForLevel(100, 80, 80, 50, 0);
+				setMalwaresForLevel(100, 80, 80, 50, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel17;
 				break;
 			case 18:
-				setMalwaresForLevel(150, 120, 120, 50, 0);
+				setMalwaresForLevel(150, 120, 120, 50, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel18;
 				break;
 			case 19:
-				setMalwaresForLevel(175, 150, 150, 60, 0);
+				setMalwaresForLevel(175, 150, 150, 60, 0, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel19;
 				break;
 			case 20:
-				setMalwaresForLevel(0, 0, 0, 0, 10);
+				setMalwaresForLevel(0, 0, 0, 0, 10, 0, 0);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel20;
 				break;

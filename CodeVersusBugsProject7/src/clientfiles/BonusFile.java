@@ -59,6 +59,10 @@ public class BonusFile
 	{
 		x = xToSet - sprite.getWidth()/2;
 	}
+	public int getType()
+	{
+		return type;
+	}
 	
 	public void draw(Graphics g)
 	{
@@ -99,6 +103,15 @@ public class BonusFile
 			BonusFile curr = iterator.next();
 			allFiles.remove(curr);
 			iterator.remove();
+		}
+		
+		//allow viruses to replicate again
+		for(Malware m : Malware.allMalware)
+		{
+			if(m instanceof Virus)
+				((Virus)m).canReplicate = true;
+			else if(m == null)
+				break;
 		}
 	}
 }

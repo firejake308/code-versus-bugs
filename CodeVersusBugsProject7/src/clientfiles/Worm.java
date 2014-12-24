@@ -49,8 +49,6 @@ public class Worm extends Malware
 	public int timer=0;
 	public final int TIMER_RESET = 60;
 	
-	public int speed;
-	
 	public Worm(int lane, int y) 
 	{
 		//create a worm in specified lane at specified y value

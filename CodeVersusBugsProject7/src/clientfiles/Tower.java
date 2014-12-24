@@ -410,7 +410,7 @@ public abstract class Tower implements ActionListener
 		
 		if (specialEffects)
 		{
-			while (i < Game.gamePanel.lvlManager.getMalwaresThisLevel())
+			while (i < Malware.numMalwares)
 			{
 				//necessary to prevent null pointer exceptions
 				if(Malware.allMalware[i] == null)
@@ -436,7 +436,7 @@ public abstract class Tower implements ActionListener
 		
 		if (!targetFound)
 		{
-			while (i < Game.gamePanel.lvlManager.getMalwaresThisLevel())
+			while (i < Malware.numMalwares)
 			{
 				//necessary to prevent null pointer exceptions
 				if(Malware.allMalware[i] == null)
@@ -446,7 +446,6 @@ public abstract class Tower implements ActionListener
 				yOfVirus = Malware.allMalware[i].getCenterY();
 				
 				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
-				//System.out.println(distanceFromTower + " " + Virus.allViruses[i]);
 				
 				if (Malware.allMalware[i].state != State.INVISIBLE  && Malware.allMalware[i].getRelativeDistance() >= virusesDistance && distanceFromTower <= range && yOfVirus >= 0)
 				{
@@ -458,8 +457,6 @@ public abstract class Tower implements ActionListener
 				i++;
 			}
 		}
-		
-		
 		
 		if (targetFound)
 		{
