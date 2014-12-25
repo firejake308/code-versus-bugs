@@ -117,14 +117,13 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.techPanel.initializeTechPanel();
 		
 		//debug code
-		//Game.techPanel.setVisible(true);
-		//Game.gamePanel.setVisible(false);
+		Game.techPanel.setVisible(true);
+		Game.gamePanel.setVisible(false);
 		
 		//these are just here to make sure that
 		Game.gamePanel.setLayout(null);
 		Game.gamePanel.setBackground(epic);
 		Game.infoPanel.setBackground(epic);
-		//Game.shopPanel.setBackground(Color.CYAN);
 		
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
@@ -135,7 +134,7 @@ public class GameFrame extends JFrame implements ActionListener
 		Scanner.rangeToSet = (int) (Game.widthOfGamePanel * .10);
 		
 		//make path parts
-		Game.gamePanel.path = new Rectangle[19];
+		Game.gamePanel.path = new Rectangle[18];
 		
 		//new parts added in modem update
 		Game.gamePanel.path[0] = new Rectangle();
@@ -198,16 +197,12 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.gamePanel.path[16] = new Rectangle();
 		Game.gamePanel.path[16].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42), (int) (Game.heightOfGamePanel * .4) + (int) (Game.heightOfGamePanel * .3) - (Game.widthOfGamePanel / 42),
 				(int) (Game.widthOfGamePanel * .8) - ((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5)) + (2 * Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42);
-		//goes left from point of connection of sides, 2nd to last track
+		//goes left from point of connection of sides, last track on dead-end path
 		Game.gamePanel.path[17] = new Rectangle();
 		Game.gamePanel.path[17].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), 
 				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-				(int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42, 
+				Game.widthOfGamePanel /3, 
 				Game.widthOfGamePanel / 42);
-		//last track on old route
-		Game.gamePanel.path[18] = new Rectangle();
-		Game.gamePanel.path[18].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-				Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .15));
 		/*addKeyListener(new KeyAdapter()
 		{
 			//pause the game whenerver escape is pressed

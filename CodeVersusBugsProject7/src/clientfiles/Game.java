@@ -85,6 +85,7 @@ public class Game extends JFrame implements Runnable
 	public static int heightOfGamePanel;
 	
 	public static double scaleOfSprites;
+	public static double malwareSpeed = 1.0;
 	
 	// track
 	static public JPanel track;
@@ -147,8 +148,7 @@ public class Game extends JFrame implements Runnable
 	{
 		if(money >= cost)
 		{
-			money -= cost;
-			gf.moneyLabel.setText("$" + money + " money");
+			addMoney(-cost);
 			return true;
 		}
 		else
@@ -244,7 +244,7 @@ public class Game extends JFrame implements Runnable
 			if(Malware.allMalware[v]==null)
 				break;
 			else
-				Malware.allMalware[v].moveVirus(frames);
+				Malware.allMalware[v].moveVirus(malwareSpeed*frames);
 		}
 		
 		//check if viruses have moved into range of a tower
@@ -280,6 +280,7 @@ public class Game extends JFrame implements Runnable
 								Malware.allMalware[m].state = State.NORMAL;
 						}
 						
+						//TODO make this clearer grpahically
 						else if (tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 3  && tower.infected)
 						{
 							Malware.allMalware[m].dealDamage(tower.damage, 1, t);

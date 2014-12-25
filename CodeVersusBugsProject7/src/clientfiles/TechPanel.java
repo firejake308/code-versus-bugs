@@ -42,18 +42,23 @@ public class TechPanel extends JPanel implements ActionListener
 	private JButton speed;
 	private JButton lives;
 	private JButton buffer;
+	private JButton router;
+	private JButton slow;
 	private JButton money;
 	
 	//number of points spent in each area
 	private int attackPoints;
 	private int defensePoints;
 	private int supportPoints;
+	public int pointsToSpend;
 	
 	//number of points spent on each upgrade
 	private int damagePoints;
 	private int speedPoints;
 	private int bufferPoints;
 	private int livesPoints;
+	private int routerPoints;
+	private int slowPoints;
 	private int moneyPoints;
 	
 	public TechPanel()
@@ -61,9 +66,14 @@ public class TechPanel extends JPanel implements ActionListener
 		attackPoints = 0;
 		defensePoints = 0;
 		supportPoints = 0;
+		pointsToSpend = 0;
 		
 		damagePoints = 0;
+		speedPoints = 0;
+		bufferPoints = 0;
 		livesPoints = 0;
+		routerPoints = 0;
+		slowPoints = 0;
 		moneyPoints = 0;
 	}
 	/**
@@ -85,14 +95,18 @@ public class TechPanel extends JPanel implements ActionListener
 		speed = new JButton("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
 		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
 		lives = new JButton("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
+		router = new JButton("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/5"+"</html>");
+		slow = new JButton("<html><div style = \"text-align:center\">Slow Malware<br>"+slowPoints+"/5"+"</html>");
 		money = new JButton("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
 		
 		//set bounds using fractions of width and height*
-		damage.setBounds(width/6-50, 25, 100, height/15);
-		speed.setBounds(width/6-50, height/15+35, 100, height/15);
-		buffer.setBounds(width/2-50, 25, 100, height/15);
-		lives.setBounds(width/2-50, height/15+35, 100, height/15);
-		money.setBounds(5*width/6-50, 25,100, height/15);
+		damage.setBounds(width/6-50, 25, 100, height/14);
+		speed.setBounds(width/6-50, height/14 + 35, 100, height/14);
+		buffer.setBounds(width/2-50, 25, 100, height/14);
+		lives.setBounds(width/2-50, height/14 + 35, 100, height/14);
+		router.setBounds(width/2-50, height/7 + 45, 100, height/14);
+		slow.setBounds(5*width/6-50, 25, 100, height/14);
+		money.setBounds(5*width/6-50, height/14 + 35, 100, height/14);
 		
 		//set descriptions
 		damage.setToolTipText("Increases the damage on all Disc Throwers and Scanners. Disc Throwers get 5 extra damage, "
@@ -101,6 +115,9 @@ public class TechPanel extends JPanel implements ActionListener
 		buffer.setToolTipText("Increases the size of your towers' buffers, making them more resistant to worm attacks."
 				+ " This allows each tower to take 1 more hit.");
 		lives.setToolTipText("Boost your uncorrupted data by 1000 bytes.");
+		router.setToolTipText("Upgrade your modem to a router so that it can connect to the decoy CPU. Malwares that hit the decoy CPU"
+				+ " do not corrupt any important data.");
+		slow.setToolTipText("Slow down all future viruses by 3%.");
 		money.setToolTipText("Boost your money by $100");
 		
 		//add action listeners
@@ -108,14 +125,26 @@ public class TechPanel extends JPanel implements ActionListener
 		speed.addActionListener(this);
 		buffer.addActionListener(this);
 		lives.addActionListener(this);
+		router.addActionListener(this);
+		slow.addActionListener(this);
 		money.addActionListener(this);
 		
 		//add buttons to panel
 		add(damage);
 		add(speed);
+		
 		add(buffer);
 		add(lives);
+		add(router);
+		
+		add(slow);
 		add(money);
+		
+		//start all of the non-primary buttons out as disabled
+		speed.setEnabled(false);
+		lives.setEnabled(false);
+		//router.setEnabled(false);
+		money.setEnabled(false);
 	}
 	
 	@Override
@@ -126,17 +155,27 @@ public class TechPanel extends JPanel implements ActionListener
 			//set visible like normal
 			super.setVisible(true);
 			
-			//make the buttons clickable again if user can spend more points on them
-			if(damagePoints < 5)
-				damage.setEnabled(true);
-			if(attackPoints > 3 && speedPoints < 5)
-				speed.setEnabled(true);
-			if(bufferPoints < 5)
-				buffer.setEnabled(true);
-			if(bufferPoints > 3 && livesPoints < 5)
-				lives.setEnabled(true);
-			if(moneyPoints < 5)
-				money.setEnabled(true);
+			//allow user to spend points if there are extras
+			if(pointsToSpend > 0)
+			{
+				//make the buttons clickable again if user can spend more points on them
+				if(damagePoints < 5)
+					damage.setEnabled(true);
+				if(attackPoints > 3 && speedPoints < 5)
+					speed.setEnabled(true);
+				
+				if(bufferPoints < 5)
+					buffer.setEnabled(true);
+				if(defensePoints > 3 && livesPoints < 5)
+					lives.setEnabled(true);
+				if(defensePoints > 6 && routerPoints < 5)
+					router.setEnabled(true);
+				
+				if(slowPoints < 5)
+					slow.setEnabled(true);
+				if(supportPoints > 3 && moneyPoints < 5)
+					money.setEnabled(true);
+			}
 			
 			//special case for tutorial slide 28
 			//force user to slide 29 once tech panel appears for the first time
@@ -151,13 +190,14 @@ public class TechPanel extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		JButton clicked = (JButton) e.getSource();
+		pointsToSpend--;
 		
 		if(clicked == damage)
 		{
 			damagePoints++;
 			attackPoints++;
 			
-			//increase damage of pre-existing towers by 5
+			//increase damage of pre-existing towers
 			for(int t = 0; t < Tower.allTowers.length; t++)
 			{
 				Tower curr = Tower.allTowers[t];
@@ -179,7 +219,7 @@ public class TechPanel extends JPanel implements ActionListener
 			
 			//update damage for future towers
 			DiscThrower.increaseDamage(5);
-			//TODO NumberGenerator.increaseDamage(1);
+			NumberGenerator.increaseDamage(1);
 		}
 		
 		else if(clicked == speed)
@@ -216,7 +256,7 @@ public class TechPanel extends JPanel implements ActionListener
 					break;
 				else if(curr.getType() != TowerType.FIREWALL)
 				{
-					curr.health += 10; //only decreases timer reset on dt's and num gens by 3
+					curr.health += 10;
 				}
 			}
 			
@@ -228,11 +268,29 @@ public class TechPanel extends JPanel implements ActionListener
 			livesPoints++;
 			defensePoints++;
 			
-			//add 1000 lives
+			//add 1000 bytes
 			Game.lives += 1000;
 			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
 		}
-		
+		else if(clicked == router)
+		{
+			//update point valued
+			routerPoints++;
+			defensePoints++;
+			
+			//turn on router
+			Malware.routerOn = true;
+			//image is changed in game panel
+		}
+		else if(clicked == slow)
+		{
+			//update point values
+			slowPoints++;
+			supportPoints++;
+			
+			//unleash the slow
+			Game.malwareSpeed -= 0.03;
+		}
 		else if(clicked == money)
 		{
 			moneyPoints++;
@@ -244,16 +302,27 @@ public class TechPanel extends JPanel implements ActionListener
 		//update point values
 		damage.setText("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
 		speed.setText("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
+		
 		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
 		lives.setText("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
+		router.setText("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/5"+"</html>");
+		
+		slow.setText("<html><div style = \"text-align:center\">Slow Malware<br>"+slowPoints+"/5"+"</html>");
 		money.setText("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
 		
 		//disable all buttons after a point is spent
-		damage.setEnabled(false);
-		speed.setEnabled(false);
-		buffer.setEnabled(false);
-		lives.setEnabled(false);
-		money.setEnabled(false);
+		if(pointsToSpend == 0)
+		{
+			damage.setEnabled(false);
+			speed.setEnabled(false);
+			
+			buffer.setEnabled(false);
+			lives.setEnabled(false);
+			router.setEnabled(false);
+			
+			slow.setEnabled(false);
+			money.setEnabled(false);
+		}
 		
 		setVisible(false);
 		Game.gamePanel.setVisible(true);

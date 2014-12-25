@@ -103,6 +103,7 @@ public class MyImages
 	public static BufferedImage r9lethal;
 	//map
 	public static BufferedImage cpu;
+	public static BufferedImage decoyCPU;
 	public static BufferedImage modem;
 	public static BufferedImage router;
 	
@@ -191,6 +192,7 @@ public class MyImages
 			
 			//map
 			cpu = ImageIO.read(MyImages.class.getResourceAsStream("resources/cpu.png"));
+			decoyCPU = ImageIO.read(MyImages.class.getResourceAsStream("resources/decoyCPU.png"));
 			modem = ImageIO.read(MyImages.class.getResourceAsStream("resources/modem1.png"));
 			router = ImageIO.read(MyImages.class.getResourceAsStream("resources/router1.png"));
 		}

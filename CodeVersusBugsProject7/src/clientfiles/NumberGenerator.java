@@ -48,6 +48,7 @@ public class NumberGenerator extends Tower
 										new ImageIcon(MyImages.random8), new ImageIcon(MyImages.random9)};
 	public static int speedToSet = 80;
 	public static int rangeToSet = (int) (Game.widthOfGamePanel * .15);
+	public static int damageToSet = 0;
 	
 	public NumberGenerator(int xToSet, int yToSet, int idToSet) 
 	{
@@ -70,13 +71,17 @@ public class NumberGenerator extends Tower
 		timerReset = speedToSet;
 		
 		type = TowerType.NUMBER_GENERATOR;
-		damage = 0;
+		damage = damageToSet;
 		
 		realValue += cost;
 		
 		//make user pay for towers
-		Game.money -= cost;
-		Game.gf.moneyLabel.setText("$"+Game.money+" money");
+		Game.makePurchase(cost);
+	}
+	
+	public static void increaseDamage(int increase)
+	{
+		damageToSet += increase;
 	}
 	
 	public void addUpgradeOptions(int idOfTower)
