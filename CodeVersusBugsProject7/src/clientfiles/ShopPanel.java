@@ -77,7 +77,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.money < DiscThrower.cost)
+            		if (Game.getMoney() < DiscThrower.cost)
             			changeInfo("$"+DiscThrower.cost, true);
             		else
             			changeInfo("$"+DiscThrower.cost, false);
@@ -91,7 +91,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.money < NumberGenerator.cost)
+            		if (Game.getMoney() < NumberGenerator.cost)
             			changeInfo("$600", true);
             		else
             			changeInfo("$600", false);
@@ -105,7 +105,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.money < Scanner.cost)
+            		if (Game.getMoney() < Scanner.cost)
             			changeInfo("$1000", true);
             		else
             			changeInfo("$1000", false);
@@ -119,7 +119,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.money < FireWall.cost)
+            		if (Game.getMoney() < FireWall.cost)
             			changeInfo("$200", true);
             		else
             			changeInfo("$200", false);
@@ -530,7 +530,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	{
 		if (type == TowerType.DISC_THROWER)
 		{
-			if(Game.money >= DiscThrower.cost)
+			if(Game.getMoney() >= DiscThrower.cost)
 			{
 				towerToPlace = TowerType.DISC_THROWER;
 			}
@@ -540,7 +540,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		
 		else if(type == TowerType.NUMBER_GENERATOR)
 		{
-			if(Game.money >= NumberGenerator.cost)
+			if(Game.getMoney() >= NumberGenerator.cost)
 			{
 				towerToPlace = TowerType.NUMBER_GENERATOR;
 			}
@@ -550,7 +550,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		
 		else if(type == TowerType.SCANNER)
 		{
-			if(Game.money >= Scanner.cost)
+			if(Game.getMoney() >= Scanner.cost)
 			{
 				towerToPlace = TowerType.SCANNER;
 			}
@@ -560,7 +560,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		
 		else if(type == TowerType.FIREWALL)
 		{
-			if(Game.money >= FireWall.cost)
+			if(Game.getMoney() >= FireWall.cost)
 			{
 				towerToPlace = TowerType.FIREWALL;
 			}

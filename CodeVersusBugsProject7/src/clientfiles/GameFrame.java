@@ -89,7 +89,7 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.infoPanel.setBounds(145,5,screenSize.width-145,50);
 		
 		//initialize money label and fps counter
-		moneyLabel = new JLabel("$" + Game.money + " money");
+		moneyLabel = new JLabel("$" + Game.getMoney() + " money");
 		fpsCounter = new JLabel(Game.fps+" fps");
 		life = new JLabel("Bytes Remaining: " + Game.lives);
 		levelCounter = new JLabel("Level: " + Game.level);

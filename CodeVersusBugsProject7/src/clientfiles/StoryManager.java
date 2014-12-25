@@ -239,7 +239,6 @@ public class StoryManager implements LevelManager
 		{
 			case 1:	
 				setMalwaresForLevel(15, 0, 0, 0, 0, 0, 0);
-				//setFilesForLevel(15);
 				addMalwares();
 				malwaresThisLevel = malwaresForLevel1;
 				break;
@@ -339,6 +338,19 @@ public class StoryManager implements LevelManager
 				malwaresThisLevel = malwaresForLevel20;
 				break;
 			case 21:
+				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 0);
+				setFilesForLevel(15);
+				addMalwares();
+				break;
+			case 22:
+				setMalwaresForLevel(0, 0, 0, 0, 0, 0, 15);
+				addMalwares();
+				break;
+			case 23:
+				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 15);
+				addMalwares();
+				break;
+			default:
 				Game.gameState = Game.OVER;
 		}
 	}
