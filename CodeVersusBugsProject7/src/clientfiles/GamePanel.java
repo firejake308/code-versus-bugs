@@ -126,20 +126,7 @@ public class GamePanel extends JPanel
 			}
 			public void mousePressed(MouseEvent e)
 			{
-				//if a special action from the user is required to move on to the
-				//next slide, don't do anything
-				switch(Game.tutorialSlide)
-				{
-					case 7:
-					case 8:
-					case 9:
-					case 13:
-					case 17:
-					case 28:
-						return;
-				}
-				
-				//if it's any other level, move on to the next slide
+				//move on to the next slide
 				nextSlide();
 				
 				/*Notes:

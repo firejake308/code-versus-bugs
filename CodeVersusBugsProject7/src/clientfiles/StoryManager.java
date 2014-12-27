@@ -101,6 +101,8 @@ public class StoryManager implements LevelManager
 		tankMinions = numOfSlowMinions;
 		worms = numOfWorms;
 		trojans = numOfTrojans;
+		viruses = numOfViruses;
+		spywares = numOfSpyware;
 	}
 	
 	@Override
@@ -179,7 +181,7 @@ public class StoryManager implements LevelManager
 		{
 			for(int l = 1; l <= 5; l++)
 			{
-				Malware.allMalware[v] = new Virus(l, startY);
+				Malware.allMalware[v] = new Bot(l, startY);
 				v++;
 			}
 			startY -= 70;
@@ -339,7 +341,7 @@ public class StoryManager implements LevelManager
 				break;
 			case 21:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 0);
-				setFilesForLevel(15);
+				setFilesForLevel(4);
 				addMalwares();
 				break;
 			case 22:

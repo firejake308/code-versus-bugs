@@ -117,8 +117,8 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.techPanel.initializeTechPanel();
 		
 		//debug code
-		Game.techPanel.setVisible(true);
-		Game.gamePanel.setVisible(false);
+		//Game.techPanel.setVisible(true);
+		//Game.gamePanel.setVisible(false);
 		
 		//these are just here to make sure that
 		Game.gamePanel.setLayout(null);

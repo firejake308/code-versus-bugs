@@ -29,7 +29,7 @@ public class Spyware extends Malware
 		{
 			super.moveVirus(frames);
 		
-			//only difference is that we need to check for collison wth exe files
+			//only difference is that we need to check for collision with data files
 			ListIterator<BonusFile> iter = BonusFile.allFiles.listIterator();
 			while(iter.hasNext())
 			{
@@ -96,25 +96,25 @@ public class Spyware extends Malware
 			{
 				setX(getX()-directions[5]*speed*frames/60*manipulator * Game.speedModifier);
 				setDistance(getDistance()-speed*frames/60*manipulator * Game.speedModifier);
-				System.out.println("lane 4/5 going sideways to left");
+				//System.out.println("lane 4/5 going sideways to left");
 			}
 			else if(getDistance()<path[6])
 			{
 				setY(getY()-directions[6]*speed*frames/60*manipulator * Game.speedModifier);
 				setDistance(getDistance()-speed*frames/60*manipulator * Game.speedModifier);
-				System.out.println("lane 4/5 on file stream, going back");
+				//System.out.println("lane 4/5 on file stream, going back");
 			}
 			else if(getDistance()<path[7])
 			{
 				setX(getX()-directions[7]*speed*frames/60*manipulator * Game.speedModifier);
 				setDistance(getDistance()-speed*frames/60*manipulator * Game.speedModifier);
-				System.out.println("going sideways to left");
+				//System.out.println("going sideways to left");
 			}
 			else if(getDistance()<path[8])
 			{
 				setY(getY()-directions[8]*speed*frames/60*manipulator * Game.speedModifier);
 				setDistance(getDistance()-speed*frames/60*manipulator * Game.speedModifier);
-				System.out.println("on file stream, going back");
+				//System.out.println("on file stream, going back");
 			}
 		}
 	}

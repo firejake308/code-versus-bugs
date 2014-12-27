@@ -59,7 +59,7 @@ public class Game extends JFrame implements Runnable
 	//common debugging parameters
 	private static int money = 750;
 	public static int lives = 5000;
-	public static int level = 1;
+	public static int level = 21;
 
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
@@ -345,6 +345,26 @@ public class Game extends JFrame implements Runnable
 				else if(targetTower == null && worm.state == State.ATTACKING)
 				{
 					worm.state = State.NORMAL;
+				}
+			}
+		}
+		
+		//spawn minions around bots
+		for(int m = 0; m < Malware.allMalware.length; m++)
+		{
+			if(Malware.allMalware[m] instanceof Bot)
+			{
+				Bot bot = (Bot) Malware.allMalware[m];
+				
+				if(bot.timer <= 0)
+				{
+					bot.spawnWave();
+					bot.timer = bot.TIMER_RESET;
+					System.out.println("massive wave of minions spawned");
+				}
+				else if(bot.timer > 0)
+				{
+					bot.timer -= speedModifier;
 				}
 			}
 		}

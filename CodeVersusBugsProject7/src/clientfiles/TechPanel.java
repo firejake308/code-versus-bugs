@@ -143,7 +143,7 @@ public class TechPanel extends JPanel implements ActionListener
 		//start all of the non-primary buttons out as disabled
 		speed.setEnabled(false);
 		lives.setEnabled(false);
-		//router.setEnabled(false);
+		router.setEnabled(false);
 		money.setEnabled(false);
 	}
 	
@@ -155,27 +155,23 @@ public class TechPanel extends JPanel implements ActionListener
 			//set visible like normal
 			super.setVisible(true);
 			
-			//allow user to spend points if there are extras
-			if(pointsToSpend > 0)
-			{
-				//make the buttons clickable again if user can spend more points on them
+			//make the buttons clickable again if user can spend more points on them
 				if(damagePoints < 5)
 					damage.setEnabled(true);
-				if(attackPoints > 3 && speedPoints < 5)
+				if(attackPoints >= 3 && speedPoints < 5)
 					speed.setEnabled(true);
 				
 				if(bufferPoints < 5)
 					buffer.setEnabled(true);
-				if(defensePoints > 3 && livesPoints < 5)
+				if(defensePoints >= 3 && livesPoints < 5)
 					lives.setEnabled(true);
-				if(defensePoints > 6 && routerPoints < 5)
+				if(defensePoints >= 6 && routerPoints < 5)
 					router.setEnabled(true);
 				
 				if(slowPoints < 5)
 					slow.setEnabled(true);
 				if(supportPoints > 3 && moneyPoints < 5)
 					money.setEnabled(true);
-			}
 			
 			//special case for tutorial slide 28
 			//force user to slide 29 once tech panel appears for the first time
@@ -303,7 +299,7 @@ public class TechPanel extends JPanel implements ActionListener
 		damage.setText("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
 		speed.setText("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
 		
-		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
+		buffer.setText("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
 		lives.setText("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
 		router.setText("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/5"+"</html>");
 		

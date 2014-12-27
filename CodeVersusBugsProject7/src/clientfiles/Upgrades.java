@@ -104,6 +104,8 @@ public abstract class Upgrades
 		    public void actionPerformed(ActionEvent e)
 		    {
 		    	getUpgradeID(1);
+		    	upgradesInfo.setBackground(Color.CYAN);
+				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(1);
 		    }
 		});
 		
@@ -121,6 +123,8 @@ public abstract class Upgrades
 		    public void actionPerformed(ActionEvent e)
 		    {
 		    	getUpgradeID(2);
+		    	upgradesInfo.setBackground(Color.CYAN);
+				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(2);
 		    }
 		});
 		
@@ -299,7 +303,7 @@ public abstract class Upgrades
 		if(Game.tutorial && Game.tutorialSlide < 13)
 		{
 			Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
-			int choice = JOptionPane.showOptionDialog(Game.gf, "That's the wrong upgrade!", 
+			int choice = JOptionPane.showOptionDialog(Game.gf, "You're not supposed to upgrade that yet!", 
 					"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
 			if(choice == 0)
 				return;
@@ -391,27 +395,27 @@ public abstract class Upgrades
 		switch (upgradeID) 
 		{
 			case 111:						//Harder Discs
-											Tower.allTowers[displayedUpgradeID].projectileDurability = 2;
+											tower.projectileDurability = 2;
 											System.out.println("projectile durability++");
 											break;
 			case 112:						//Even Harder Discs?
-											Tower.allTowers[displayedUpgradeID].projectileDurability = 3;
+											tower.projectileDurability = 3;
 											System.out.println("projectile durability++");
 											break;
 			case 113:						//Faster attack speed?,etc.
-											Tower.allTowers[displayedUpgradeID].timerReset = 24;
+											tower.timerReset = 24;
 											System.out.println("attack speed++");
 											break;
 											
 			case 121:						//increase damage
-											Tower.allTowers[displayedUpgradeID].damage += 15;
+											tower.damage += 15;
 											System.out.println("damage++");
 											break;
-			case 122:						Tower.allTowers[displayedUpgradeID].damage += 10;
+			case 122:						tower.damage += 10;
 											System.out.println("damage++");
 											break;
 											
-			case 131:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 6;
+			case 131:						tower.range += tower.range / 6;
 											System.out.println("range++");
 											
 											//special case for tutorial slide 13
@@ -423,7 +427,7 @@ public abstract class Upgrades
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 										
-			case 132:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 6;
+			case 132:						tower.range += tower.range / 6;
 											System.out.println("range++");
 											
 											//update range indicator
@@ -431,33 +435,32 @@ public abstract class Upgrades
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 											
-			case 133:						Tower.allTowers[displayedUpgradeID].backedUp = true;
+			case 133:						tower.backedUp = true;
 											System.out.println("Backups Added");
 											break;
 											
-			case 211:						Tower.allTowers[displayedUpgradeID].splashEffect = true;
-											Tower.allTowers[displayedUpgradeID].rangeOfSplash = 1.2;
+			case 211:						tower.splashEffect = true;
+											tower.rangeOfSplash = 1.2;
 											System.out.println("splash effect = true");
 											break;
 										
-			case 212:						Tower.allTowers[displayedUpgradeID].rangeOfSplash = 1.5;
+			case 212:						tower.rangeOfSplash = 1.5;
 											System.out.println("disruptor range enhanced");
 											break;
 										
-			case 221:						Tower.allTowers[displayedUpgradeID].damage = 5;
-											Tower.allTowers[displayedUpgradeID].lethalRandoms = true;
+			case 221:						tower.damage = 5;
+											tower.lethalRandoms = true;
 											Tower.sprites[displayedUpgradeID].setIcon(NumberGenerator.lethalIcon);
 											System.out.println("killer numbers");
 											break;
 											
-			case 231:						Tower.allTowers[displayedUpgradeID].range += Tower.allTowers[displayedUpgradeID].range / 4;
+			case 231:						tower.range += tower.range / 4;
 											System.out.println("wider range");
 											
 											//update range indicator
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
-											
 											
 			case 311:						Tower.allTowers[displayedUpgradeID].damage = .45;
 											System.out.println("damage++");

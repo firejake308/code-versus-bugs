@@ -1,7 +1,10 @@
 package clientfiles;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.ListIterator;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class Virus extends Malware 
 {
@@ -30,7 +33,7 @@ public class Virus extends Malware
 		if(parent.path != lane4 || parent.path != lane5)
 		{
 			//if on horizontal stretch, offest child virus x
-			if(parent.getDistance() < parent.path[parent.path.length-1])
+			if(parent.getDistance() < parent.path[7])
 			{
 				setX(parent.x - 50);
 			}
@@ -46,7 +49,7 @@ public class Virus extends Malware
 		else
 		{
 			//if on horizontal stretch, offest child virus x
-			if(parent.getDistance() < parent.path[parent.path.length-3])
+			if(parent.getDistance() < parent.path[5])
 			{
 				setX(parent.x - 50);
 			}
@@ -80,14 +83,28 @@ public class Virus extends Malware
 				if(dist < Math.sqrt(sprite.getHeight() * sprite.getWidth()))
 				{
 					file.addToRecycleBin();
-					
+					System.out.println("file consumed");
 					//replicate the virus
 					if(canReplicate)
 					{
 						Malware.allMalware[numMalwares] = new Virus(this);
 						System.out.println("virus replicated, and now there are "+numMalwares);
 						canReplicate = false;
+						speed = (int) (w * 0.030);
 					}
+					break;
+				}
+				else if(dist < 5 * Math.sqrt(sprite.getHeight() * sprite.getWidth()) && file.getY()> y 
+						&& getDistance() > path[5] && (lane == 4 || lane ==5))
+				{
+					speed = (int)(w * 0.015);
+					break;
+				}
+				else if(dist < 5 * Math.sqrt(sprite.getHeight() * sprite.getWidth()) && file.getY()> y 
+						&& getDistance() > path[7] && (lane == 1 || lane == 2 || lane == 3))
+				{
+					speed = (int)(w * 0.015);
+					break;
 				}
 			}
 		}

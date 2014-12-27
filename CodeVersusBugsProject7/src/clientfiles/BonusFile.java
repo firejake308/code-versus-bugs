@@ -108,8 +108,11 @@ public class BonusFile
 		//allow viruses to replicate again
 		for(Malware m : Malware.allMalware)
 		{
-			if(m instanceof Virus)
+			if(m instanceof Virus && !((Virus) m).canReplicate)
+			{
 				((Virus)m).canReplicate = true;
+				System.out.println("virus can replicate again.");
+			}
 			else if(m == null)
 				break;
 		}
