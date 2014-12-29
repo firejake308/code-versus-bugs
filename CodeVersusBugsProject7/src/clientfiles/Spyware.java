@@ -35,7 +35,7 @@ public class Spyware extends Malware
 			{
 				BonusFile file = iter.next();
 				//only bother to check if the file is a data
-				if(file.getType() == BonusFile.DATA)
+				if(file.getType() == BonusFile.DATA && !file.isEncrypted())
 				{
 					double dist = Math.sqrt(Math.pow(file.getX() - x, 2) + Math.pow(file.getY() - y, 2));
 				

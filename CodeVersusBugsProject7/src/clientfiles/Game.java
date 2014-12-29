@@ -57,9 +57,9 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 750;
+	private static int money = 75000;
 	public static int lives = 5000;
-	public static int level = 21;
+	public static int level = 22;
 
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
@@ -301,6 +301,10 @@ public class Game extends JFrame implements Runnable
 			else if (tower instanceof FireWall)
 			{
 				((FireWall) tower).dealDamage();
+			}
+			else if (tower instanceof Encrypter)
+			{
+				((Encrypter) tower).encryptAll();
 			}
 			else
 			{

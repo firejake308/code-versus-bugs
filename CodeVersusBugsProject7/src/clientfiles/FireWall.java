@@ -34,7 +34,6 @@ public class FireWall extends Tower
 		int [] costsOfUpgradesGoBetween = {150, 250, 400, 1000000, 0, 0, 0, 0, 0, 150, 300, 10000000, 0, 0, 0, 0, 0, 0, 500, 400, 10000000, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
-		//cost = 50;
 		projectileDurability = 0;
 		rangeOfSplash = 0;
 		splashEffect = false;
@@ -51,8 +50,6 @@ public class FireWall extends Tower
 		
 		type = TowerType.FIREWALL;
 		damage = damageToSet;
-		
-		angleOfArrow = 0;
 		
 		realValue += cost;
 		

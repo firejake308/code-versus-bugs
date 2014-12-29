@@ -46,6 +46,7 @@ public class MyImages
 	public static BufferedImage trojan;
 	public static BufferedImage dataFile;
 	public static BufferedImage exeFile;
+	public static BufferedImage secureFile;
 	public static BufferedImage virus;
 	public static BufferedImage spy;
 	public static BufferedImage bot;
@@ -76,6 +77,13 @@ public class MyImages
 	public static BufferedImage scanner3;
 	public static BufferedImage scanner4;
 	public static BufferedImage scanner5;
+	public static BufferedImage encrypter0;
+	public static BufferedImage encrypter1;
+	public static BufferedImage encrypter2;
+	public static BufferedImage encrypter3;
+	public static BufferedImage encrypter4;
+	public static BufferedImage encrypter5;
+	public static BufferedImage invalidEncrypter;
 	public static BufferedImage invalidScanner;
 	public static BufferedImage firewall;
 	public static BufferedImage firewallShopImage;
@@ -133,6 +141,7 @@ public class MyImages
 			trojan = ImageIO.read(MyImages.class.getResourceAsStream("resources/trojan1.png"));
 			dataFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/datafile.png"));
 			exeFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/exefile.png"));
+			secureFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/securefile.png"));
 			virus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus3.png"));
 			spy = ImageIO.read(MyImages.class.getResourceAsStream("resources/spy.png"));
 			bot = ImageIO.read(MyImages.class.getResourceAsStream("resources/bot.png"));
@@ -164,6 +173,13 @@ public class MyImages
 			scanner3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner3.png"));
 			scanner4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner4.png"));
 			scanner5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner5.png"));
+			encrypter0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter0.png"));
+			encrypter1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter1.png"));
+			encrypter2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter2.png"));
+			encrypter3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter3.png"));
+			encrypter4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter4.png"));
+			encrypter5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter5.png"));
+			invalidEncrypter = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidEncrypter.png"));
 			invalidScanner = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidScanner.png"));
 			firewall = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall1.png"));
 			firewallShopImage = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall2.png"));

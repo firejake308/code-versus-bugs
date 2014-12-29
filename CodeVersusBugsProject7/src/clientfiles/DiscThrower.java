@@ -63,7 +63,7 @@ public class DiscThrower extends Tower
 		rangeOfSplash = 0;
 		splashEffect = false;
 		
-		diameterOfTower = 50;
+		diameterOfTower = icon.getIconWidth();
 		
 		x=0;
 		y=0;

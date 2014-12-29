@@ -18,12 +18,14 @@ public class BonusFile
 	private int reward;
 	private BufferedImage sprite;
 	private int type;
+	private boolean encrypted;
 	
 	public BonusFile(int y, int type) 
 	{
 		//initialize instance variables
 		reward = 10;
 		speed = Game.widthOfGamePanel  * 0.01;
+		encrypted = false;
 		if(type == EXE)
 		{
 			this.type = type;
@@ -88,6 +90,17 @@ public class BonusFile
 			
 			addToRecycleBin();
 		}
+	}
+	
+	public void encrypt()
+	{
+		encrypted = true;
+		sprite = MyImages.secureFile;
+	}
+	
+	public boolean isEncrypted()
+	{
+		return encrypted;
 	}
 	
 	public void addToRecycleBin()

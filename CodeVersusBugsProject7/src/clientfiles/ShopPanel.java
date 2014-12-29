@@ -31,6 +31,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private JButton buyNumberGenerator;
 	private JButton buyScanner;
 	private JButton buyFireWall;
+	private JButton buyEncrypter;
 	
 	public static JLabel info = new JLabel("");
 	public static boolean warned = false;
@@ -40,6 +41,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon ngImage = NumberGenerator.icon;
 	private Icon scImage = Scanner.icon;
 	private Icon fwImage = new ImageIcon(MyImages.firewallShopImage);
+	private Icon enImage = Encrypter.icon;
 	
 	public static int timer=0;
 	
@@ -49,6 +51,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyNumberGenerator = new JButton(ngImage);
 		buyScanner = new JButton(scImage);
 		buyFireWall = new JButton(fwImage);
+		buyEncrypter = new JButton(enImage);
 		
 		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -58,11 +61,13 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyNumberGenerator.setBounds(20, 150, 50, 50);
 		buyScanner.setBounds(20, 215, 50, 63);
 		buyFireWall.setBounds(20, 305, 50, 50);
+		buyEncrypter.setBounds(20, 370, 50, 63);
 		
 		buyDiscThrower.addActionListener(this);
 		buyNumberGenerator.addActionListener(this);
 		buyScanner.addActionListener(this);
 		buyFireWall.addActionListener(this);
+		buyEncrypter.addActionListener(this);
 		
 		setLayout(null);
 		add(info);
@@ -70,6 +75,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		add(buyNumberGenerator);
 		add(buyScanner);
 		add(buyFireWall);
+		add(buyEncrypter);
 		
 		buyDiscThrower.addMouseListener(new MouseAdapter()
 		{
@@ -126,6 +132,20 @@ public class ShopPanel extends JPanel implements ActionListener
             	}
 			}
 		});
+		
+		buyEncrypter.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				if (!warned)
+				{
+            		if (Game.getMoney() < DiscThrower.cost)
+            			changeInfo("$"+Encrypter.cost, true);
+            		else
+            			changeInfo("$"+Encrypter.cost, false);
+            	}
+			}
+		});
 	}
 	public static void changeInfo(String text, boolean warning)
 	{
@@ -153,9 +173,12 @@ public class ShopPanel extends JPanel implements ActionListener
 		int centerOfOtherTowerY;
 		int radiusOfOtherTower;
 		
-		if (mouseOnTrack && towerToPlace != TowerType.FIREWALL)
+		if (mouseOnTrack && towerToPlace != TowerType.FIREWALL && towerToPlace != TowerType.ENCRYPTER)
+		{
+			System.out.println("something");
 			return false;
-		else if (mouseOnTrack && towerToPlace == TowerType.FIREWALL)
+		}
+		else if (mouseOnTrack && (towerToPlace == TowerType.FIREWALL || towerToPlace == TowerType.ENCRYPTER))
 		{
 			boolean comparingToFireWall = false;
 			
@@ -182,10 +205,11 @@ public class ShopPanel extends JPanel implements ActionListener
 			}
 			return true;
 		}
-		else if (!mouseOnTrack && towerToPlace == TowerType.FIREWALL)
+		else if (!mouseOnTrack && (towerToPlace == TowerType.FIREWALL || towerToPlace == TowerType.ENCRYPTER))
 			return false;
 		
-		//testing code for simplified bounds checking
+		//simplified bounds checking against the track
+		//first, create a rectangle for the proposed tower
 		if(towerToPlace == TowerType.DISC_THROWER)
 		{
 			proposedTower = new Rectangle(x-DiscThrower.icon.getIconWidth()/2, y-DiscThrower.icon.getIconHeight()/2, 
@@ -201,222 +225,25 @@ public class ShopPanel extends JPanel implements ActionListener
 			proposedTower = new Rectangle(x-Scanner.icon.getIconWidth()/2, y-Scanner.icon.getIconHeight()/2, 
 					Scanner.icon.getIconWidth(), Scanner.icon.getIconHeight());
 		}
-		//loop through all path parts and check for intersection with proposed tower
+		//next, loop through all path parts and check for intersection with proposed tower
 		for(int pathPart = 0; pathPart < Game.gamePanel.path.length; pathPart++)
 		{
 			if(Game.gamePanel.path[pathPart].intersects(proposedTower))
 				return false;
 		}
 		
-		/* 
-		 * Reason for iterations:
-		 * 
-		 * 0 - because tower could be twice the size of the track?
-		 * 1 - testing 1 side
-		 * 2 - testing the other side
-		*/
-		for (int i = 0; i < 3; i++)
+		//loop through all towers and check for intersection with proposed tower
+		for(int t = 0; t < Tower.allTowers.length; t++)
 		{
-			// 1st iteration
-			if(i == 0)
-				offset = 0;
-			
-			// second iteration
-			if(i == 1 && towerToPlace == TowerType.DISC_THROWER)
-				offset = (int)(Game.scaleOfSprites*DiscThrower.icon.getIconWidth()/2);
-			else if(i == 1 && towerToPlace == TowerType.NUMBER_GENERATOR)
-				offset = (int)(Game.scaleOfSprites*NumberGenerator.icon.getIconWidth()/2);
-			else if(i == 1 && towerToPlace == TowerType.SCANNER)
-				offset = (int)(Game.scaleOfSprites*Scanner.icon.getIconWidth()/2);
-			
-			// 3rd iteration
-			else if(i == 2 && towerToPlace == TowerType.DISC_THROWER)
-				offset = -(int)(Game.scaleOfSprites*DiscThrower.icon.getIconWidth()/2);
-			else if(i == 2 && towerToPlace == TowerType.NUMBER_GENERATOR)
-				offset = -(int)(Game.scaleOfSprites*NumberGenerator.icon.getIconWidth()/2);
-			else if(i == 2 && towerToPlace == TowerType.SCANNER)
-				offset = -(int)(Game.scaleOfSprites*Scanner.icon.getIconWidth()/2);
-			
-			// vertical top far left
-			if(y < Game.heightOfGamePanel / 4 && x + offset < Game.widthOfGamePanel / 14 + Game.widthOfGamePanel / 42 && x + offset > Game.widthOfGamePanel / 14)
+			if(Tower.allTowers[t] == null)
 			{
-				return false;
+				break;
 			}
-			
-			// vertical top 2nd to left
-			else if(y < Game.heightOfGamePanel / 4 && x + offset < Game.widthOfGamePanel / 4 + Game.widthOfGamePanel / 42 && x + offset > Game.widthOfGamePanel / 4)
+			else
 			{
-				return false;
-			}
-			
-			// vertical top 3rd left
-			else if(y < Game.heightOfGamePanel / 4 && x + offset < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .4))
-			{
-				return false;
-			}
-			
-			// horizontal, connects top 3, left side
-			else if(y + offset < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 &&  y + offset > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) && x < Game.widthOfGamePanel / 14 + (int) (Game.widthOfGamePanel * .35) && x > Game.widthOfGamePanel / 14)
-			{
-				return false;
-			}
-			
-			// vertical, stems from above, left side
-			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) &&  y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) && x + offset < Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 42 && x + offset > Game.widthOfGamePanel / 5)
-			{
-				return false;
-			}
-			
-			// horizontal, connects to above, left side
-			else if(y + offset < (Game.heightOfGamePanel / 4) + (int) (Game.heightOfGamePanel * .4) - (2 * Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 &&  y + offset > (Game.heightOfGamePanel / 4) + (int) (Game.heightOfGamePanel * .4) - (2 * Game.widthOfGamePanel / 42) && x < Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 5 && x > Game.widthOfGamePanel / 5)
-			{
-				return false;
-			}
-			
-			// vertical, connects left, left side
-			else if(y < (int) (Game.heightOfGamePanel * .4) + (Game.heightOfGamePanel / 4) + (int) (Game.heightOfGamePanel * .4) - (2 * Game.widthOfGamePanel / 42) - (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 &&  y > (int) (Game.heightOfGamePanel * .4) && x + offset < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .4))
-			{
-				return false;
-			}
-			
-			// horizontal, connects left, left side
-			else if(y + offset < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 &&  y + offset > (int) (Game.heightOfGamePanel * .4) && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 && x > (int) (Game.widthOfGamePanel * .4))
-			{
-				return false;
-			}
-			
-			// vertical, connects left and right (midway), both sides
-			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 &&  y > (int) (Game.heightOfGamePanel * .4) && x + offset < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42))
-			{
-				return false;
-			}
-			
-			// horizontal, connects right, both sides
-			else if(y + offset < (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 &&  y + offset > (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) + (int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42 && x > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3))
-			{
-				return false;
-			}
-			
-			// vertical, connects right, last piece
-			else if(y > (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) && x + offset < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3))
-			{
-				return false;
-			}
-			
-			// vertical, 4th from left, top(right)
-			else if(y < (int) (Game.heightOfGamePanel * .4) && x + offset < (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .65))
-			{
-				return false;
-			}
-			
-			// vertical, 5th from left(last), top right
-			else if(y < (int) (Game.heightOfGamePanel * .4) && x + offset < (int) (Game.widthOfGamePanel * .85) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .85))
-			{
-				return false;
-			}
-			
-			// horizontal, connects top 2 on right side, right side
-			else if(y + offset < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 &&  y + offset > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) && x < (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 5 && x > (int) (Game.widthOfGamePanel * .65))
-			{
-				return false;
-			}
-			
-			// vertical, connects top, right side
-			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .3) &&  y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) && x + offset < (int) (Game.widthOfGamePanel * .8) + Game.widthOfGamePanel / 42 && x + offset > (int) (Game.widthOfGamePanel * .8))
-			{
-				return false;
-			}
-			
-			// horizontal, connects right, last on right side
-			else if(y + offset < (int) (Game.heightOfGamePanel * .4) + (int) (Game.heightOfGamePanel * .3) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 &&  y + offset > (int) (Game.heightOfGamePanel * .4) + (int) (Game.heightOfGamePanel * .3) - (Game.widthOfGamePanel / 42) && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + (int) (Game.widthOfGamePanel * .8) - ((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + (Game.widthOfGamePanel / 42)) + (2 * Game.widthOfGamePanel / 42) && x > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42))
-			{
-				return false;
-			}
-			
-/**CORNERS**/
-			
-			// check corner of 1st on top left
-			else if(y < Game.heightOfGamePanel / 4 + offset && y > Game.heightOfGamePanel / 4 - Game.widthOfGamePanel / 42 + offset && x < Game.widthOfGamePanel / 14 + Game.widthOfGamePanel / 42 - offset && x > Game.widthOfGamePanel / 14 - offset)
-			{
-				return false;
-			}
-			
-			// check corner of 3rd on top left
-			else if(y < Game.heightOfGamePanel / 4 + offset && y > Game.heightOfGamePanel / 4 - Game.widthOfGamePanel / 42 + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .4) + offset)
-			{
-				return false;
-			}
-			
-			// check corner of 2 vertical on left side (not top row)
-			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + offset && x < Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 42 - offset && x > Game.widthOfGamePanel / 5 - offset)
-			{
-				return false;
-			}
-			
-			// check corner opposite of above (left side)
-			else if(y < Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && y > Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .4) + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .4) + offset)
-			{
-				return false;
-			}
-			
-			// check corner above line converging both sides, left corner
-			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 - offset && y > (int) (Game.heightOfGamePanel * .4) - offset && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 42) - offset && x > (int) (Game.widthOfGamePanel * .4) - offset)
-			{
-				return false;
-			}
-			
-			// check corner above line converging both sides, right corner
-			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42 - offset && y > (int) (Game.heightOfGamePanel * .4) - offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 + offset && x > (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 - Game.widthOfGamePanel / 42 + offset)
-			{
-				return false;
-			}
-			
-			// check corner directly below line converging both sides, both
-			else if(y < (int) (Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 + offset && y > (int) (Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2 - Game.widthOfGamePanel / 42 + offset && x < (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 + offset && x > (int) (Game.widthOfGamePanel * .4) + Game.widthOfGamePanel / 5 - Game.widthOfGamePanel / 42 + offset)
-			{
-				return false;
-			}
-			
-			// check last corner
-			else if(y < (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 - offset && y > (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42) - offset && x < (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42 - offset && x > (int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) - offset)
-			{
-				return false;
-			}
-			
-			// check corner connecting 4th on left side, top
-			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + offset && x < (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 42 - offset && x > (int) (Game.widthOfGamePanel * .65) - offset)
-			{
-				return false;
-			}
-			
-			// check corner connecting last column to left on top
-			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + offset && x < (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 5 + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .65) + Game.widthOfGamePanel / 5 + offset)
-			{
-				return false;
-			}
-			
-			// last corner on right side before merging
-			else if(y < (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .3) + Game.widthOfGamePanel / 42 + offset && y > (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42) + (int) (Game.heightOfGamePanel * .3) + offset && x < (int) (Game.widthOfGamePanel * .8) + Game.widthOfGamePanel / 42 + offset && x > (int) (Game.widthOfGamePanel * .8) + offset)
-			{
-				return false;
-			}
-			
-			/**For checking proximity to other towers*/
-			for (int j = 0; j < Tower.allTowers.length; j++)
-			{
-				if (Tower.allTowers[j] == null)
-					break;
-				
-				// get centers of other towers
-				centerOfOtherTowerX = Tower.allTowers[j].getCenterX();
-				centerOfOtherTowerY = Tower.allTowers[j].getCenterY();
-				radiusOfOtherTower = Tower.allTowers[j].getRadius();
-				
-				// check top left and bottom right corners
-				if (x + offset >= centerOfOtherTowerX - radiusOfOtherTower && x + offset <= centerOfOtherTowerX + radiusOfOtherTower && y + offset >= centerOfOtherTowerY - radiusOfOtherTower && y + offset <= centerOfOtherTowerY + radiusOfOtherTower)
-					return false;
-				// check top right and bottom left corners
-				else if (x + offset >= centerOfOtherTowerX - radiusOfOtherTower && x + offset <= centerOfOtherTowerX + radiusOfOtherTower && y - offset >= centerOfOtherTowerY - radiusOfOtherTower && y - offset <= centerOfOtherTowerY + radiusOfOtherTower)
+				Rectangle curr = new Rectangle(Tower.allTowers[t].getX(), Tower.allTowers[t].getY(), 
+						Tower.sprites[t].getWidth(), Tower.sprites[t].getY());
+				if(curr.intersects(proposedTower))
 					return false;
 			}
 		}
@@ -522,6 +349,31 @@ public class ShopPanel extends JPanel implements ActionListener
 			
 			changeInfo("Firewall Selected",false);
 		}
+		else if (temp == buyEncrypter)
+		{
+			towerType = TowerType.ENCRYPTER;
+			
+			//reset if already selected
+			if (towerToPlace == TowerType.ENCRYPTER)
+			{
+				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
+				return;
+			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Firewall?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
+			
+			changeInfo("Firewall Selected",false);
+		}
 		
 		validateBuy(towerType);
 	}
@@ -563,6 +415,15 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.getMoney() >= FireWall.cost)
 			{
 				towerToPlace = TowerType.FIREWALL;
+			}
+			else
+				changeInfo("Not Enough Money!", true);
+		}
+		else if(type == TowerType.ENCRYPTER)
+		{
+			if(Game.getMoney() >= Encrypter.cost)
+			{
+				towerToPlace = TowerType.ENCRYPTER;
 			}
 			else
 				changeInfo("Not Enough Money!", true);

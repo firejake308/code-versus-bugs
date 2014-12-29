@@ -84,6 +84,11 @@ public class GamePanel extends JPanel
 	private Point fwHotspot = new Point(15, 15);
 	private Cursor firewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwSprite,fwHotspot,"Firewall");
 	private Cursor invalidFirewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwInvalidSprite, fwHotspot, "Firewall");
+	private Image enSprite = Encrypter.icon.getImage();
+	private Image enInvalidSprite = Encrypter.invalidIcon.getImage();
+	private Point enHotspot = new Point(15, 15);
+	private Cursor encrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enSprite,enHotspot,"Encrypter");
+	private Cursor invalidEncrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enInvalidSprite,enHotspot,"Encrypter");
 	
 	
 	static private final long serialVersionUID = 1;
@@ -251,7 +256,22 @@ public class GamePanel extends JPanel
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
             			break;
-            			
+            		case ENCRYPTER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new Encrypter(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currEN = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currEN.setCenterX(e.getX());
+	                    currEN.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;	
             		case NONE:
             		default:
             			rangeOn = false;                   	
@@ -273,6 +293,9 @@ public class GamePanel extends JPanel
             			break;
             		case FIREWALL:
             			setCursor(firewallCursor);
+            			break;
+            		case ENCRYPTER:
+            			setCursor(encrypterCursor);
             			break;
             		case NONE:
             		default:
@@ -403,7 +426,11 @@ public class GamePanel extends JPanel
 										else
 											setCursor(firewallCursor);
 							    		break;
-							    		
+    		case ENCRYPTER:				if (!ShopPanel.checkPlacement())
+    										setCursor(invalidEncrypterCursor);
+										else
+											setCursor(encrypterCursor);
+    		break;	    		
 			default:					setCursor(Cursor.getDefaultCursor());
 										break;
     	}
