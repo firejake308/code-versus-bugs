@@ -41,7 +41,7 @@ public class CodeVersusBugs
 	{
 		try
 		{
-			//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			
 			MyImages.initializeImages();
 			game = new Game();
@@ -133,10 +133,10 @@ public class CodeVersusBugs
 			//JOptionPane.showMessageDialog(null, e);
 			e.printStackTrace();
 		}
-		/*catch(UnsupportedLookAndFeelException e)
+		catch(UnsupportedLookAndFeelException e)
 		{
 			JOptionPane.showMessageDialog(null,"nimbus didn't work");
-		}*/
+		}
 		catch(Exception e)
 		{
 			JOptionPane.showMessageDialog(null,"something went wrong");

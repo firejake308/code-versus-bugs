@@ -110,11 +110,11 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Stronger Wall:\n   $150\n Wall can block 20\n viruses before being\n  destroyed");
+				case 1:					Upgrades.upgradesInfo.setText(" Stronger Wall: $150\nWall can block 20 viruses before overflowing");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Wall:\n   $250\n Wall can block 25\n viruses before being\n  destroyed");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Wall: $250\nWall can block 25 viruses before overflowing");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Invincible Wall:\n    $400\n Wall can block 40\n viruses before being\n  destroyed");
+				case 3:					Upgrades.upgradesInfo.setText(" Invincible Wall: $400\nWall can block 40 viruses before overflowing");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -125,9 +125,9 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Dangerous Wall:\n    $150\n Wall deals more damage\n to worms and trojans");
+				case 1:					Upgrades.upgradesInfo.setText("Dangerous Wall: $150\nWall deals more damage to worms and trojans");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Killer Wall:\n    $300\n Wall deals even more damage\n to worms and trojans");
+				case 2:					Upgrades.upgradesInfo.setText("Killer Wall: $300\nWall deals even more damage to worms and trojans");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -138,9 +138,9 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Regenerate Wall:\n     $500\n Allows the wall to rebuild\n overtime, can attack more");
+				case 1:					Upgrades.upgradesInfo.setText("Regenerate Wall: $500\nAllows the wall to rebuild overtime, can attack more");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Faster Rejuvination:\n     $400\n Increases regeneration\n speeds");
+				case 2:					Upgrades.upgradesInfo.setText("Faster Rejuvination: $400\nIncreases regeneration speeds");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

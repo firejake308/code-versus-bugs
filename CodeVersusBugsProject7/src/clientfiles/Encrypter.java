@@ -42,13 +42,38 @@ public class Encrypter extends Tower
 	@Override
 	public void addUpgradeOptions(int idOfTower) 
 	{
-		
+		switch (upgradesInPath1)
+		{
+			case 1:					Upgrades.upgradePath1.setText("De-encrypt Trojans\n(WIP)");
+									break;
+			case 2:					Upgrades.upgradePath1.setText("Path Closed");
+									break;
+			case 3:					Upgrades.upgradePath1.setText("Path Closed");
+									break;
+			case 4:					Upgrades.upgradePath1.setText("Path Closed");
+									break;
+			default:				break;
+		}
 	}
 
 	@Override
 	public void displayUpgradeInfo(int upgradePath) 
 	{
-		
+		if (upgradePath == 1)
+		{
+			switch (upgradesInPath1)
+			{
+				case 1:					Upgrades.upgradesInfo.setText("De-encrypt Trojans: $100\nDe-ecnrypts Trojans, like scanners, and makes "
+						+ "them visible to your other towers.");
+										break;
+				case 2:					Upgrades.upgradesInfo.setText("Path Closed");
+										break;
+				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
+										break;
+				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
+										break;
+			}
+		}
 	}
 	
 	public void encryptAll()

@@ -58,6 +58,7 @@ public abstract class Upgrades
 	
 	public static JTextArea statistics   		= new JTextArea();
 	public static JTextArea upgradesInfo 		= new JTextArea();
+	private static JScrollPane infoScroll;
 	
 	public static TowerType typeOfTower  		= TowerType.NONE;
 	
@@ -72,14 +73,23 @@ public abstract class Upgrades
 		upgrade.setVisible(true);
 		upgrade.setLayout(null);
 		
-		upgradePath1.setBounds(width/10 + 90, 10, 150, height-20);
-		upgradePath2.setBounds(width/10 + 245, 10, 150, height-20);
-		upgradePath3.setBounds(width/10 + 400, 10, 150, height-20);
+		upgradePath1.setBounds(width/10 + 100, 10, 150, height-20);
+		upgradePath2.setBounds(width/10 + 255, 10, 150, height-20);
+		upgradePath3.setBounds(width/10 + 410, 10, 150, height-20);
 		
 		statistics.setBounds(5, 5, 100, 80);
 		statistics.setBackground(Color.CYAN);
-		upgradesInfo.setBounds((int) (width / 1.5) - 75, 10, 150, height - 20);
+		
+		upgradesInfo.setBounds((int) (width / 1.5) - 75, 10, 160, height - 20);
 		upgradesInfo.setBackground(Color.CYAN);
+		upgradesInfo.setLineWrap(true);
+		upgradesInfo.setWrapStyleWord(true);
+		
+		infoScroll = new JScrollPane(upgradesInfo);
+		infoScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		infoScroll.setPreferredSize(upgradesInfo.getSize());
+		infoScroll.setBounds((int) (width / 1.5) - 75, 10, 160, height - 20);
+		infoScroll.setBorder(null);
 		
 		deleteTower.setBounds(105+(width/10-25)/2-37, 10, 100, 25);
 		deleteTower.setText("Delete");
@@ -203,7 +213,8 @@ public abstract class Upgrades
 		upgrade.add(upgradePath1);
 		upgrade.add(upgradePath2);
 		upgrade.add(upgradePath3);
-		upgrade.add(upgradesInfo);
+		//upgrade.add(upgradesInfo);
+		upgrade.add(infoScroll);
 		Game.gamePanel.addToLayeredPane(upgrade, JLayeredPane.DEFAULT_LAYER + 1);
 	}
 	
@@ -485,13 +496,13 @@ public abstract class Upgrades
 											System.out.println("disable worms");
 											break;
 			
-			case 331:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(15);
+			case 331:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(20);
 											System.out.println("range++");
 											
 											//update scanner range
 											tower.scan = new Arc2D.Double(tower.getX(), tower.getY(), tower.getRange(), tower.getRange(), 0, ((Scanner)tower).getArcAngle(), Arc2D.PIE);
 											break;
-			case 332:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(15);
+			case 332:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(25);
 											System.out.println("range++");
 											
 											//update scanner range

@@ -66,8 +66,8 @@ public class StoryManager implements LevelManager
 	 * @param numOfMinions
 	 * @param numOfFastMinions
 	 * @param numOfSlowMinions
-	 * @param numOfTrojans
 	 * @param numOfWorms
+	 * @param numOfTrojans
 	 */
 	public void setMalwaresForLevel(int numOfMinions, int numOfFastMinions, int numOfSlowMinions, int numOfWorms, int numOfTrojans, int numOfViruses, int numOfSpyware, int numOfBots)
 	{

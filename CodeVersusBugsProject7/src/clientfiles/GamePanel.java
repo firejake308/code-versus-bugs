@@ -333,17 +333,6 @@ public class GamePanel extends JPanel
         {
         	public void keyPressed(KeyEvent e)
         	{
-        		/*map movement
-        		if(e.getKeyCode()==KeyEvent.VK_LEFT && mapX<0)
-        			mapX+=5;
-        		if(e.getKeyCode()==KeyEvent.VK_RIGHT && mapX>-454)
-        			mapX-=5;
-        		if(e.getKeyCode()==KeyEvent.VK_UP && mapY<0)
-        			mapY+=5;
-        		if(e.getKeyCode()==KeyEvent.VK_DOWN && mapY>-159)
-        			mapY-=5;
-        		*/
-        		
         		// for hot keys
         		if(e.getKeyCode()==KeyEvent.VK_D)
         		{
@@ -366,9 +355,41 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
-        		if(e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_SPACE)
+        		if(e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
+        		}
+        		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        		{
+        			Game.pauseButton.setText("");
+        			Game.pauseButton.setIcon(PauseButtonListener.sprite);
+        			
+        			Game.gameState = Game.PAUSED;
+        			
+        			//show dialog to quit or resume
+        			Object[] options = {"Resume", "Quit"};
+        			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
+        					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
+        			
+        			if(choice == 0)
+        			{
+        				//if escaped between rounds, go back to pause
+        				if (Game.endOfRound == true)
+            			{
+        					Game.pauseButton.setIcon(PauseButtonListener.sprite);
+                			Game.gameState = Game.PAUSED;
+            			}
+        				//otherwise, go back to playing
+        				else
+        				{
+        					Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+            				Game.gameState = Game.PLAYING;
+        				}
+        			}
+        			else if(choice == 1)
+        			{
+        				System.exit(0);
+        			}
         		}
         	}
         	public void keyReleased(KeyEvent e){}

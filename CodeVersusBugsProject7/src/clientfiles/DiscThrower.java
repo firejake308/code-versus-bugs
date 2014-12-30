@@ -133,11 +133,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Harder Discs:\n   $300\n Discs can attack 2\n viruses before being\n  destroyed");
+				case 1:					Upgrades.upgradesInfo.setText("Harder Discs: $300\nDiscs can attack 2 viruses before being destroyed");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs:\n   $600\n Discs can attack 3\n viruses before being\n  destroyed");
+				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs: $600\nDiscs can attack 3 viruses before being  destroyed");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing:\n    $500\n Attack speed\n increase");
+				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing: $500\nAttack speed increase");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -148,9 +148,9 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs:\n    $300\n Discs are more\n powerful");
+				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs: $300\n Discs are more powerful");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs:\n    $500\n Discs are even\n more pawerful");
+				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs: $500\n Discs are even more powerful");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -161,11 +161,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $200\n Increases tower\n range");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range: $200\n Increases tower range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $400\n Greatly increases\n tower range");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range: $400\n Greatly increases tower range");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Backup Tower:\n     $500\n Allows the tower to\n be cured");
+				case 3:					Upgrades.upgradesInfo.setText(" Backup Tower: $500\n Allows the tower to be cured");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

@@ -1,6 +1,7 @@
 package clientfiles;
 
 import java.awt.geom.Arc2D;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 /**
@@ -26,6 +27,8 @@ public class Scanner extends Tower
 	private int arcAngle;
 	public boolean disableWorms = false;
 	
+	private Arc2D workingScan;
+	
 	public Scanner(int xToSet, int yToSet, int idToSet)
 	{
 		super(icon, idToSet);
@@ -40,7 +43,6 @@ public class Scanner extends Tower
 		splashEffect = false;
 		
 		diameterOfTower = 50;
-		health = 100;
 		
 		x=0;
 		y=0;
@@ -60,13 +62,31 @@ public class Scanner extends Tower
 	}
 	
 	/**
-	 * The purpose of this method is to attack malwares with a special attack only the Scanner uses
+	 * Moves the scanner forward
 	 */
 	public void scan(double elapsedTime)
 	{
 		scanDegree += elapsedTime * 0.7;
 		if (Game.fastForward)
 			scanDegree += elapsedTime * 0.7;
+		
+		//save current, working arc
+		if(!infected)
+		{
+			workingScan = scan;
+		}
+		//disable an infected tower
+		if(scanDegree > 359 && scanDegree < 361 && infected)
+		{
+			scan = new Arc2D.Double();
+			System.out.println("disabled scanner");
+		}
+		else if(scanDegree > 719 && infected)
+		{
+			scan = workingScan;
+			scanDegree = 0;
+			System.out.println("re-enabled scanner");
+		}
 	}
 	
 	public static void increaseDamage(int increase)
@@ -120,9 +140,9 @@ public class Scanner extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Stronger Scan:\n   $500\n Scans deal more\n damage at a time");
+				case 1:					Upgrades.upgradesInfo.setText("Stronger Scan: $500\nScans deal more damage at a time");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Legendary Scan:\n   $1000\n Scans deal an\n immense amount of\n damage at a time");
+				case 2:					Upgrades.upgradesInfo.setText("Legendary Scan: $1000\nScans deal an immense amount of damage at a time");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -135,9 +155,9 @@ public class Scanner extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Backup Tower:\n    $500\n Allows the tower to\n be cured");
+				case 1:					Upgrades.upgradesInfo.setText(" Backup Tower: $500\nAllows the tower to be cured");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Quarantine Worms:\n    $750\n Quarantines worms,\n disabling their attacks");
+				case 2:					Upgrades.upgradesInfo.setText(" Quarantine Worms: $750\nQuarantines worms, disabling their attacks");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -148,9 +168,9 @@ public class Scanner extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $400\n Increases the angle\n of the scan arc.");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range: $400\nIncreases the angle of the scan arc.");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $600\n Greatly increases\n the angle of the scan arc");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range: $600\nGreatly increases the angle of the scan arc");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

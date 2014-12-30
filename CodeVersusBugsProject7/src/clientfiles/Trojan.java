@@ -6,7 +6,7 @@ public class Trojan extends Malware
 {
 	//shortcut variable to width of game panel
 	private static int w = Game.widthOfGamePanel;
-	public static Image sprite = MyImages.trojan;
+	public static Image sprite = MyImages.secureFile;
 	
 	/**
 	 * Creates a Trojan.
@@ -52,5 +52,11 @@ public class Trojan extends Malware
 			System.out.println(this.toString());
 			despawn();
 		}
+	}
+	
+	public void makeVisible()
+	{
+		state = State.NORMAL;
+		super.sprite = MyImages.trojan;
 	}
 }

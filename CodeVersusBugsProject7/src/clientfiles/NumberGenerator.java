@@ -122,9 +122,9 @@ public class NumberGenerator extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Network Disruptor:\n  $100\n Disables all viruses\n within range of\n the disruption");
+				case 1:					Upgrades.upgradesInfo.setText("Network Disruptor: $100\nDisables all viruses within range of the disruption");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Disruptor Range:\n $600\n Increses range of\n disruption");
+				case 2:					Upgrades.upgradesInfo.setText("Disruptor Range: $600\nIncreases range of disruption");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -135,7 +135,7 @@ public class NumberGenerator extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Lethal Numbers:\n $300\n Numbers now deal\n damage");
+				case 1:					Upgrades.upgradesInfo.setText("Lethal Numbers: $300\nNumbers now deal a small amount of damage");
 										break;
 				case 2:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -146,7 +146,7 @@ public class NumberGenerator extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Wider Range:\n   $400\n Increases tower\n range");
+				case 1:					Upgrades.upgradesInfo.setText("Wider Range: $400\nIncreases tower range");
 										break;
 				case 2:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

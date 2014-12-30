@@ -51,15 +51,15 @@ public class Game extends JFrame implements Runnable
 	public static final int PAUSED = 2;
 	public static final int OVER = 3;
 	public static int gameState = Game.START;
-	public static int fps=60;
+	public static int fps = 60;
 	public static boolean gamePlaying = true;
 	public static boolean endOfRound = true;
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 750;
+	private static int money = 75000;
 	public static int lives = 5000;
-	public static int level = 1;
+	public static int level = 10;
 
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
@@ -272,7 +272,7 @@ public class Game extends JFrame implements Runnable
 					{
 						Point malware = new Point(Malware.allMalware[m].getCenterX(), Malware.allMalware[m].getCenterY());
 						
-						if(tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 1  && !tower.infected)
+						if(tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 1)
 						{
 							Malware.allMalware[m].dealDamage(tower.damage, 1, t);
 							((Scanner) tower).tickCounter = 0;
@@ -281,19 +281,9 @@ public class Game extends JFrame implements Runnable
 							{
 								Malware.allMalware[m].state = State.BENIGN;
 							}
-							if (Malware.allMalware[m] instanceof Trojan)
-								Malware.allMalware[m].state = State.NORMAL;
-						}
-						
-						//TODO make this clearer grpahically
-						else if (tower.scan.contains(malware) && ((Scanner) tower).tickCounter >= 3  && tower.infected)
-						{
-							Malware.allMalware[m].dealDamage(tower.damage, 1, t);
-							((Scanner) tower).tickCounter = 0;
-							
-							if (Malware.allMalware[m] instanceof Worm && ((Scanner)tower).disableWorms)
+							if (Malware.allMalware[m] instanceof Trojan && Malware.allMalware[m].state == State.INVISIBLE)
 							{
-								Malware.allMalware[m].state = State.BENIGN;
+								((Trojan)Malware.allMalware[m]).makeVisible();
 							}
 						}
 						

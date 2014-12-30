@@ -80,6 +80,46 @@ public class TechPanel extends JPanel implements ActionListener
 		slowPoints = 0;
 		moneyPoints = 0;
 		moneyMultPoints = 0;
+		
+		//enable escape to brng up quit dialog
+		addKeyListener(new KeyAdapter()
+		{
+			public void keyPressed(KeyEvent e)
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        		{
+        			Game.pauseButton.setText("");
+        			Game.pauseButton.setIcon(PauseButtonListener.sprite);
+        			
+        			Game.gameState = Game.PAUSED;
+        			
+        			//show dialog to quit or resume
+        			Object[] options = {"Resume", "Quit"};
+        			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
+        					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
+        			
+        			if(choice == 0)
+        			{
+        				//if escaped between rounds, go back to pause
+        				if (Game.endOfRound == true)
+            			{
+        					Game.pauseButton.setIcon(PauseButtonListener.sprite);
+                			Game.gameState = Game.PAUSED;
+            			}
+        				//otherwise, go back to playing
+        				else
+        				{
+        					Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+            				Game.gameState = Game.PLAYING;
+        				}
+        			}
+        			else if(choice == 1)
+        			{
+        				System.exit(0);
+        			}
+        		}
+			}
+		});
 	}
 	/**
 	 * All GUI initializing goes in this pseudo-constructor
