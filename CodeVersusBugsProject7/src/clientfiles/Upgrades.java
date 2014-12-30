@@ -72,9 +72,9 @@ public abstract class Upgrades
 		upgrade.setVisible(true);
 		upgrade.setLayout(null);
 		
-		upgradePath1.setBounds(width/10 + 80, 10, 150, height-20);
-		upgradePath2.setBounds(width/10 + 235, 10, 150, height-20);
-		upgradePath3.setBounds(width/10 + 390, 10, 150, height-20);
+		upgradePath1.setBounds(width/10 + 90, 10, 150, height-20);
+		upgradePath2.setBounds(width/10 + 245, 10, 150, height-20);
+		upgradePath3.setBounds(width/10 + 400, 10, 150, height-20);
 		
 		statistics.setBounds(5, 5, 100, 80);
 		statistics.setBackground(Color.CYAN);
@@ -328,6 +328,7 @@ public abstract class Upgrades
 			case SCANNER:					upgradeID += 100;
 			case NUMBER_GENERATOR:			upgradeID += 100;
 			case DISC_THROWER:				upgradeID += 100;
+			case ENCRYPTER:					upgradeID += 100;
 											break;
 		}
 		
@@ -341,6 +342,7 @@ public abstract class Upgrades
 			{
 				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1);
 				Tower.allTowers[displayedUpgradeID].upgradesInPath1++;
+				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(1);
 			}
 			else
 			{
@@ -359,6 +361,7 @@ public abstract class Upgrades
 			{
 				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(2);
 				Tower.allTowers[displayedUpgradeID].upgradesInPath2++;
+				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(2);
 			}
 			else
 			{
@@ -376,6 +379,7 @@ public abstract class Upgrades
 			{
 				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(3);
 				Tower.allTowers[displayedUpgradeID].upgradesInPath3++;
+				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(3);
 			}
 			else
 			{
@@ -511,6 +515,6 @@ public abstract class Upgrades
 											break;
 			}
 		
-		Tower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		tower.addUpgradeOptions(displayedUpgradeID);
 	}
 }

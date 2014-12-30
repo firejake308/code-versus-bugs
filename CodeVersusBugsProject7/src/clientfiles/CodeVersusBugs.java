@@ -29,6 +29,9 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.*;
 
 public class CodeVersusBugs
 {
@@ -38,6 +41,8 @@ public class CodeVersusBugs
 	{
 		try
 		{
+			//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			
 			MyImages.initializeImages();
 			game = new Game();
 			
@@ -128,6 +133,10 @@ public class CodeVersusBugs
 			//JOptionPane.showMessageDialog(null, e);
 			e.printStackTrace();
 		}
+		/*catch(UnsupportedLookAndFeelException e)
+		{
+			JOptionPane.showMessageDialog(null,"nimbus didn't work");
+		}*/
 		catch(Exception e)
 		{
 			JOptionPane.showMessageDialog(null,"something went wrong");
