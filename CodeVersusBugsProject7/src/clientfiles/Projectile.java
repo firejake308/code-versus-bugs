@@ -90,7 +90,7 @@ public class Projectile
 			// affects speed of virus
 			manipulatorForVirus = 1;
 		}
-		else if(/*towerType == TowerType.NUMBER_GENERATOR*/Tower.allTowers[idOfTower] instanceof NumberGenerator)
+		else if(Tower.allTowers[idOfTower] instanceof NumberGenerator)
 		{
 			if (Tower.allTowers[idOfTower].lethalRandoms)
 			{
@@ -192,7 +192,7 @@ public class Projectile
 	{
 		return y + sprite.getHeight(null)/2;
 	}
-	// I removed parameter p since this is an object method
+	
 	public void moveProjectile(double elapsedTime)
 	{
 		double oldX = getX();
@@ -297,7 +297,7 @@ public class Projectile
 					break;
 				
 				//if it hits the tower, deal damage to it and decrement uses
-				double distFromTower = Math.sqrt(Math.pow(current.getX() - getCenterX(), 2) + Math.pow(current.getY()- getCenterY(), 2));
+				double distFromTower = Math.sqrt(Math.pow(current.getCenterX() - getCenterX(), 2) + Math.pow(current.getCenterY()- getCenterY(), 2));
 				
 				if(distFromTower < Tower.sprites[t].getWidth())
 				{

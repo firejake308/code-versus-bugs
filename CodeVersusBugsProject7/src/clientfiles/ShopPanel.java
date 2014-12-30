@@ -160,7 +160,6 @@ public class ShopPanel extends JPanel implements ActionListener
 		}
 		//reset timer so that text fades after 2 seconds
 		timer = 60;
-		
 	}
 	
 	public static boolean checkPlacement()
@@ -262,6 +261,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if (towerToPlace == TowerType.DISC_THROWER)
 			{
 				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
 				return;
 			}
 			//warn user before buying if tutorial on
@@ -287,6 +287,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if (towerToPlace == TowerType.NUMBER_GENERATOR)
 			{
 				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
 				return;
 			}
 			//warn user before buying if tutorial on
@@ -310,6 +311,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if (towerToPlace == TowerType.SCANNER)
 			{
 				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
 				return;
 			}
 			//warn user before buying if tutorial on
@@ -333,6 +335,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if (towerToPlace == TowerType.FIREWALL)
 			{
 				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
 				return;
 			}
 			//warn user before buying if tutorial on
@@ -364,7 +367,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.tutorial && Game.tutorialSlide <= 7)
 			{
 				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
-				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Firewall?", 
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy an Encrypter?", 
 						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
 				if(choice == 1)
 					Game.gamePanel.disableTutorial();
@@ -372,7 +375,7 @@ public class ShopPanel extends JPanel implements ActionListener
 					return;
 			}
 			
-			changeInfo("Firewall Selected",false);
+			changeInfo("Encrypter Selected",false);
 		}
 		
 		validateBuy(towerType);

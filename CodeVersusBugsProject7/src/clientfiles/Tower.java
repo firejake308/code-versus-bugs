@@ -78,7 +78,6 @@ public abstract class Tower implements ActionListener
 	protected double rangeOfSplash;
 	public int timer = 0;  
 	public int timerReset;   //upgrade-able
-	//private int attackSpeed; // work on this later
 	protected TowerType type;
 	protected double damage;
 	protected int level = 1;
@@ -88,7 +87,7 @@ public abstract class Tower implements ActionListener
 	private static int healthToSet = 50;
 	
 	protected Ellipse2D rangeIndicator;
-	protected Arc2D.Double scan;
+	protected Arc2D scan;
 	public boolean rangeOn = true;
 	protected double angleOfArrow;
 	protected double scanDegree;
@@ -170,13 +169,13 @@ public abstract class Tower implements ActionListener
 	{
 		x=xToSet;
 		if(this instanceof Scanner)
-			scan = new Arc2D.Double(x, y, range, range, 0, 90, Arc2D.PIE);
+			scan = new Arc2D.Double(x, y, range, range, 0, ((Scanner)this).getArcAngle(), Arc2D.PIE);
 	}
 	public void setY(int yToSet)
 	{
 		y=yToSet;
 		if(this instanceof Scanner)
-			scan = new Arc2D.Double(x, y, range, range, 0, 90, Arc2D.PIE);
+			scan = new Arc2D.Double(x, y, range, range, 0, ((Scanner)this).getArcAngle(), Arc2D.PIE);
 	}
 	
 	public void setIcon(ImageIcon i)
@@ -307,11 +306,36 @@ public abstract class Tower implements ActionListener
 				setIcon(new ImageIcon(MyImages.scanner1));
 			}
 		}
-		
+		else if(this instanceof Encrypter)
+		{
+			if(health <= 0)
+			{
+				//or, just infect it
+				infected = true;
+				health = 100;
+				setIcon(new ImageIcon(MyImages.encrypter5));
+			}
+			else if(health <= 10)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter4));
+			}
+			else if(health <= 20)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter3));
+			}
+			else if(health <=30)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter2));
+			}
+			else if(health <= 40)
+			{
+				System.out.println("DAMAGED");
+				setIcon(new ImageIcon(MyImages.encrypter1));
+			}
+		}
 		//for ng's, just infect 'em for now
 		else if(health <= 0)
 		{
-			//or, just infect it
 			infected = true;
 			health = 100;
 		}

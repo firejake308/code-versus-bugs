@@ -2,6 +2,7 @@ package clientfiles;
 
 import java.awt.Color;
 import java.awt.event.*;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.*;
@@ -285,7 +286,12 @@ public abstract class Upgrades
 		{
 			Tower.allTowers[displayedUpgradeID].infected = false;
 			Tower.allTowers[displayedUpgradeID].health = 50;
-			Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.dt0));
+			if(Tower.allTowers[displayedUpgradeID] instanceof DiscThrower)
+				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.dt0));
+			else if(Tower.allTowers[displayedUpgradeID] instanceof Scanner)
+				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.scanner0));
+			else if(Tower.allTowers[displayedUpgradeID] instanceof Encrypter)
+				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.encrypter0));
 		}
 	}
 	
@@ -475,19 +481,17 @@ public abstract class Upgrades
 											System.out.println("disable worms");
 											break;
 			
-			case 331:						Tower.allTowers[displayedUpgradeID].range = Game.widthOfGamePanel * .12;
+			case 331:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(15);
 											System.out.println("range++");
 											
-											//update range indicator
-											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
-												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											//update scanner range
+											tower.scan = new Arc2D.Double(tower.getX(), tower.getY(), tower.getRange(), tower.getRange(), 0, ((Scanner)tower).getArcAngle(), Arc2D.PIE);
 											break;
-			case 332:						Tower.allTowers[displayedUpgradeID].range = Game.widthOfGamePanel * .15;
+			case 332:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(15);
 											System.out.println("range++");
 											
-											//update range indicator
-											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
-												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											//update scanner range
+											tower.scan = new Arc2D.Double(tower.getX(), tower.getY(), tower.getRange(), tower.getRange(), 0, ((Scanner)tower).getArcAngle(), Arc2D.PIE);
 											break;
 											
 			case 411:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 20;

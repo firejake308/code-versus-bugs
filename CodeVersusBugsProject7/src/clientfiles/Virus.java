@@ -94,7 +94,7 @@ public class Virus extends Malware
 					}
 					break;
 				}
-				else if(dist < 5 * Math.sqrt(sprite.getHeight() * sprite.getWidth()) && file.getY()> y 
+				/*else if(dist < 5 * Math.sqrt(sprite.getHeight() * sprite.getWidth()) && file.getY()> y 
 						&& getDistance() > path[5] && (lane == 4 || lane ==5))
 				{
 					speed = (int)(w * 0.015);
@@ -105,7 +105,7 @@ public class Virus extends Malware
 				{
 					speed = (int)(w * 0.015);
 					break;
-				}
+				}*/
 			}
 		}
 	}

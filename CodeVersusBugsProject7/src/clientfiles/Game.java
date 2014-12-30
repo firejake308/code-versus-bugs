@@ -86,6 +86,7 @@ public class Game extends JFrame implements Runnable
 	
 	public static double scaleOfSprites;
 	public static double malwareSpeed = 1.0;
+	public static double moneyMultiplier = 1.0;
 	
 	// track
 	static public JPanel track;
@@ -100,7 +101,11 @@ public class Game extends JFrame implements Runnable
 	 */
 	public static void addMoney(int income)
 	{
-		money += income;
+		if(income > 0)
+			money += Math.floor(moneyMultiplier * income);
+		else
+			money += income;
+		
 		gf.moneyLabel.setText("$" + money + " money");
 	}
 	public static int getMoney() 
@@ -390,11 +395,12 @@ public class Game extends JFrame implements Runnable
 			iterator.remove();
 		}
 		
+		//fade away shop panel
 		if(ShopPanel.timer > 0)
 		{
 			ShopPanel.timer--;
 		}
-		else if (ShopPanel.warned)
+		else
 		{
 			ShopPanel.info.setText("");
 			ShopPanel.info.setBackground(Color.white);
