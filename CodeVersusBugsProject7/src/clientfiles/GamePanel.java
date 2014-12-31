@@ -573,6 +573,49 @@ public class GamePanel extends JPanel
 				tutorial.setVisible(false);
 				break;
 			case 29:
+				//handled in tech panel
+				break;
+			case 30:
+				Game.techPanel.disableTutorial();
+				break;
+			case 31:
+				tutorial.setVisible(true);
+				tutorial.setBounds(0, 9*h/10, w/7, h/10);
+				tutorial.setText("Ooh, the hackers have gotten crafty...");
+				break;
+			case 32:
+				tutorial.setText("This round, they're going to start sending...");
+				break;
+			case 33:
+				tutorial.setText("specialized minions. Here they come!");
+				break;
+			case 34:
+				tutorial.setText("These green ones...");
+				tutorial.setBounds((int)(w / 14), h / 4, 15 * w / 42, h / 10);
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				tutorial.setVerticalTextPosition(SwingConstants.BOTTOM);
+				break;
+			case 35:
+				tutorial.setText("are rush minions...");
+				break;
+			case 36:
+				tutorial.setText("They're fast, but...");
+				break;
+			case 37:
+				tutorial.setText("they have less health.");
+				tutorial.setBounds((int)(w / 14), h / 4, 8 * w / 21, h / 10);
+				break;
+			case 38:
+				tutorial.setText("These red ones are...");
+				break;
+			case 39:
+				tutorial.setText("tank minions-they're...");
+				break;
+			case 40:
+				tutorial.setText("slow, but they have...");
+				break;
+			case 41:
+				tutorial.setText("more health to compensate.");
 				break;
 		}
 	}

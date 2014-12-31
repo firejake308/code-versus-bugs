@@ -48,6 +48,9 @@ public class TechPanel extends JPanel implements ActionListener
 	private JButton money;
 	private JButton moneyMult;
 	
+	//text for tutorial
+	private JTextArea tutorial;
+	
 	//number of points spent in each area
 	private int attackPoints;
 	private int defensePoints;
@@ -64,6 +67,7 @@ public class TechPanel extends JPanel implements ActionListener
 	private int slowPoints;
 	private int moneyPoints;
 	private int moneyMultPoints;
+	
 	public TechPanel()
 	{
 		attackPoints = 0;
@@ -206,6 +210,24 @@ public class TechPanel extends JPanel implements ActionListener
 		router.setEnabled(false);
 		money.setEnabled(false);
 		moneyMult.setEnabled(false);
+		
+		//tutorialstuff
+		tutorial = new JTextArea();
+		tutorial.setBounds(0, height/2, width, height/4);
+		tutorial.setEditable(false);
+		tutorial.setLineWrap(true);
+		tutorial.setWrapStyleWord(true);
+		tutorial.setText("Welcome to the Hardware Store! Here we sell all kinds of "
+				+ "stats upgrades for your towers. At the end of each round, "
+				+ "you can get 1 upgrade for free! As you spend more points in an "
+				+ "area, you'll unlock more upgrades in that field. Go ahead and "
+				+ "spend a point to move on to the next round.");
+		tutorial.setBackground(new Color(158, 216, 255, 175));
+		tutorial.setOpaque(true);
+		tutorial.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		
+		if(Game.tutorial)
+			add(tutorial);
 	}
 	
 	@Override
@@ -257,6 +279,10 @@ public class TechPanel extends JPanel implements ActionListener
 		{
 			damagePoints++;
 			attackPoints++;
+			
+			//special case for tutorial slide 29
+			if(Game.tutorialSlide == 29 && Game.tutorial)
+				Game.gamePanel.nextSlide();
 			
 			//increase damage of pre-existing towers
 			for(int t = 0; t < Tower.allTowers.length; t++)
@@ -330,6 +356,10 @@ public class TechPanel extends JPanel implements ActionListener
 			bufferPoints++;
 			defensePoints++;
 			
+			//special case for tutorial slide 29
+			if(Game.tutorialSlide == 29 && Game.tutorial)
+				Game.gamePanel.nextSlide();
+			
 			//increase health of existing towers
 			for(int t=0; t < Tower.allTowers.length; t++)
 			{
@@ -369,6 +399,10 @@ public class TechPanel extends JPanel implements ActionListener
 			//update point values
 			slowPoints++;
 			supportPoints++;
+			
+			//special case for tutorial slide 29
+			if(Game.tutorialSlide == 29 && Game.tutorial)
+				Game.gamePanel.nextSlide();
 			
 			//unleash the slow
 			Game.malwareSpeed -= 0.03;
@@ -420,7 +454,10 @@ public class TechPanel extends JPanel implements ActionListener
 		setVisible(false);
 		Game.gamePanel.setVisible(true);
 	}
-	
+	public void disableTutorial()
+	{
+		tutorial.setVisible(false);
+	}
 	public void paintComponent(Graphics g)
 	{
 		//attack
@@ -439,5 +476,6 @@ public class TechPanel extends JPanel implements ActionListener
 		g.drawString("ATTACK", 10, height-20);
 		g.drawString("DEFENSE", width/3+10, height-20);
 		g.drawString("SUPPORT", 2*width/3+10, height-20);
+		g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 	}
 }

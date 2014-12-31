@@ -245,6 +245,9 @@ public class StoryManager implements LevelManager
 			case 5:	
 				setMalwaresForLevel(100, 20, 20, 0, 0, 0, 0, 0);
 				addMalwares();
+				//special case for tutorial slide 30
+				if(Game.tutorial && Game.tutorialSlide <= 30)
+					Game.gamePanel.nextSlide();
 				break;
 			case 6:
 				setMalwaresForLevel(120, 40, 40, 0, 0, 0, 0, 0);

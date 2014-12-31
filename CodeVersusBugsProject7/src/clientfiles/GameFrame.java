@@ -193,7 +193,7 @@ public class GameFrame extends JFrame implements ActionListener
 		//goes down from connector of top right entrances
 		Game.gamePanel.path[15] = new Rectangle();
 		Game.gamePanel.path[15].setBounds((int) (Game.widthOfGamePanel * .8), (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .3));
-		//goes left from Game.gamePanel.path[15] to join with down connctor
+		//goes left from Game.gamePanel.path[15] to join with down connector
 		Game.gamePanel.path[16] = new Rectangle();
 		Game.gamePanel.path[16].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42), (int) (Game.heightOfGamePanel * .4) + (int) (Game.heightOfGamePanel * .3) - (Game.widthOfGamePanel / 42),
 				(int) (Game.widthOfGamePanel * .8) - ((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5)) + (2 * Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42);

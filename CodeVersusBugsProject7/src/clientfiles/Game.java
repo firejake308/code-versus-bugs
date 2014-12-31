@@ -57,13 +57,13 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 75000;
+	private static int money = 750;
 	public static int lives = 5000;
-	public static int level = 10;
+	public static int level = 5;
 
 	private static final long serialVersionUID = 1L;
 	public static boolean tutorial = true;
-	public static int tutorialSlide = 1;
+	public static int tutorialSlide = 31;
 	public static GameFrame gf;
 	public static StartMenu startMenu;
 	
@@ -198,6 +198,16 @@ public class Game extends JFrame implements Runnable
 				if(choice == 1)
 					Game.gamePanel.disableTutorial();
 				return;
+			}
+			else if(Game.tutorialSlide == 29 && Game.tutorial)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to start without upgrading your hardware?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else
+					return;
 			}
 			
 			//doesn't move on to next level unless it is end of round, 
