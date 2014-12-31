@@ -64,31 +64,31 @@ public class GamePanel extends JPanel
 	public Rectangle[] path;
 	
 	//cursors
-	private Image dtSprite = DiscThrower.icon.getImage();
-	private Point dtHotspot = new Point(15, 15);
-	private Cursor discThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtSprite,dtHotspot,"Disc Thrower");
-	private Image ngSprite = NumberGenerator.icon.getImage();
-	private Point ngHotspot = new Point(15, 15);
-	private Cursor numberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngSprite, ngHotspot, "Number Generator");
-	private Image ngInvalidSprite = NumberGenerator.invalidIcon.getImage();
-	private Cursor invalidNumberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngInvalidSprite, ngHotspot, "Number Generator");
-	private Image dtInvalidSprite = DiscThrower.invalidIcon.getImage();
-	private Cursor invalidDiscThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtInvalidSprite, dtHotspot, "Number Generator");
-	private Image scSprite = Scanner.icon.getImage();
-	private Image scInvalidSprite = Scanner.invalidIcon.getImage();
-	private Point scHotspot = new Point(15, 15);
-	private Cursor scannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scSprite,scHotspot,"Scanner");
-	private Cursor invalidScannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scInvalidSprite, scHotspot, "Scanner");
-	private Image fwSprite = FireWall.normalIcon.getImage();
-	private Image fwInvalidSprite = FireWall.invalidIcon.getImage();
-	private Point fwHotspot = new Point(15, 15);
-	private Cursor firewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwSprite,fwHotspot,"Firewall");
-	private Cursor invalidFirewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwInvalidSprite, fwHotspot, "Firewall");
-	private Image enSprite = Encrypter.icon.getImage();
-	private Image enInvalidSprite = Encrypter.invalidIcon.getImage();
-	private Point enHotspot = new Point(15, 15);
-	private Cursor encrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enSprite,enHotspot,"Encrypter");
-	private Cursor invalidEncrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enInvalidSprite,enHotspot,"Encrypter");
+	private Image dtSprite;
+	private Point dtHotspot;
+	private Cursor discThrowerCursor;
+	private Image ngSprite;
+	private Point ngHotspot;
+	private Cursor numberGeneratorCursor;
+	private Image ngInvalidSprite;
+	private Cursor invalidNumberGeneratorCursor;
+	private Image dtInvalidSprite;
+	private Cursor invalidDiscThrowerCursor;
+	private Image scSprite;
+	private Image scInvalidSprite;
+	private Point scHotspot;
+	private Cursor scannerCursor;
+	private Cursor invalidScannerCursor;
+	private Image fwSprite;
+	private Image fwInvalidSprite;
+	private Point fwHotspot;
+	private Cursor firewallCursor;
+	private Cursor invalidFirewallCursor;
+	private Image enSprite;
+	private Image enInvalidSprite;
+	private Point enHotspot;
+	private Cursor encrypterCursor;
+	private Cursor invalidEncrypterCursor;
 	
 	
 	static private final long serialVersionUID = 1;
@@ -100,6 +100,32 @@ public class GamePanel extends JPanel
 	
 	public GamePanel()
 	{
+		dtSprite = DiscThrower.icon.getImage();
+		dtHotspot = new Point(15, 15);
+		discThrowerCursor= Toolkit.getDefaultToolkit().createCustomCursor(dtSprite,dtHotspot,"Disc Thrower");
+		ngSprite = NumberGenerator.icon.getImage();
+		ngHotspot = new Point(15, 15);
+		numberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngSprite, ngHotspot, "Number Generator");
+		ngInvalidSprite = NumberGenerator.invalidIcon.getImage();
+		invalidNumberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngInvalidSprite, ngHotspot, "Number Generator");
+		dtInvalidSprite = DiscThrower.invalidIcon.getImage();
+		invalidDiscThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtInvalidSprite, dtHotspot, "Number Generator");
+		scSprite = Scanner.icon.getImage();
+		scInvalidSprite = Scanner.invalidIcon.getImage();
+		scHotspot = new Point(15, 15);
+		scannerCursor= Toolkit.getDefaultToolkit().createCustomCursor(scSprite,scHotspot,"Scanner");
+		invalidScannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scInvalidSprite, scHotspot, "Scanner");
+		fwSprite = FireWall.normalIcon.getImage();
+		fwInvalidSprite = FireWall.invalidIcon.getImage();
+		fwHotspot = new Point(15, 15);
+		firewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwSprite,fwHotspot,"Firewall");
+		invalidFirewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwInvalidSprite, fwHotspot, "Firewall");
+		enSprite = Encrypter.icon.getImage();
+		enInvalidSprite = Encrypter.invalidIcon.getImage();
+		enHotspot = new Point(15, 15);
+		encrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enSprite,enHotspot,"Encrypter");
+		invalidEncrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enInvalidSprite,enHotspot,"Encrypter");
+		
 		this.setFocusable(true);
 		lvlManager = new StoryManager();
 		
@@ -131,16 +157,16 @@ public class GamePanel extends JPanel
 			}
 			public void mousePressed(MouseEvent e)
 			{
+				switch(Game.tutorialSlide)
+				{
+					case 33:
+						return;
+				}
 				//move on to the next slide
 				nextSlide();
 				
 				/*Notes:
-				 * Slide 7 requires the user to buy a disc thrower
-				 * Slide 8 requires placing a tower
-				 * Slide 9 requires the user to click on the tower
-				 * Slide 13 requires upgrading a tower's range
-				 * Slide 17 requires starting the first round
-				 * Slide 28 is invisible, and will only move on when the tech panel appears
+				 * Slide 33 will move on when the green minions appear
 				 */
 			}
 		});
@@ -580,6 +606,7 @@ public class GamePanel extends JPanel
 				break;
 			case 31:
 				tutorial.setVisible(true);
+				tutorial.setIcon(null);
 				tutorial.setBounds(0, 9*h/10, w/7, h/10);
 				tutorial.setText("Ooh, the hackers have gotten crafty...");
 				break;
@@ -594,6 +621,7 @@ public class GamePanel extends JPanel
 				tutorial.setBounds((int)(w / 14), h / 4, 15 * w / 42, h / 10);
 				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
 				tutorial.setVerticalTextPosition(SwingConstants.BOTTOM);
+				tutorial.setHorizontalAlignment(SwingConstants.LEFT);
 				break;
 			case 35:
 				tutorial.setText("are rush minions...");
@@ -602,14 +630,14 @@ public class GamePanel extends JPanel
 				tutorial.setText("They're fast, but...");
 				break;
 			case 37:
-				tutorial.setText("they have less health.");
-				tutorial.setBounds((int)(w / 14), h / 4, 8 * w / 21, h / 10);
+				tutorial.setText("rather \"squishy\".");
 				break;
 			case 38:
 				tutorial.setText("These red ones are...");
 				break;
 			case 39:
-				tutorial.setText("tank minions-they're...");
+				tutorial.setText("tank minions - they're...");
+				tutorial.setBounds((int)(w / 14), h / 4, 7 * w / 16, h / 10);
 				break;
 			case 40:
 				tutorial.setText("slow, but they have...");
@@ -617,6 +645,36 @@ public class GamePanel extends JPanel
 			case 41:
 				tutorial.setText("more health to compensate.");
 				break;
+			case 42:
+				tutorial.setText("Since these new malwares...");
+				break;
+			case 43:
+				tutorial.setText("are harder to kill, ....");
+				break;
+			case 44:
+				tutorial.setText("they drop more money, ...");
+				break;
+			case 45:
+				tutorial.setText("which you can see up here.");
+				tutorial.setBounds(3 * w / 8, 0,  7 * w / 16, h / 10);
+				break;
+			case 46:
+				tutorial.setText("You can also watch the amount of data...");
+				tutorial.setBounds(0, 0, 2 * w / 3, h / 10);
+				break;
+			case 47:
+				tutorial.setText("left in the CPU here. Don't let it reach 0!");
+				break;
+			case 48:
+				tutorial.setText("Ok, you should be good for now. ...");
+				tutorial.setIcon(null);
+				break;
+			case 49:
+				tutorial.setText("See you in round 10!");
+				tutorial.setSize(w/3, h/10);
+				break;
+			case 50:
+				tutorial.setVisible(false);
 		}
 	}
 	/**
@@ -627,7 +685,17 @@ public class GamePanel extends JPanel
 		Game.tutorial = false;
 		tutorial.setVisible(false);
 	}
-	
+	/**
+	 * Moves the tutorial up to make room for the upgrades panel, if the tutorial is in the way.
+	 */
+	public void moveTutorial()
+	{
+		Rectangle tutorialArea = new Rectangle(tutorial.getBounds());
+		Rectangle upgradesArea = new Rectangle(0, 9 * getHeight() / 10, getWidth(), getHeight() / 10);
+		
+		if(tutorialArea.intersects(upgradesArea))
+			tutorial.setLocation(0, 8 * getHeight() / 10);
+	}
 	private class DrawingPanel extends JPanel
 	{
 		public DrawingPanel()

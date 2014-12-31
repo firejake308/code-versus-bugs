@@ -135,6 +135,7 @@ public class Projectile
 		damage = damageToSet;
 		uses = Tower.allTowers[idOfTower].projectileDurability;
 		splashEffect = Tower.allTowers[idOfTower].splashEffect;
+		System.out.println("uses "+uses);
 	}
 	/**ONLY FOR USE WITH WORMS TO ATTACK TOWERS
 	 * 
@@ -277,11 +278,6 @@ public class Projectile
 						numOfVirusesHit++;
 						
 						Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
-						
-						/*if (uses <= 0)
-						{
-							deleteProjectile();
-						}*/
 						break;
 					}
 				}

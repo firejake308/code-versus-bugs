@@ -68,7 +68,7 @@ public abstract class Upgrades
 		int width = Game.gamePanel.getWidth();
 		
 		//TODO check setBounds stuff
-		upgrade.setBounds(0, height * 9, width, width / 10);
+		upgrade.setBounds(0, height * 9, width, height);
 		upgrade.setBackground(Color.CYAN);
 		upgrade.setVisible(true);
 		upgrade.setLayout(null);
@@ -215,7 +215,10 @@ public abstract class Upgrades
 		upgrade.add(upgradePath3);
 		//upgrade.add(upgradesInfo);
 		upgrade.add(infoScroll);
-		Game.gamePanel.addToLayeredPane(upgrade, JLayeredPane.DEFAULT_LAYER + 1);
+		Game.gamePanel.addToLayeredPane(upgrade, JLayeredPane.DRAG_LAYER);
+		
+		//move tutorial out of the way
+		Game.gamePanel.moveTutorial();
 	}
 	
 	public static void removeUpgradePanel()
@@ -297,6 +300,8 @@ public abstract class Upgrades
 		{
 			Tower.allTowers[displayedUpgradeID].infected = false;
 			Tower.allTowers[displayedUpgradeID].health = 50;
+			
+			//reset image
 			if(Tower.allTowers[displayedUpgradeID] instanceof DiscThrower)
 				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.dt0));
 			else if(Tower.allTowers[displayedUpgradeID] instanceof Scanner)
@@ -335,11 +340,11 @@ public abstract class Upgrades
 		{
 			case NONE:						return;
 			case COMMUNICATIONS_TOWER:		upgradeID += 100;
+			case ENCRYPTER:					upgradeID += 100;
 			case FIREWALL:					upgradeID += 100;
 			case SCANNER:					upgradeID += 100;
 			case NUMBER_GENERATOR:			upgradeID += 100;
 			case DISC_THROWER:				upgradeID += 100;
-			case ENCRYPTER:					upgradeID += 100;
 											break;
 		}
 		
