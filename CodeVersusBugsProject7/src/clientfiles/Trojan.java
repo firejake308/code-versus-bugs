@@ -22,7 +22,7 @@ public class Trojan extends Malware
 		//initialize instance variables
 		health = 400;
 		reward = 10;
-		speed = (int) (w * 0.020);
+		speed = (int) (w * 0.0075);
 		state = State.INVISIBLE;
 		
 		//System.out.println("x "+x+" y "+y);

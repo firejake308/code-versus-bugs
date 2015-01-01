@@ -24,7 +24,7 @@ public class BonusFile
 	{
 		//initialize instance variables
 		reward = 10;
-		speed = Game.widthOfGamePanel  * 0.01;
+		speed = Game.widthOfGamePanel  * 0.0075;
 		encrypted = false;
 		if(type == EXE)
 		{

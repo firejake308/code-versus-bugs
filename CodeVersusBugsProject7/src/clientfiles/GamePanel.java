@@ -57,10 +57,13 @@ public class GamePanel extends JPanel
 {
 	private static int mouseX;
 	private static int mouseY;
-	public static int numTowers=0;
+	public static int numTowers = 0;
 	public LevelManager lvlManager;
 	
 	public static boolean mouseInUpgradePanel = false;
+	/**
+	 * An array of all of the rectangles that make up the path.
+	 */
 	public Rectangle[] path;
 	
 	//cursors
@@ -676,7 +679,158 @@ public class GamePanel extends JPanel
 			case 50:
 				tutorial.setVisible(false);
 				break;
-				
+			//worms
+			case 51:
+				tutorial.setVisible(true);
+				tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				tutorial.setVerticalTextPosition(SwingConstants.BOTTOM);
+				tutorial.setHorizontalAlignment(SwingConstants.LEFT);
+				tutorial.setText("The worms are here! ...");
+				Game.gameState = Game.PAUSED;
+				break;
+			case 52:
+				tutorial.setText("Worms are advanced ...");
+				break;
+			case 53:
+				tutorial.setSize(10 * w / 21, h / 10);
+				tutorial.setText("forms of malware that...");
+				break;
+			case 54:
+				tutorial.setSize(21 * w / 42, h / 10);
+				tutorial.setText("will attack your towers to...");
+				break;
+			case 55:
+				tutorial.setText("insert a copy of themselves...");
+				break;
+			case 56:
+				tutorial.setText("into the tower's system, causing...");
+				break;
+			case 57:
+				tutorial.setText("the tower to make a new worm. ...");
+				break;
+			case 58:
+				tutorial.setText("The infected tower will also ...");
+				break;
+			case 59:
+				tutorial.setText("have its targeting system replaced ...");
+				break;
+			case 60:
+				tutorial.setText("with one that only fires about 2% ...");
+				break;
+			case 61:
+				tutorial.setText("of the time. It takes a worm 5 hits...");
+				break;
+			case 62:
+				tutorial.setText("to overflow you towers' buffers, which...");
+				break;
+			case 63:
+				tutorial.setText("are safe places to hold data. After that,...");
+				break;
+			case 64:
+				tutorial.setText("the worms' commands are executed by...");
+				break;
+			case 65:
+				tutorial.setText("the tower. You can buy upgrades to backup...");
+				break;
+			case 66:
+				tutorial.setText("your towers, after which you can restore them...");
+				break;
+			case 67:
+				tutorial.setText("for $50. Alterantively, ...");
+				break;
+			case 68:
+				tutorial.setText("you could just scrap your tower for...");
+				break;
+			case 69:
+				tutorial.setText("60% of its value. Anyway, good luck...");
+				break;
+			case 70:
+				tutorial.setText("with the worms! They have double the health...");
+				break;
+			case 71:
+				tutorial.setText("of minions, so you'll need it!");
+				break;
+			case 72:
+				tutorial.setVisible(false);
+				Game.gameState = Game.PLAYING;
+				break;
+			//files and trojans tutorial
+			case 73:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("This level, you get your first taste of files. ...");
+				Game.gameState = Game.PAUSED;
+				break;
+			case 74:
+				tutorial.setText("The 1st thing you need to know is that files are slow.");
+				break;
+			case 75:
+				tutorial.setIcon(new ImageIcon(MyImages.arrowDown));
+				tutorial.setHorizontalTextPosition(SwingConstants.LEFT);
+				tutorial.setText("However, since they start out here, they have less...");
+				break;
+			case 76:
+				tutorial.setIcon(null);
+				tutorial.setText("distance to cover. A file that makes it safely to the...");
+				break;
+			case 77:
+				tutorial.setText("CPU will add 20 bytes of data. However, there are ...");
+				break;
+			case 78:
+				tutorial.setText("other things on the Internet that want to get to...");
+				break;
+			case 79:
+				tutorial.setText("your computer, including Trojan horses. Trojans...");
+				break;
+			case 80:
+				tutorial.setText("are programs that seem legit, but actually contain...");
+				break;
+			case 81:
+				tutorial.setText("malicious code. In this game, they appear as...");
+				break;
+			case 82:
+				tutorial.setText("encrypted files, and there are only 2 ways to ...");
+				break;
+			case 83:
+				tutorial.setText("reveal their true identity: You can scan them...");
+				break;
+			case 84:
+				tutorial.setText("with an antivirus scanner or de-encrypt them...");
+				break;
+			case 85:
+				tutorial.setText("with an upgraded encrypter. Since scanners also...");
+				break;
+			case 86:
+				tutorial.setText("I recommend placing a scanner on this corner.");
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				break;
+			case 87:
+				if(Game.getMoney() < 1000)
+					Game.addMoney(1000 - Game.getMoney());
+				tutorial.setText("Buy a scanner now.");
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				tutorial.setLocation(0, 215);
+				break;
+			case 88:
+				tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
+				tutorial.setIcon(null);
+				tutorial.setText("Now, the scanner will reveal the Trojans' true...");
+				break;
+			case 89:
+				tutorial.setText("identity. Remember, Trojans have high health, so...");
+				break;
+			case 90:
+				tutorial.setText("You probably want a disc thrower that covers ...");
+				break;
+			case 91:
+				tutorial.setText("the right side of the map. You're all set! Go get 'em!");
+				tutorial.setVisible(false);
+				Game.gameState = Game.PLAYING;
+				break;
 			//only runs when a life is lost
 			case 500:
 				tutorial.setVisible(true);
@@ -742,6 +896,10 @@ public class GamePanel extends JPanel
 				nextSlide();
 				break;
 		}
+		
+		//set size of tutorial to appropriate size if it's not in the bottom
+		if(!tutorial.getLocation().equals(new Point(0, 9 * h / 10)))
+			tutorial.setSize(tutorial.getPreferredSize().width + 5, tutorial.getPreferredSize().height + 5);
 	}
 	/**
 	 * Turns off the tutorial.

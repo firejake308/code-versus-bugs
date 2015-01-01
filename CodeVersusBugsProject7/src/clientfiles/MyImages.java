@@ -38,6 +38,7 @@ public class MyImages
 	public static BufferedImage fastForwardOn;
 	public static BufferedImage redArrow;
 	public static BufferedImage arrowUp;
+	public static BufferedImage arrowDown;
 	//malware
 	public static BufferedImage minion;
 	public static BufferedImage tankMinion;
@@ -133,6 +134,7 @@ public class MyImages
 			fastForwardOn 	= ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOn.png"));
 			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
 			arrowUp = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowUp.png"));
+			arrowDown = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowDown.png"));
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
 			tankMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusRed.png"));

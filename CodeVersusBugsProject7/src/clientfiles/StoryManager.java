@@ -36,6 +36,8 @@
  */
 package clientfiles;
 
+import java.util.Random;
+
 import javax.swing.ImageIcon;
 
 public class StoryManager implements LevelManager
@@ -185,24 +187,33 @@ public class StoryManager implements LevelManager
 			startY -= 70;
 		}
 		
+		//make files and Trojans if necessary
 		startY = Game.heightOfGamePanel + 10;
-		// i is the number of trojans per route, as worms is / 5 (5 = routes)
-		for (int i = 0; i < trojans; i++)
+		int filesSoFar = 0;
+		int trojansSoFar = 0;
+		for (int i = 0; i < filesThisLevel + trojans; i ++)
 		{
-			Malware.allMalware[v] = new Trojan(Malware.NORMAL, startY);
-			v++;
-			startY += 70;
-		}
-		
-		//make files if necessary
-		startY = Game.heightOfGamePanel + 750;
-		for (int i = 0; i < filesThisLevel; i ++)
-		{
-			if(i % 2 == 0)
-				BonusFile.allFiles.add(new BonusFile(startY, BonusFile.DATA));
-			else if(i % 2 == 1)
-				BonusFile.allFiles.add(new BonusFile(startY, BonusFile.EXE));
-			startY += 100;
+			Random gen = new Random();
+			int random = gen.nextInt(4);
+			
+			//50% probability of making a file
+			if(random < 2 && filesSoFar < filesThisLevel)
+			{
+				if(random == 0)
+					BonusFile.allFiles.add(new BonusFile(startY, BonusFile.DATA));
+				else if(random == 1)
+					BonusFile.allFiles.add(new BonusFile(startY, BonusFile.EXE));
+				startY += 100;
+				filesSoFar++;
+			}
+			//50% probability of making a Trojan
+			else if(trojansSoFar < trojans)
+			{
+				Malware.allMalware[v] = new Trojan(Malware.NORMAL, startY);
+				startY += 100;
+				v++;
+				trojansSoFar++;
+			}
 		}
 	}
 	
@@ -307,26 +318,30 @@ public class StoryManager implements LevelManager
 				break;
 			case 20:
 				setMalwaresForLevel(0, 0, 0, 0, 10, 0, 0, 0);
+				setFilesForLevel(4);
 				addMalwares();
+				//move onto files tutorial
+				if(Game.tutorial && Game.tutorialSlide <= 72)
+					Game.gamePanel.nextSlide();
 				break;
 			case 21:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 0, 0);
-				setFilesForLevel(4);
+				setFilesForLevel(6);
 				addMalwares();
 				break;
 			case 22:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 0, 15, 0);
-				setFilesForLevel(4);
+				setFilesForLevel(6);
 				addMalwares();
 				break;
 			case 23:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 15, 0);
-				setFilesForLevel(4);
+				setFilesForLevel(6);
 				addMalwares();
 				break;
 			case 24:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 0, 0, 5);
-				setFilesForLevel(4);
+				setFilesForLevel(6);
 				addMalwares();
 			default:
 				Game.gameState = Game.OVER;

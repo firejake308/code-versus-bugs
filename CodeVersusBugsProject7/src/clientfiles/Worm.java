@@ -196,6 +196,13 @@ public class Worm extends Malware
 		{
 			setY(getY()+directions[0]*speed*frames/60*manipulator * Game.speedModifier);
 			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
+			
+			//special case for worms tutorial
+			if(getDistance() > path[0]/2)
+			{
+				if(Game.tutorial && Game.tutorialSlide <= 50 && this instanceof Worm)
+					Game.gamePanel.nextSlide();
+			}
 		}
 		//move right
 		else if(getDistance()<path[1])
