@@ -60,10 +60,13 @@ public class Game extends JFrame implements Runnable
 	private static int money = 750;
 	public static int lives = 5000;
 	public static int level = 1;
-
-	private static final long serialVersionUID = 1L;
+	
 	public static boolean tutorial = true;
-	public static int tutorialSlide = 1;
+	public static int tutorialSlide = 499;
+	public static boolean livesTutorialPlayed = false;
+	public static int savedSlide = 1;
+	
+	private static final long serialVersionUID = 1L;
 	public static GameFrame gf;
 	public static StartMenu startMenu;
 	

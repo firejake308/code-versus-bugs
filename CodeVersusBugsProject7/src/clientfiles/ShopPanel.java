@@ -350,6 +350,10 @@ public class ShopPanel extends JPanel implements ActionListener
 					return;
 			}
 			
+			//move to slide 511
+			if(Game.tutorial && Game.tutorialSlide == 510)
+				Game.gamePanel.nextSlide();
+			
 			changeInfo("Firewall Selected",false);
 		}
 		else if (temp == buyEncrypter)

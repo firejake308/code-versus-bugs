@@ -675,6 +675,72 @@ public class GamePanel extends JPanel
 				break;
 			case 50:
 				tutorial.setVisible(false);
+				break;
+				
+			//only runs when a life is lost
+			case 500:
+				tutorial.setVisible(true);
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				tutorial.setHorizontalTextPosition(SwingConstants.LEFT);
+				tutorial.setHorizontalAlignment(SwingConstants.RIGHT);
+				tutorial.setBounds(3 * w / 7, 3 * h / 14, w / 2, h / 10);
+				tutorial.setText("Oh, rats! it appears that...");
+				Game.gameState = Game.PAUSED;
+				break;
+			case 501:
+				tutorial.setText("the malwares reached your...");
+				break;
+			case 502:
+				tutorial.setText("CPU. Now, your Bytes...");
+				break;
+			case 503:
+				tutorial.setText("Remaining will decrease...");
+				break;
+			case 504:
+				tutorial.setText("according to the remaining...");
+				break;
+			case 505:
+				tutorial.setText("health of the malware. ...");
+				break;
+			case 506:
+				tutorial.setText("For example, a full health...");
+				break;
+			case 507:
+				tutorial.setText("minion will corrupt 100 bytes.");
+				break;
+			case 508:
+				tutorial.setText("You can stop a few...");
+				break;
+			case 509:
+				tutorial.setText("slip-aways with a firewall.");
+				break;
+			case 510:
+				Game.addMoney(200);
+				tutorial.setLocation(0, 305);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				tutorial.setHorizontalAlignment(SwingConstants.LEADING);
+				tutorial.setText("Go ahead and buy one now.");
+				break;
+			case 511:
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setIcon(null);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("Normally, firewalls cost $200, but I'll pay for it this time.");
+				break;
+			case 512:
+				tutorial.setText("Now, each firewall can only stop 10 malwares per...");
+				break;
+			case 513:
+				tutorial.setText("round, so place it on the track strategically!");
+				break;
+			case 514:
+				Game.livesTutorialPlayed = true;
+				Game.tutorialSlide = Game.savedSlide - 1;
+				Game.gameState = Game.PLAYING;
+				//go back
+				nextSlide();
+				break;
 		}
 	}
 	/**
