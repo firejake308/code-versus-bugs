@@ -46,6 +46,7 @@ public class Worm extends Malware
 	private double distance4;
 	private int range;
 	private int damage;
+	private int lane;
 	public int timer=0;
 	public final int TIMER_RESET = 60;
 	
@@ -73,6 +74,7 @@ public class Worm extends Malware
 		range = 120;
 		damage = 10;
 		speed = (int) (w * 0.020);
+		this.lane = lane;
 	}
 	
 	private double getX2() 
@@ -510,19 +512,67 @@ public class Worm extends Malware
 		{
 			g.drawImage(sprite, (int)getX(), (int)getY(), null);
 		}
-		if(health>100)
+		if(health>150)
 		{
 			g.drawImage(sprite2, (int)getX2(), (int)getY2(), null);
 		}
-		if(health>200)
+		if(health>300)
 		{
 			g.drawImage(sprite2, (int)getX3(), (int)getY3(), null);
 		}
-		if(health>300)
+		if(health>450)
 		{
 			g.drawImage(sprite2, (int)getX4(), (int)getY4(), null);
 
 		}
 	}
-	
+	/**
+	 * Creates a new worm behind the original.
+	 */
+	public void replicate()
+	{
+		int interval;
+		try
+		{
+			interval = Math.min(50, (int)((distance - path[pathPart-1])/3));
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			interval = 50;
+		}
+		//if the path is vertical
+				if(pathPart % 2 == 0)
+				{
+					//if going down
+					if(directions[pathPart] == 1)
+					{
+						Malware.allMalware[numMalwares] = new Worm(lane, (int)(y -interval));
+						Malware.allMalware[numMalwares-1].setCenterX(getCenterX());
+						Malware.allMalware[numMalwares-1].setDistance(getDistance() -interval);
+					}
+					//if going up, switch sign on distance
+					else
+					{
+						Malware.allMalware[numMalwares] = new Worm(lane, (int)(y +interval));
+						Malware.allMalware[numMalwares-1].setCenterX(getCenterX());
+						Malware.allMalware[numMalwares-1].setDistance(getDistance() -interval);
+					}
+				}
+				//if on horizontal part of track
+				else
+				{
+					if(directions[pathPart] == 1)
+					{
+						Malware.allMalware[numMalwares] = new Worm(lane, (int)(y));
+						Malware.allMalware[numMalwares-1].setCenterX(getCenterX() -interval);
+						Malware.allMalware[numMalwares-1].setDistance(getDistance() -interval);
+					}
+					else
+					{
+						Malware.allMalware[numMalwares] = new Worm(lane, (int)(y));
+						Malware.allMalware[numMalwares-1].setCenterX(getCenterX() +interval);
+						Malware.allMalware[numMalwares-1].setDistance(getDistance() -interval);
+					}
+				}
+	}
 }

@@ -83,7 +83,8 @@ public abstract class Tower implements ActionListener
 	protected int level = 1;
 	protected int health;
 	protected int maxHealth;
-	public boolean infected = false;
+	private boolean infected = false;
+	private boolean spawnedWorm = false;
 	private static int healthToSet = 50;
 	
 	protected Ellipse2D rangeIndicator;
@@ -247,11 +248,10 @@ public abstract class Tower implements ActionListener
 	public void dealDamage(int damage)
 	{
 		health -= damage;
-		
 		//change image for disc throwers
 		if(this instanceof DiscThrower)
 		{
-			if(health <= 0)
+			if(health < 0)
 			{
 				//or, just infect it
 				infected = true;
@@ -277,7 +277,7 @@ public abstract class Tower implements ActionListener
 		}
 		else if(this instanceof Scanner)
 		{
-			if(health <= 0)
+			if(health < 0)
 			{
 				//kill a worm-ed tower
 				//Upgrades.displayedUpgradeID = id;
@@ -288,19 +288,19 @@ public abstract class Tower implements ActionListener
 				health = 100;
 				setIcon(new ImageIcon(MyImages.scanner5));
 			}
-			else if(health <= 10)
+			else if(health <= maxHealth / 5)
 			{
 				setIcon(new ImageIcon(MyImages.scanner4));
 			}
-			else if(health <= 20)
+			else if(health <= 2 * maxHealth / 5)
 			{
 				setIcon(new ImageIcon(MyImages.scanner3));
 			}
-			else if(health <=30)
+			else if(health <= 3 * maxHealth / 5)
 			{
 				setIcon(new ImageIcon(MyImages.scanner2));
 			}
-			else if(health <= 40)
+			else if(health <= 4 * maxHealth / 5)
 			{
 				System.out.println("DAMAGED");
 				setIcon(new ImageIcon(MyImages.scanner1));
@@ -308,33 +308,33 @@ public abstract class Tower implements ActionListener
 		}
 		else if(this instanceof Encrypter)
 		{
-			if(health <= 0)
+			if(health < 0)
 			{
 				//or, just infect it
 				infected = true;
 				health = 100;
 				setIcon(new ImageIcon(MyImages.encrypter5));
 			}
-			else if(health <= 10)
+			else if(health <= maxHealth / 5)
 			{
 				setIcon(new ImageIcon(MyImages.encrypter4));
 			}
-			else if(health <= 20)
+			else if(health <= 2 * maxHealth / 5)
 			{
 				setIcon(new ImageIcon(MyImages.encrypter3));
 			}
-			else if(health <=30)
+			else if(health <= 3 * maxHealth / 5)
 			{
 				setIcon(new ImageIcon(MyImages.encrypter2));
 			}
-			else if(health <= 40)
+			else if(health <= 4 * maxHealth / 5)
 			{
 				System.out.println("DAMAGED");
 				setIcon(new ImageIcon(MyImages.encrypter1));
 			}
 		}
 		//for ng's, just infect 'em for now
-		else if(health <= 0)
+		else if(health < 0)
 		{
 			infected = true;
 			health = 100;
@@ -574,5 +574,19 @@ public abstract class Tower implements ActionListener
 				}
 			}
 		}
+	}
+	
+	public boolean hasSpawnedWorm()
+	{
+		return spawnedWorm;
+	}
+	
+	public void setSpawnedWorm()
+	{
+		spawnedWorm = true;
+	}
+	public void setInfected(boolean b) 
+	{
+		infected = b;
 	}
 }

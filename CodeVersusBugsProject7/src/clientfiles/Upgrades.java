@@ -298,7 +298,7 @@ public abstract class Upgrades
 	{
 		if (Tower.allTowers[displayedUpgradeID].isInfected() && Tower.allTowers[displayedUpgradeID].backedUp && Game.makePurchase(50))
 		{
-			Tower.allTowers[displayedUpgradeID].infected = false;
+			Tower.allTowers[displayedUpgradeID].setInfected(false);
 			Tower.allTowers[displayedUpgradeID].health = 50;
 			
 			//reset image

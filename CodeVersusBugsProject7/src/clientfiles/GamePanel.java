@@ -746,7 +746,7 @@ public class GamePanel extends JPanel
 				tutorial.setText("60% of its value. Anyway, good luck...");
 				break;
 			case 70:
-				tutorial.setText("with the worms! They have double the health...");
+				tutorial.setText("with the worms! They have 6 times the health...");
 				break;
 			case 71:
 				tutorial.setText("of minions, so you'll need it!");

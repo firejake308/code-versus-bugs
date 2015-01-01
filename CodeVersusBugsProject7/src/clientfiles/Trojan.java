@@ -20,7 +20,7 @@ public class Trojan extends Malware
 		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
 		
 		//initialize instance variables
-		health = 400;
+		health = 800;
 		reward = 10;
 		speed = (int) (w * 0.0075);
 		state = State.INVISIBLE;

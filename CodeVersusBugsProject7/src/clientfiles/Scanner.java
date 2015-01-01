@@ -71,17 +71,17 @@ public class Scanner extends Tower
 			scanDegree += elapsedTime * 0.7;
 		
 		//save current, working arc
-		if(!infected)
+		if(!isInfected())
 		{
 			workingScan = scan;
 		}
 		//disable an infected tower
-		if(scanDegree > 359 && scanDegree < 361 && infected)
+		if(scanDegree > 359 && scanDegree < 361 && isInfected())
 		{
 			scan = new Arc2D.Double();
 			System.out.println("disabled scanner");
 		}
-		else if(scanDegree > 719 && infected)
+		else if(scanDegree > 719 && isInfected())
 		{
 			scan = workingScan;
 			scanDegree = 0;
