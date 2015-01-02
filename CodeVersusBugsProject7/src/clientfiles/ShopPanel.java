@@ -325,7 +325,7 @@ public class ShopPanel extends JPanel implements ActionListener
 				else if(choice == 0)
 					return;
 			}
-			if(Game.tutorial && Game.tutorialSlide == 87)
+			if(Game.tutorial && Game.tutorialSlide == 88)
 				Game.gamePanel.nextSlide();
 			changeInfo("Scanner Selected",false);
 		}

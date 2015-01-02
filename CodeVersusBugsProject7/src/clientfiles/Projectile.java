@@ -48,7 +48,7 @@ public class Projectile
 	private double x;
 	private double y;
 	
-	private int idOfTower;
+	private int idOfOwner;
 	
 	private int quadrant;
 	private int uses;
@@ -80,9 +80,9 @@ public class Projectile
 	{
 		owner = TOWER;
 		
-		idOfTower = towerID;
+		idOfOwner = towerID;
 		
-		if (/*towerType==TowerType.DISC_THROWER*/Tower.allTowers[idOfTower] instanceof DiscThrower)
+		if (/*towerType==TowerType.DISC_THROWER*/Tower.allTowers[idOfOwner] instanceof DiscThrower)
 		{
 			sprite = MyImages.cd;
 			speed = 5;
@@ -90,9 +90,9 @@ public class Projectile
 			// affects speed of virus
 			manipulatorForVirus = 1;
 		}
-		else if(Tower.allTowers[idOfTower] instanceof NumberGenerator)
+		else if(Tower.allTowers[idOfOwner] instanceof NumberGenerator)
 		{
-			if (Tower.allTowers[idOfTower].lethalRandoms)
+			if (Tower.allTowers[idOfOwner].lethalRandoms)
 			{
 				ImageIcon[] randoms = {
 						new ImageIcon(MyImages.r0lethal), new ImageIcon(MyImages.r1lethal),
@@ -117,11 +117,11 @@ public class Projectile
 			
 			speed=3;
 			
-			splashRange = Tower.allTowers[idOfTower].rangeOfSplash;
+			splashRange = Tower.allTowers[idOfOwner].rangeOfSplash;
 			
 			//change normalIcon of the number generator
 			int r1 = NumberGenerator.rand.nextInt(NumberGenerator.icons.length);
-			Tower.sprites[idOfTower].setIcon(NumberGenerator.icons[r1]);
+			Tower.sprites[idOfOwner].setIcon(NumberGenerator.icons[r1]);
 			
 			// affects speed of virus
 			manipulatorForVirus = 0;
@@ -133,21 +133,22 @@ public class Projectile
 		x = xToSet - sprite.getWidth(null)/2;
 		y = yToSet - sprite.getHeight(null)/2;
 		damage = damageToSet;
-		uses = Tower.allTowers[idOfTower].projectileDurability;
-		splashEffect = Tower.allTowers[idOfTower].splashEffect;
+		uses = Tower.allTowers[idOfOwner].projectileDurability;
+		splashEffect = Tower.allTowers[idOfOwner].splashEffect;
 		System.out.println("uses "+uses);
 	}
-	/**ONLY FOR USE WITH WORMS TO ATTACK TOWERS
+	/**
+	 * ONLY FOR USE WITH WORMS TO ATTACK TOWERS
 	 * 
 	 * @param aToSet
 	 * @param bToSet
 	 * @param quadrantToSet
 	 * @param xToSet
 	 * @param yToSet
-	 * @param location
+	 * @param wormID
 	 * @param damageToSet
 	 */
-	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, int location, double damageToSet)
+	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, int wormID, double damageToSet)
 	{
 		owner = WORM;
 		
@@ -167,6 +168,7 @@ public class Projectile
 		quadrant = quadrantToSet;
 		x = xToSet - sprite.getWidth(null)/2;
 		y = yToSet - sprite.getHeight(null)/2;
+		idOfOwner = wormID;
 		damage = damageToSet;
 		
 		uses = 1;
@@ -257,7 +259,7 @@ public class Projectile
 				{
 					uses--;
 					
-					Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
+					Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfOwner);
 				}
 				
 				else if(distFromMalware <= Malware.allMalware[v].sprite.getHeight(null) / 2 && !virusHit)
@@ -277,7 +279,7 @@ public class Projectile
 						virusesHit[numOfVirusesHit] = Malware.allMalware[v];
 						numOfVirusesHit++;
 						
-						Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
+						Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfOwner);
 						break;
 					}
 				}
@@ -298,6 +300,8 @@ public class Projectile
 				if(distFromTower < Tower.sprites[t].getWidth())
 				{
 					current.dealDamage((int)damage);
+					if(current.isInfected())
+						Malware.allMalware[Malware.numMalwares] = new Worm(rand.nextInt(5)+1, 0);
 					recycleBin.add(this);
 					numToRecycle++;
 				}

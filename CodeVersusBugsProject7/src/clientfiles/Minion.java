@@ -21,12 +21,7 @@
  */
 package clientfiles;
 
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
-
-import javax.swing.ImageIcon;
-
 public class Minion extends Malware
 {
 	public static Image sprite = MyImages.minion;

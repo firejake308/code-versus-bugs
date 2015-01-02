@@ -801,13 +801,15 @@ public class GamePanel extends JPanel
 				tutorial.setText("with an antivirus scanner or de-encrypt them...");
 				break;
 			case 85:
-				tutorial.setText("with an upgraded encrypter. Since scanners also...");
+				tutorial.setText("with an upgraded encrypter. Although encrypters...");
 				break;
 			case 86:
+				tutorial.setText("are cheaper, scanners deal damage, so...");
+			case 87:
 				tutorial.setText("I recommend placing a scanner on this corner.");
 				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
 				break;
-			case 87:
+			case 88:
 				if(Game.getMoney() < 1000)
 					Game.addMoney(1000 - Game.getMoney());
 				tutorial.setText("Buy a scanner now.");
@@ -815,18 +817,18 @@ public class GamePanel extends JPanel
 				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
 				tutorial.setLocation(0, 215);
 				break;
-			case 88:
+			case 89:
 				tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
 				tutorial.setIcon(null);
 				tutorial.setText("Now, the scanner will reveal the Trojans' true...");
 				break;
-			case 89:
+			case 90:
 				tutorial.setText("identity. Remember, Trojans have high health, so...");
 				break;
-			case 90:
+			case 91:
 				tutorial.setText("You probably want a disc thrower that covers ...");
 				break;
-			case 91:
+			case 92:
 				tutorial.setText("the right side of the map. You're all set! Go get 'em!");
 				tutorial.setVisible(false);
 				Game.gameState = Game.PLAYING;

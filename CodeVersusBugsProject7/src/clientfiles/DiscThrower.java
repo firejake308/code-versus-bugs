@@ -30,15 +30,8 @@ package clientfiles;
  * limitations under the License.
  */
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public class DiscThrower extends Tower
 {

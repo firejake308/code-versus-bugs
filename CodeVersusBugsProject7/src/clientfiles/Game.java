@@ -38,6 +38,8 @@
 package clientfiles;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.ListIterator;
 
 import javax.swing.*;
@@ -57,12 +59,12 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 750;
+	private static int money = 7500;
 	public static int lives = 5000;
-	public static int level = 20;
+	public static int level = 10;
 	
 	public static boolean tutorial = true;
-	public static int tutorialSlide = 72;
+	public static int tutorialSlide = 1;
 	public static boolean livesTutorialPlayed = false;
 	public static int savedSlide = 1;
 	
@@ -123,7 +125,11 @@ public class Game extends JFrame implements Runnable
 			gf.setUndecorated(true);
 		    gf.setBounds(0,0,dm.getWidth(),dm.getHeight());
 			gf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			gf.setIconImage(MyImages.miniMinion);
+			ArrayList<BufferedImage> icons = new ArrayList<BufferedImage>();
+			icons.add(MyImages.miniMinion);
+			icons.add(MyImages.miniMinion2);
+			icons.add(MyImages.miniMinion3);
+			gf.setIconImages(icons);
 			gf.setVisible(true);
 			gf.setResizable(false);
 		}

@@ -32,6 +32,8 @@ public class MyImages
 {
 	//frames and buttons
 	public static BufferedImage miniMinion;
+	public static BufferedImage miniMinion2;
+	public static BufferedImage miniMinion3;
 	public static BufferedImage play;
 	public static BufferedImage pause;
 	public static BufferedImage fastForwardOff;
@@ -128,6 +130,8 @@ public class MyImages
 		{
 			//frames and buttons
 			miniMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon.png"));
+			miniMinion2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon2.png"));
+			miniMinion3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon3.png"));
 			pause = ImageIO.read(MyImages.class.getResourceAsStream("resources/pausePauseButton.png"));
 			play 			= ImageIO.read(MyImages.class.getResourceAsStream("resources/playPauseButton.png"));
 			fastForwardOff 	= ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOff.png"));
