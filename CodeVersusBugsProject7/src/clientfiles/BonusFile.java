@@ -1,6 +1,7 @@
 package clientfiles;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -9,23 +10,70 @@ public class BonusFile
 {
 	public static final int EXE = 0;
 	public static final int DATA = 1;
+	public static final Point CPU = new Point((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - 
+			(Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3), (int) Game.gamePanel.path[1].getY());
 	public static ArrayList<BonusFile> allFiles = new ArrayList<BonusFile>();
 	public static ArrayList<BonusFile> recycleBin = new ArrayList<BonusFile>();
 	
-	private int x;
+	private double x;
 	private double y;
 	private double speed;
 	private int reward;
 	private BufferedImage sprite;
 	private int type;
 	private boolean encrypted;
-	
+	private Point destination;
+	private Point origin;
+	private double distance;
+	private double TOTAL_DISTANCE;
+	/**
+	 * Creates a file that carries important info.
+	 * 
+	 * @param type DATA or EXE
+	 * @param orig the starting point of the file
+	 * @param dest the destination of the file
+	 */
+	public BonusFile(int type, Point orig, Point dest) 
+	{
+		//initialize instance variables
+		reward = 10;
+		speed = Game.widthOfGamePanel  * 0.0075;
+		encrypted = false;
+		
+		if(type == EXE)
+		{
+			this.type = type;
+			sprite = MyImages.exeFile;
+		}
+		else if(type == DATA)
+		{
+			this.type = type;
+			sprite = MyImages.dataFile;
+		}
+		
+		//initialize x, y,origin, and destination
+		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
+		setOrigin((int)x, orig.y);
+		destination = dest;
+		distance = 0;
+		TOTAL_DISTANCE = origin.distance(destination);
+		
+		ListIterator<BonusFile> iterator = allFiles.listIterator();
+		iterator.add(this);
+	}
+	/**
+	 * Creates a file on the "file stream" part of the map, headed toward the CPU by default.
+	 * 
+	 * @param y the y to start the file at
+	 * @param type the type of the file (DATA or EXE)
+	 */
 	public BonusFile(int y, int type) 
 	{
 		//initialize instance variables
 		reward = 10;
 		speed = Game.widthOfGamePanel  * 0.0075;
 		encrypted = false;
+		
 		if(type == EXE)
 		{
 			this.type = type;
@@ -38,28 +86,35 @@ public class BonusFile
 		}
 		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
 		setY(y);
+		setOrigin((int)x, y);
+		destination = new Point((int)x, CPU.y);
+		distance = 0;
+		TOTAL_DISTANCE = y - CPU.y;
 		
 		ListIterator<BonusFile> iterator = allFiles.listIterator();
 		iterator.add(this);
 	}
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public double getY() {
+	public double getY() 
+	{
 		return y;
 	}
-
-	private void setY(double y) {
+	private void setY(double y) 
+	{
 		this.y = y;
 	}
 	private void setCenterX(int xToSet) 
 	{
 		x = xToSet - sprite.getWidth()/2;
+	}
+	public void setOrigin(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+		origin = new Point(x,y);
 	}
 	public int getType()
 	{
@@ -68,30 +123,82 @@ public class BonusFile
 	
 	public void draw(Graphics g)
 	{
-		g.drawImage(sprite, x, (int)y, null);
+		g.drawImage(sprite, (int)x, (int)y, null);
 	}
 	
 	public void move(double frames)
 	{
-		//keep going up until hits cpu
-		if(getY() > Game.gamePanel.path[1].getY())
+		//keep going up until hits destination
+		if(distance < TOTAL_DISTANCE)
 		{
-			setY(getY()-speed*frames/60 * Game.speedModifier);
+			double slope;
+			double angle;
+			double xDist;
+			double yDist;
+			try
+			{
+				slope = (destination.y - origin.y) / (destination.x - origin.x);
+				angle = Math.abs(Math.atan(slope));
+			}
+			//if going straight up or down, angle is 90
+			catch(ArithmeticException e)
+			{
+				angle = Math.PI / 2;
+			}
+			yDist = Math.sin(angle);
+			xDist = Math.cos(angle);
 			//debug
-			//System.out.println((speed*frames/60 * Game.speedModifier));
+			//System.out.println("moving "+xDist+" on x-axis and "+yDist+" on y");
+			
+			if(destination.x >= origin.x && destination.y >= origin.y)
+			{
+				setY(y+yDist*speed*frames/60);
+				setX(x+xDist*speed*frames/60);
+				distance += speed*frames/60;
+			}
+			else if(destination.x >= origin.x && destination.y <= origin.y)
+			{
+				setY(y-yDist*speed*frames/60);
+				setX(x+xDist*speed*frames/60);
+				distance += speed*frames/60;
+			}
+			else if(destination.x <= origin.x && destination.y >= origin.y)
+			{
+				setY(y+yDist*speed*frames/60);
+				setX(x-xDist*speed*frames/60);
+				distance += speed*frames/60;
+			}
+			else if(destination.x <= origin.x && destination.y <= origin.y)
+			{
+				setY(y-yDist*speed*frames/60);
+				setX(x-xDist*speed*frames/60);
+				distance += speed*frames/60;
+			}
 		}
-		//if virus makes it across the map, then despawn virus
+		//if virus makes it to destination, then despawn virus
 		else
 		{
-			System.out.println("a file made it across");
+			//add lives for CPU files
+			if(destination.equals(CPU))
+			{
+				System.out.println("a file made it across");
 					
-			Game.lives+=reward;
-			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
-			
-			addToRecycleBin();
+				Game.lives+=reward;
+				Game.gf.life.setText("Bytes Remaining: " + Game.lives);
+				
+				addToRecycleBin();
+			}
+			//for files headed to other places
+			else
+			{
+				addToRecycleBin();
+			}
 		}
 	}
 	
+	private void setX(double x) {
+		this.x = x;
+	}
 	public void encrypt()
 	{
 		encrypted = true;

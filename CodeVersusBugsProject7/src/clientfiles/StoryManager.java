@@ -55,14 +55,6 @@ public class StoryManager implements LevelManager
 	private int bots;
 	
 	/**
-	 * @deprecated
-	 */
-	public StoryManager()  
-	{
-		
-	}
-	
-	/**
 	 * Sets number of malwares per type that are in the level.
 	 *  
 	 * @param numOfMinions
@@ -256,9 +248,6 @@ public class StoryManager implements LevelManager
 			case 5:	
 				setMalwaresForLevel(100, 20, 20, 0, 0, 0, 0, 0);
 				addMalwares();
-				//special case for tutorial slide 30
-				if(Game.tutorial && Game.tutorialSlide <= 30)
-					Game.gamePanel.nextSlide();
 				break;
 			case 6:
 				setMalwaresForLevel(120, 40, 40, 0, 0, 0, 0, 0);
@@ -320,28 +309,25 @@ public class StoryManager implements LevelManager
 				setMalwaresForLevel(0, 0, 0, 0, 10, 0, 0, 0);
 				setFilesForLevel(4);
 				addMalwares();
-				//move onto files tutorial
-				if(Game.tutorial && Game.tutorialSlide <= 72)
-					Game.gamePanel.nextSlide();
 				break;
 			case 21:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 0, 0);
-				setFilesForLevel(6);
+				setFilesForLevel(8);
 				addMalwares();
 				break;
 			case 22:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 0, 15, 0);
-				setFilesForLevel(6);
+				setFilesForLevel(8);
 				addMalwares();
 				break;
 			case 23:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 15, 0);
-				setFilesForLevel(6);
+				setFilesForLevel(8);
 				addMalwares();
 				break;
 			case 24:
 				setMalwaresForLevel(0, 0, 0, 0, 0, 0, 0, 5);
-				setFilesForLevel(6);
+				setFilesForLevel(8);
 				addMalwares();
 			default:
 				Game.gameState = Game.OVER;

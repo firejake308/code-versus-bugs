@@ -92,6 +92,11 @@ public class GamePanel extends JPanel
 	private Point enHotspot;
 	private Cursor encrypterCursor;
 	private Cursor invalidEncrypterCursor;
+	private Image ctSprite;
+	private Image ctInvalidSprite;
+	private Point ctHotspot;
+	private Cursor communicationsCursor;
+	private Cursor invalidCommunicationsCursor;
 	
 	
 	static private final long serialVersionUID = 1;
@@ -128,6 +133,11 @@ public class GamePanel extends JPanel
 		enHotspot = new Point(15, 15);
 		encrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enSprite,enHotspot,"Encrypter");
 		invalidEncrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enInvalidSprite,enHotspot,"Encrypter");
+		ctSprite = CommunicationsTower.icon.getImage();
+		ctInvalidSprite = CommunicationsTower.invalidIcon.getImage();
+		ctHotspot = new Point(15, 15);
+		communicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctSprite,ctHotspot,"Communications Tower");
+		invalidCommunicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctInvalidSprite,ctHotspot,"Communications Tower");
 		
 		this.setFocusable(true);
 		lvlManager = new StoryManager();
@@ -236,12 +246,24 @@ public class GamePanel extends JPanel
                         //special case for tutorial slide 8
                         if(Game.tutorialSlide == 8)
                         	nextSlide();
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currDT);
+                        	}
+                        }
+                        
                         break;
             		case NUMBER_GENERATOR:
 	            		// create a new number generator in the static array
 	                    Tower.allTowers[numTowers] = new NumberGenerator(e.getX(), e.getY(), numTowers);
 	                    
-	                    //use currDT as shortcut reference for current disc thrower
+	                    //use currT as shortcut reference for current num gen
 	                    Tower currT = Tower.allTowers[numTowers];
 	                    numTowers++; //now there's 1 more tower
 	                    
@@ -252,6 +274,18 @@ public class GamePanel extends JPanel
                         setCursor(Cursor.getDefaultCursor());
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currT);
+                        	}
+                        }
+                        
             			break;
             		case SCANNER:
             			// create a new number generator in the static array
@@ -268,6 +302,18 @@ public class GamePanel extends JPanel
                         setCursor(Cursor.getDefaultCursor());
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currST);
+                        	}
+                        }
+                        
             			break;
             		case FIREWALL:
             			// create a new number generator in the static array
@@ -300,6 +346,25 @@ public class GamePanel extends JPanel
                         setCursor(Cursor.getDefaultCursor());
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
+            			break;
+            		case COMMUNICATIONS_TOWER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new CommunicationsTower(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currCT = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currCT.setCenterX(e.getX());
+	                    currCT.setCenterY(e.getY());
+	                      
+	                    // upgrade new towers
+	            		((CommunicationsTower)currCT).upgradeTowers();
+	                    
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
             			break;	
             		case NONE:
             		default:
@@ -326,12 +391,14 @@ public class GamePanel extends JPanel
             		case ENCRYPTER:
             			setCursor(encrypterCursor);
             			break;
+            		case COMMUNICATIONS_TOWER:
+            			setCursor(communicationsCursor);
+            			break;
             		case NONE:
             		default:
             			setCursor(Cursor.getDefaultCursor());
             			rangeOn = false;
             			break;
-            			
             	}
             }
         });
@@ -384,6 +451,13 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
+        		if(e.getKeyCode()==KeyEvent.VK_C)
+        		{
+        			TowerType towerToPlace = TowerType.COMMUNICATIONS_TOWER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
         		if(e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
@@ -394,6 +468,7 @@ public class GamePanel extends JPanel
         			Game.pauseButton.setIcon(PauseButtonListener.sprite);
         			
         			Game.gameState = Game.PAUSED;
+        			Game.pauseButton.setIcon(PauseButtonListener.sprite);
         			
         			//show dialog to quit or resume
         			Object[] options = {"Resume", "Quit"};
@@ -480,7 +555,15 @@ public class GamePanel extends JPanel
     										setCursor(invalidEncrypterCursor);
 										else
 											setCursor(encrypterCursor);
-    		break;	    		
+    									break;
+    		case COMMUNICATIONS_TOWER:	if (!ShopPanel.checkPlacement())
+											setCursor(invalidCommunicationsCursor);
+										else
+											setCursor(communicationsCursor);
+							    		rangeOn = true;  // this stuff was missing but i added it
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-CommunicationsTower.rangeToSet, getMouseY()-CommunicationsTower.rangeToSet, 
+							    				CommunicationsTower.rangeToSet*2, CommunicationsTower.rangeToSet*2);
+										break;
 			default:					setCursor(Cursor.getDefaultCursor());
 										break;
     	}
@@ -688,6 +771,7 @@ public class GamePanel extends JPanel
 				tutorial.setHorizontalAlignment(SwingConstants.LEFT);
 				tutorial.setText("The worms are here! ...");
 				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
 				break;
 			case 52:
 				tutorial.setText("Worms are advanced ...");
@@ -754,6 +838,7 @@ public class GamePanel extends JPanel
 			case 72:
 				tutorial.setVisible(false);
 				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 				break;
 			//files and trojans tutorial
 			case 73:
@@ -763,6 +848,7 @@ public class GamePanel extends JPanel
 				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
 				tutorial.setText("This level, you get your first taste of files. ...");
 				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
 				break;
 			case 74:
 				tutorial.setText("The 1st thing you need to know is that files are slow.");
@@ -777,7 +863,7 @@ public class GamePanel extends JPanel
 				tutorial.setText("distance to cover. A file that makes it safely to the...");
 				break;
 			case 77:
-				tutorial.setText("CPU will add 20 bytes of data. However, there are ...");
+				tutorial.setText("CPU will add 10 bytes of data. However, there are ...");
 				break;
 			case 78:
 				tutorial.setText("other things on the Internet that want to get to...");
@@ -818,7 +904,8 @@ public class GamePanel extends JPanel
 				tutorial.setLocation(0, 215);
 				break;
 			case 89:
-				tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
+				//tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
 				tutorial.setIcon(null);
 				tutorial.setText("Now, the scanner will reveal the Trojans' true...");
 				break;
@@ -832,6 +919,154 @@ public class GamePanel extends JPanel
 				tutorial.setText("the right side of the map. You're all set! Go get 'em!");
 				tutorial.setVisible(false);
 				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				break;
+			//viruses tutorial
+			case 93:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("From here on out, files are pretty much going to...");
+				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
+				break;
+			case 94:
+				tutorial.setText("be omnipresent. This is an easy way for you to...");
+				break;
+			case 95:
+				tutorial.setText("rack up data, but on the flip side, malwares like...");
+				break;
+			case 96:
+				tutorial.setText("viruses will try to use the files for their own...");
+				break;
+			case 97:
+				tutorial.setText("purposes. Viruses come in from the top, like...");
+				break;
+			case 98:
+				tutorial.setText("minions and worms. However, viruses can replicate...");
+				break;
+			case 99:
+				tutorial.setText("by attaching themselves to executable files. ...");
+				break;
+			case 100:
+				tutorial.setText("The best defense against these is to stop them ...");	
+				break;
+			case 101:
+				tutorial.setText("early on, with scanners and disc throwers. ...");
+				break;
+			case 102:
+				tutorial.setText("However, they are rather fast, so it might ...");
+				break;
+			case 103:
+				tutorial.setText("be helpful to place a random number generator.");
+				break;
+			case 104:
+				tutorial.setText("These towers freeze malware teporarily.");
+			case 105:
+				tutorial.setText("You can buy one if you want.");
+				tutorial.setLocation(0, 150);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				break;
+			case 106:
+				tutorial.setText("Okay, I hope you can handle 15 viruses. Good luck!");
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				break;
+			case 107:
+				tutorial.setVisible(false);
+				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				break;
+			//spywares tutorial
+			case 108:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setText("These shady characters on the screen are ...");
+				break;
+			case 109:
+				tutorial.setText("called spyware. They hunt the network for ...");
+				break;
+			case 110:
+				tutorial.setText("unprotected data, stealing any that they find. ...");
+				break;
+			case 111:
+				tutorial.setText("You can protect your data by encrypting it.");
+				break;
+			case 112:
+				tutorial.setText("Paying $750 for an encrypter is definitely worth...");
+				break;
+			case 113:
+				tutorial.setText("the money, since each file that is stolen...");
+				break;
+			case 114:
+				tutorial.setText("by spyware contains confidential info...");
+				break;
+			case 115:
+				tutorial.setText("that the hackers will use to spend 10% of...");
+				break;
+			case 116:
+				tutorial.setText("all the money you currently have.");
+				break;
+			case 117:
+				tutorial.setText("If you can, buy an encrypter now.");
+				tutorial.setLocation(0, 370);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				break;
+			case 118:
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setIcon(null);
+				tutorial.setText("Now go! Obliterate the spyware and ruin the ...");
+				break;
+			case 119:
+				tutorial.setText("hackers' dreams!");
+				break;
+			case 120:
+				tutorial.setVisible(false);
+				break;
+			//bots tutorial
+			case 121:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9*h/10, w, h/10);
+				tutorial.setText("Ah,the hackers have unleashed the most powerful...");
+				break;
+			case 122:
+				tutorial.setText("malware of all: the Web Bot. Bots perform...");
+				break;
+			case 123:
+				tutorial.setText("actions that are normally done by humans. These...");
+				break;
+			case 124:
+				tutorial.setText("particular bots create their own minions in...");
+				break;
+			case 125:
+				tutorial.setText("an attempt to perform a denial of service...");
+				break;
+			case 126:
+				tutorial.setText("attack. In a DoS attack, hackers overflow the...");
+				break;
+			case 127:
+				tutorial.setText("servers with bots. This technique could be used...");
+				break;
+			case 128:
+				tutorial.setText("to shut down PlayStation Network or even to...");
+				break;
+			case 129:
+				tutorial.setText("overwhelm your disc throwers with sheer numbers.");
+				break;
+			case 130:
+				tutorial.setText("Beware, you had better be well prepared , for...");
+				break;
+			case 131:
+				tutorial.setText("the bots are no weak enemy!");
+				break;
+			case 132:
+				tutorial.setVisible(false);
 				break;
 			//only runs when a life is lost
 			case 500:
@@ -842,6 +1077,7 @@ public class GamePanel extends JPanel
 				tutorial.setBounds(3 * w / 7, 3 * h / 14, w / 2, h / 10);
 				tutorial.setText("Oh, rats! it appears that...");
 				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
 				break;
 			case 501:
 				tutorial.setText("the malwares reached your...");
@@ -894,6 +1130,7 @@ public class GamePanel extends JPanel
 				Game.livesTutorialPlayed = true;
 				Game.tutorialSlide = Game.savedSlide - 1;
 				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 				//go back
 				nextSlide();
 				break;

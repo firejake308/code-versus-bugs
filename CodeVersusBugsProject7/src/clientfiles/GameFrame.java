@@ -69,8 +69,6 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		//set layout for game
 		Container mainWindow = getContentPane();
-		//GridBagLayout layout = new GridBagLayout();
-		//GridBagConstraints constraints = new GridBagConstraints();
 		mainWindow.setLayout(null);
 		mainWindow.setBackground(epic);
 		

@@ -75,7 +75,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 		options.addActionListener(this);
 		c.add(options);
 		
-		instructions = new JButton("INSTRUCTIONS");
+		instructions = new JButton("DIRECTIONS");
 		instructions.setFont(new Font("Monospaced", Font.PLAIN, 20));
 		instructions.setBounds(120, 280, 160, 50);
 		instructions.addActionListener(this);
@@ -259,6 +259,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			Game.tutorial = false;
 			Game.tutorialSlide = 0;
 			Game.gamePanel.disableTutorial();
+			Game.techPanel.disableTutorial();
 		}
 		else if(state == ItemEvent.SELECTED)
 			Game.tutorial = true;

@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.util.Random;
 
@@ -89,6 +90,7 @@ public abstract class Tower implements ActionListener
 	
 	protected Ellipse2D rangeIndicator;
 	protected Arc2D scan;
+	protected BufferedImage healthBar;
 	public boolean rangeOn = true;
 	protected double angleOfArrow;
 	protected double scanDegree;
@@ -97,6 +99,7 @@ public abstract class Tower implements ActionListener
 	protected int projectileDurability;
 	protected boolean splashEffect; //TODO add animation
 	protected boolean lethalRandoms = false;
+	protected boolean buffed;
 	
 	protected int cost = 0;
 	protected int realValue = 0;
@@ -112,18 +115,6 @@ public abstract class Tower implements ActionListener
 	protected double hits;
 	protected double accuracy;
 	
-	/** Upgrades Ideas:
-	 * Individual vs Universal  				<---let's start with individual 
-	 * Attack       		<---i think we should do attack 1st
-	 * bottom panel vs shop panel				<---???you choose here
-	 * panel(must be individual) vs tree(must be universal)	<---we don't actually have to have different visuals, tree == paused like state?
-	 * 											here, let's just start
-	 * 											ok so lets get the pause menu
-	 * stats						<---start w/ stats. access the tree?
-	 * ok, so stats on tree and individual upgrades on panel
-	 * abilities/special upgrades vs stats
-	 */
-	
 	public Tower(ImageIcon icon, int idToSet)
 	{
 		kills = 0;
@@ -133,6 +124,7 @@ public abstract class Tower implements ActionListener
 		accuracy = 1;
 		maxHealth = healthToSet;
 		health = maxHealth;
+		buffed = false;
 		
 		id = idToSet;
 		
@@ -143,7 +135,6 @@ public abstract class Tower implements ActionListener
 		sprites[id] = new JButton(icon);
 		sprites[id].setBounds(getX(), getY(), (int)(icon.getIconWidth()*Game.scaleOfSprites), (int)(icon.getIconHeight()*Game.scaleOfSprites));
 		sprites[id].addActionListener(this);
-		
 		
 		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
 		
@@ -427,6 +418,8 @@ public abstract class Tower implements ActionListener
 		double virusesDistance = 0;
 		boolean specialEffects = false;
 		boolean targetFound = false;
+		boolean validTower = true;
+		boolean commTowerSelected = false;
 		Malware virusToAttack = null;
 		
 		if (target.type == TowerType.NUMBER_GENERATOR)
@@ -472,6 +465,82 @@ public abstract class Tower implements ActionListener
 				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
 				
 				if (Malware.allMalware[i].state != State.INVISIBLE  && Malware.allMalware[i].getRelativeDistance() >= virusesDistance && distanceFromTower <= range && yOfVirus >= 0)
+				{
+					virusToAttack = Malware.allMalware[i];
+					virusesDistance = virusToAttack.getRelativeDistance();
+					targetFound = true;
+				}
+				
+				i++;
+			}
+		}
+		
+		i = 0;
+		
+		if (target.type == TowerType.COMMUNICATIONS_TOWER || target.type == TowerType.FIREWALL || target.type == TowerType.ENCRYPTER)
+			validTower = false;
+		
+		// check range of comm towers
+		if (specialEffects)
+		{
+			for (int t = 0; t < GamePanel.numTowers; t++)
+			{
+				if (Tower.allTowers[t] == null)
+					break;
+				if (Tower.allTowers[t].type == TowerType.COMMUNICATIONS_TOWER)
+					commTowerSelected = true;
+				
+				while (i < Malware.numMalwares && commTowerSelected && validTower)
+				{
+					//necessary to prevent null pointer exceptions
+					if(Malware.allMalware[i] == null)
+						break;
+					
+					xOfVirus = Malware.allMalware[i].getCenterX();
+					yOfVirus = Malware.allMalware[i].getCenterY();
+					xOfTower = Tower.allTowers[t].getCenterX();
+					yOfTower = Tower.allTowers[t].getCenterY();
+					
+					distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
+					
+					if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.FROZEN 
+							&& Malware.allMalware[i].state != State.INVISIBLE && distanceFromTower <= Tower.allTowers[t].range && yOfVirus >= 0 
+							&& ((CommunicationsTower)Tower.allTowers[t]).shareRange)
+					{
+						virusToAttack = Malware.allMalware[i];
+						virusesDistance = virusToAttack.getRelativeDistance();
+						targetFound = true;
+					}
+					
+					i++;
+				}
+			}
+		}
+		
+		i = 0;
+		
+		// check range of comm towers
+		for (int t = 0; t < GamePanel.numTowers; t++)
+		{
+			if (Tower.allTowers[t] == null)
+				break;
+			if (Tower.allTowers[t].type == TowerType.COMMUNICATIONS_TOWER)
+				commTowerSelected = true;
+			
+			while (i < Malware.numMalwares && commTowerSelected && validTower)
+			{
+				//necessary to prevent null pointer exceptions
+				if(Malware.allMalware[i] == null)
+					break;
+				
+				xOfVirus = Malware.allMalware[i].getCenterX();
+				yOfVirus = Malware.allMalware[i].getCenterY();
+				xOfTower = Tower.allTowers[t].getCenterX();
+				yOfTower = Tower.allTowers[t].getCenterY();
+				
+				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
+				
+				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.INVISIBLE && distanceFromTower <= Tower.allTowers[t].range && yOfVirus >= 0 && ((CommunicationsTower)Tower.allTowers[t]).shareRange)
 				{
 					virusToAttack = Malware.allMalware[i];
 					virusesDistance = virusToAttack.getRelativeDistance();

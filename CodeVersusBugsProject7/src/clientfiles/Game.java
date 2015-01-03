@@ -61,10 +61,10 @@ public class Game extends JFrame implements Runnable
 	//common debugging parameters
 	private static int money = 7500;
 	public static int lives = 5000;
-	public static int level = 10;
+	public static int level = 21;
 	
 	public static boolean tutorial = true;
-	public static int tutorialSlide = 1;
+	public static int tutorialSlide = 92;
 	public static boolean livesTutorialPlayed = false;
 	public static int savedSlide = 1;
 	
@@ -79,13 +79,12 @@ public class Game extends JFrame implements Runnable
 	//4 areas of screen
 	static public JPanel infoPanel;
 	static public GamePanel gamePanel;
-	
 	static public TechPanel techPanel;
-	
 	static public ShopPanel shopPanel;
 	
 	static public JButton pauseButton;
 	static public JButton fastForwardButton;
+	
 	public static int widthOfGamePanel;
 	public static int heightOfGamePanel;
 	
@@ -119,7 +118,6 @@ public class Game extends JFrame implements Runnable
 	}
 	public static void initializeGame()
 	{
-
 		try 
 		{
 			gf.setUndecorated(true);
@@ -182,7 +180,7 @@ public class Game extends JFrame implements Runnable
 			Game.gameState = Game.PAUSED;
 			
 			//show dialog to quit or resume
-			Object[] options = {"Resume", "Quit"};
+			Object[] options = {"Resume", "Quit", "Restart"};
 			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
 					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
 			
@@ -194,6 +192,33 @@ public class Game extends JFrame implements Runnable
 			else if(choice == 1)
 			{
 				System.exit(0);
+			}
+			else if(choice == 2)
+			{
+				//reset static Game variables
+				Game.gameState = Game.PAUSED;
+				Game.level = 1;
+				Game.lives = 5000;
+				Game.money = 750;
+				Game.tutorialSlide = 1;
+				Game.endOfRound = true;
+				
+				//reset game
+				Game.gf.setVisible(false);
+				System.out.println(gf);
+				System.out.println(gamePanel);
+				System.out.println(shopPanel);
+				Game.gf = new GameFrame();
+				Game.initializeGame();
+				
+				//reset static collections
+				Tower.allTowers = new Tower[1000];
+				GamePanel.numTowers = 0;
+				Tower.sprites = new JButton[1000];
+				Malware.allMalware = new Malware[10000];
+				Malware.numMalwares = 0;
+				BonusFile.allFiles = new ArrayList<BonusFile>();
+				Projectile.allProjectiles = new ArrayList<Projectile>();
 			}
 		}
 		else if(Game.gameState == Game.PAUSED)
@@ -235,6 +260,16 @@ public class Game extends JFrame implements Runnable
 			
 			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 			Game.gameState = Game.PLAYING;
+			
+			//special case for minion types tutorial
+			if(level == 5 && Game.tutorial && Game.tutorialSlide <= 30)
+				Game.gamePanel.nextSlide();
+			//move onto files tutorial
+			if(level == 20 && Game.tutorial && Game.tutorialSlide <= 72)
+				Game.gamePanel.nextSlide();
+			//move onto viruses tutorial
+			if(level == 21 && Game.tutorial && Game.tutorialSlide <= 92)
+				Game.gamePanel.nextSlide();
 		}
 	}
 	

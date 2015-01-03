@@ -82,7 +82,7 @@ public class Projectile
 		
 		idOfOwner = towerID;
 		
-		if (/*towerType==TowerType.DISC_THROWER*/Tower.allTowers[idOfOwner] instanceof DiscThrower)
+		if (Tower.allTowers[idOfOwner] instanceof DiscThrower)
 		{
 			sprite = MyImages.cd;
 			speed = 5;
@@ -135,7 +135,6 @@ public class Projectile
 		damage = damageToSet;
 		uses = Tower.allTowers[idOfOwner].projectileDurability;
 		splashEffect = Tower.allTowers[idOfOwner].splashEffect;
-		System.out.println("uses "+uses);
 	}
 	/**
 	 * ONLY FOR USE WITH WORMS TO ATTACK TOWERS
@@ -310,8 +309,6 @@ public class Projectile
 		//delete used projectiles
 		if (uses <= 0)
 		{
-			/*recycleBin[numToRecycle] = this;
-			numToRecycle++;*/
 			addToRecycleBin();
 		}
 		

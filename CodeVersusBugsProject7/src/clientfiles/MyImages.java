@@ -92,6 +92,15 @@ public class MyImages
 	public static BufferedImage firewall;
 	public static BufferedImage firewallShopImage;
 	public static BufferedImage firewallBroken;
+	public static BufferedImage commTower;
+	public static BufferedImage invalidCommTower;
+	public static BufferedImage healthBar0;
+	public static BufferedImage healthBar1;
+	public static BufferedImage healthBar2;
+	public static BufferedImage healthBar3;
+	public static BufferedImage healthBar4;
+	public static BufferedImage healthBar5;
+	
 	//projectiles
 	public static BufferedImage cd;
 	public static BufferedImage r0;
@@ -139,6 +148,7 @@ public class MyImages
 			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
 			arrowUp = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowUp.png"));
 			arrowDown = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowDown.png"));
+			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
 			tankMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusRed.png"));
@@ -191,6 +201,14 @@ public class MyImages
 			firewall = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall1.png"));
 			firewallShopImage = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall2.png"));
 			firewallBroken = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewallBroken.png"));
+			commTower = ImageIO.read(MyImages.class.getResourceAsStream("resources/commTower.png"));
+			invalidCommTower = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidCommTower.png"));
+			healthBar0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar0.png"));
+			healthBar1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar1.png"));
+			healthBar2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar2.png"));
+			healthBar3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar3.png"));
+			healthBar4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar4.png"));
+			healthBar5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar5.png"));
 			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));

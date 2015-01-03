@@ -32,6 +32,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private JButton buyScanner;
 	private JButton buyFireWall;
 	private JButton buyEncrypter;
+	private JButton buyCommunicationsTower;
 	
 	public static JLabel info = new JLabel("");
 	public static boolean warned = false;
@@ -42,6 +43,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon scImage = Scanner.icon;
 	private Icon fwImage = new ImageIcon(MyImages.firewallShopImage);
 	private Icon enImage = Encrypter.icon;
+	private Icon ctImage = CommunicationsTower.icon;
 	
 	public static int timer=0;
 	
@@ -52,6 +54,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyScanner = new JButton(scImage);
 		buyFireWall = new JButton(fwImage);
 		buyEncrypter = new JButton(enImage);
+		buyCommunicationsTower = new JButton(ctImage);
 		
 		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -62,12 +65,17 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyScanner.setBounds(20, 215, 50, 63);
 		buyFireWall.setBounds(20, 305, 50, 50);
 		buyEncrypter.setBounds(20, 370, 50, 63);
+		buyCommunicationsTower.setBounds(20, 440, 50, 50);
+		
+		//makes button background transparent
+		buyCommunicationsTower.setBackground(new Color(0,0,0,0));
 		
 		buyDiscThrower.addActionListener(this);
 		buyNumberGenerator.addActionListener(this);
 		buyScanner.addActionListener(this);
 		buyFireWall.addActionListener(this);
 		buyEncrypter.addActionListener(this);
+		buyCommunicationsTower.addActionListener(this);
 		
 		setLayout(null);
 		add(info);
@@ -76,6 +84,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		add(buyScanner);
 		add(buyFireWall);
 		add(buyEncrypter);
+		add(buyCommunicationsTower);
 		
 		buyDiscThrower.addMouseListener(new MouseAdapter()
 		{
@@ -139,10 +148,24 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.getMoney() < DiscThrower.cost)
+            		if (Game.getMoney() < Encrypter.cost)
             			changeInfo("$"+Encrypter.cost, true);
             		else
             			changeInfo("$"+Encrypter.cost, false);
+            	}
+			}
+		});
+		
+		buyCommunicationsTower.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				if (!warned)
+				{
+            		if (Game.getMoney() < CommunicationsTower.cost)
+            			changeInfo("$"+CommunicationsTower.cost, true);
+            		else
+            			changeInfo("$"+CommunicationsTower.cost, false);
             	}
 			}
 		});
@@ -174,7 +197,6 @@ public class ShopPanel extends JPanel implements ActionListener
 		
 		if (mouseOnTrack && towerToPlace != TowerType.FIREWALL && towerToPlace != TowerType.ENCRYPTER)
 		{
-			System.out.println("something");
 			return false;
 		}
 		else if (mouseOnTrack && (towerToPlace == TowerType.FIREWALL || towerToPlace == TowerType.ENCRYPTER))
@@ -223,6 +245,11 @@ public class ShopPanel extends JPanel implements ActionListener
 		{
 			proposedTower = new Rectangle(x-Scanner.icon.getIconWidth()/2, y-Scanner.icon.getIconHeight()/2, 
 					Scanner.icon.getIconWidth(), Scanner.icon.getIconHeight());
+		}
+		else if(towerToPlace == TowerType.COMMUNICATIONS_TOWER)
+		{
+			proposedTower = new Rectangle(x-CommunicationsTower.icon.getIconWidth()/2, y-CommunicationsTower.icon.getIconHeight()/2, 
+					CommunicationsTower.icon.getIconWidth(), CommunicationsTower.icon.getIconHeight());
 		}
 		//next, loop through all path parts and check for intersection with proposed tower
 		for(int pathPart = 0; pathPart < Game.gamePanel.path.length; pathPart++)
@@ -301,6 +328,9 @@ public class ShopPanel extends JPanel implements ActionListener
 				else if(choice == 0)
 					return;
 			}
+			//specialcase for tutorial slide 105
+			if(Game.tutorial && Game.tutorialSlide == 105)
+				Game.gamePanel.nextSlide();
 			
 			changeInfo("Number Generator Selected",false);
 		}
@@ -379,6 +409,34 @@ public class ShopPanel extends JPanel implements ActionListener
 				else if(choice == 0)
 					return;
 			}
+			//special case for tutorial slide 117
+			if(Game.tutorial && Game.tutorialSlide == 117)
+				Game.gamePanel.nextSlide();
+			
+			changeInfo("Encrypter Selected",false);
+		}
+		else if (temp == buyCommunicationsTower)
+		{
+			towerType = TowerType.COMMUNICATIONS_TOWER;
+			
+			//reset if already selected
+			if (towerToPlace == TowerType.COMMUNICATIONS_TOWER)
+			{
+				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
+				return;
+			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy an Encrypter?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
 			
 			changeInfo("Encrypter Selected",false);
 		}
@@ -432,6 +490,15 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.getMoney() >= Encrypter.cost)
 			{
 				towerToPlace = TowerType.ENCRYPTER;
+			}
+			else
+				changeInfo("Not Enough Money!", true);
+		}
+		else if(type == TowerType.COMMUNICATIONS_TOWER)
+		{
+			if(Game.getMoney() >= CommunicationsTower.cost)
+			{
+				towerToPlace = TowerType.COMMUNICATIONS_TOWER;
 			}
 			else
 				changeInfo("Not Enough Money!", true);

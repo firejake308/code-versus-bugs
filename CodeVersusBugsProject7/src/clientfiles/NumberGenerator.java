@@ -75,6 +75,8 @@ public class NumberGenerator extends Tower
 		
 		realValue += cost;
 		
+		healthBar = MyImages.healthBar0;
+		
 		//make user pay for towers
 		Game.makePurchase(cost);
 	}

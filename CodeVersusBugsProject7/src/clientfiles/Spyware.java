@@ -58,7 +58,7 @@ public class Spyware extends Malware
 			{
 				System.out.println("a virus made it across");
 				
-				Game.makePurchase((int)(Game.getMoney()*0.95));
+				Game.makePurchase((int)(Game.getMoney()*0.10));
 				
 				if (Game.lives <= 0)
 				{
