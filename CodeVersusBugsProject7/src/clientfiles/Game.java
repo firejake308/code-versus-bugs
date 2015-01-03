@@ -61,7 +61,7 @@ public class Game extends JFrame implements Runnable
 	//common debugging parameters
 	private static int money = 7500;
 	public static int lives = 5000;
-	public static int level = 21;
+	public static int level = 10;
 	
 	public static boolean tutorial = true;
 	public static int tutorialSlide = 92;
@@ -219,6 +219,9 @@ public class Game extends JFrame implements Runnable
 				Malware.numMalwares = 0;
 				BonusFile.allFiles = new ArrayList<BonusFile>();
 				Projectile.allProjectiles = new ArrayList<Projectile>();
+				
+				//reset miscellaneous static variables
+				Malware.routerOn = false;
 			}
 		}
 		else if(Game.gameState == Game.PAUSED)

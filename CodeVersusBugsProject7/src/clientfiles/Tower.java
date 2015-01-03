@@ -320,15 +320,45 @@ public abstract class Tower implements ActionListener
 			}
 			else if(health <= 4 * maxHealth / 5)
 			{
-				System.out.println("DAMAGED");
 				setIcon(new ImageIcon(MyImages.encrypter1));
 			}
 		}
-		//for ng's, just infect 'em for now
+		else if(this instanceof NumberGenerator)
+		{
+			if(health < 0)
+			{
+				infected = true;
+				health = 100;
+				healthBar = MyImages.healthBar5;
+			}
+			else if(health <= maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar4;
+			}
+			else if(health <= 2 * maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar3;
+			}
+			else if(health <= 3 * maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar2;
+			}
+			else if(health <= 4 * maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar1;
+			}
+		}
+		//for non-imaged towers, just infect
 		else if(health < 0)
 		{
 			infected = true;
 			health = 100;
+			System.out.println(getClass().getName()+" doesn't have an image.");
+			
+			if(health < 0)
+			{
+				healthBar = MyImages.healthBar0;
+			}
 		}
 	}
 	public boolean isInfected()
@@ -598,6 +628,19 @@ public abstract class Tower implements ActionListener
 			scan.setFrame(getCenterX()-range, getCenterY()-range, range*2, range*2);
 			g2d.setColor(new Color(131, 252, 201, 150));
 			g2d.fill(scan);
+		}
+		//set background transparent for communications tower
+		else if(this instanceof CommunicationsTower)
+		{
+			sprites[id].setBackground(new Color(0,0,0,0));
+		}
+		//draw health bar for num gens
+		else if(this instanceof NumberGenerator)
+		{
+			AffineTransform op = new AffineTransform();
+			op.scale(Game.scaleOfSprites, Game.scaleOfSprites);
+			op.translate(getX()/Game.scaleOfSprites, (getY() + sprites[id].getHeight())/Game.scaleOfSprites);
+			g2d.drawImage(healthBar, op, null);
 		}
 	}
 	

@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 /**ShopPanel.java
  * Handles the shop panel, which holds buttons for buying towers and an info label.
  * Additionally, this class checks the placement of new towers for collision with other towers
@@ -60,12 +61,12 @@ public class ShopPanel extends JPanel implements ActionListener
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
 		info.setOpaque(true);
 		info.setBounds(5, 10, 75, 55);
-		buyDiscThrower.setBounds(20, 75, 50, 63);
-		buyNumberGenerator.setBounds(20, 150, 50, 50);
-		buyScanner.setBounds(20, 215, 50, 63);
-		buyFireWall.setBounds(20, 305, 50, 50);
-		buyEncrypter.setBounds(20, 370, 50, 63);
-		buyCommunicationsTower.setBounds(20, 440, 50, 50);
+		buyDiscThrower.setBounds(20, 75, 51, 63);
+		buyNumberGenerator.setBounds(20, 150, 51, 50);
+		buyScanner.setBounds(20, 225, 51, 63);
+		buyFireWall.setBounds(20, 305, 51, 50);
+		buyEncrypter.setBounds(20, 370, 51, 63);
+		buyCommunicationsTower.setBounds(20, 440, 51, 50);
 		
 		//makes button background transparent
 		buyCommunicationsTower.setBackground(new Color(0,0,0,0));
@@ -507,6 +508,10 @@ public class ShopPanel extends JPanel implements ActionListener
 	
 	public void paintComponent(Graphics g)
 	{
-		
+		Graphics2D g2d = (Graphics2D)g;
+		//draw num gen health bar
+		AffineTransform op = new AffineTransform();
+		op.translate(20, 150 + ngImage.getIconHeight());
+		g2d.drawImage(MyImages.healthBar0, op, null);
 	}
 }

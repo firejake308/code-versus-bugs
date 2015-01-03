@@ -130,6 +130,7 @@ public class GameFrame extends JFrame implements ActionListener
 		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .12);
 		NumberGenerator.rangeToSet = (int) (Game.widthOfGamePanel * .15);
 		Scanner.rangeToSet = (int) (Game.widthOfGamePanel * .10);
+		CommunicationsTower.rangeToSet = (int) (Game.widthOfGamePanel * .10);
 		
 		//make path parts
 		Game.gamePanel.path = new Rectangle[18];

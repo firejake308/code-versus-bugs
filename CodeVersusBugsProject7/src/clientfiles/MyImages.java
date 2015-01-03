@@ -41,6 +41,18 @@ public class MyImages
 	public static BufferedImage redArrow;
 	public static BufferedImage arrowUp;
 	public static BufferedImage arrowDown;
+	public static BufferedImage dim;
+	public static BufferedImage glow;
+	public static BufferedImage startOpen;
+	public static BufferedImage startClosed;
+	public static BufferedImage creditsOpen;
+	public static BufferedImage creditsClosed;
+	public static BufferedImage optionsOpen;
+	public static BufferedImage optionsClosed;
+	public static BufferedImage directionsOpen;
+	public static BufferedImage directionsClosed;
+	public static BufferedImage exitOpen;
+	public static BufferedImage exitClosed;
 	//malware
 	public static BufferedImage minion;
 	public static BufferedImage tankMinion;
@@ -148,6 +160,18 @@ public class MyImages
 			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
 			arrowUp = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowUp.png"));
 			arrowDown = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowDown.png"));
+			dim = ImageIO.read(MyImages.class.getResourceAsStream("resources/dim.png"));
+			glow = ImageIO.read(MyImages.class.getResourceAsStream("resources/glow.png"));
+			startOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/startBtnOpen.png"));
+			startClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/startBtnClosed.png"));
+			creditsOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/creditsBtnOpen.png"));
+			creditsClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/creditsBtnClosed.png"));
+			optionsOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/optionsBtnOpen.png"));
+			optionsClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/optionsBtnClosed.png"));
+			directionsOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/directionsBtnOpen.png"));
+			directionsClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/directionsBtnClosed.png"));
+			exitOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/exitBtnOpen.png"));
+			exitClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/exitBtnClosed.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));

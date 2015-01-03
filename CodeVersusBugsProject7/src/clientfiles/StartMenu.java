@@ -46,49 +46,55 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	{
 		c = getContentPane();
 		c.setLayout(null);
+		c.setBackground(new Color(0,0,0));
 		
 		setSize(400,500);
 		setIconImage(MyImages.miniMinion);
 		setLocationRelativeTo(null);
 		
 		title = new JLabel("Code Versus Bugs");
+		title.setForeground(new Color(0, 162, 232));
 		title.setFont(new Font("Monospaced", Font.BOLD, 30));
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setBounds(0,50,400,50);
 		c.add(title);
 		
-		start = new JButton("NEW GAME");
-		start.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		start = new JButton(new ImageIcon(MyImages.startOpen));
 		start.setBounds(120,100,160,50);
 		start.addActionListener(this);
+		start.setRolloverIcon(new ImageIcon(MyImages.startClosed));
+		start.setBorder(null);
 		c.add(start);
 		
-		credits = new JButton("CREDITS");
-		credits.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		credits = new JButton(new ImageIcon(MyImages.creditsOpen));
 		credits.setBounds(120, 160, 160, 50);
 		credits.addActionListener(this);
+		credits.setRolloverIcon(new ImageIcon(MyImages.creditsClosed));
+		credits.setBorder(null);
 		c.add(credits);
 		
-		options = new JButton("OPTIONS");
-		options.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		options = new JButton(new ImageIcon(MyImages.optionsOpen));
 		options.setBounds(120, 220, 160, 50);
 		options.addActionListener(this);
+		options.setRolloverIcon(new ImageIcon(MyImages.optionsClosed));
+		options.setBorder(null);
 		c.add(options);
 		
-		instructions = new JButton("DIRECTIONS");
-		instructions.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		instructions = new JButton(new ImageIcon(MyImages.directionsOpen));
 		instructions.setBounds(120, 280, 160, 50);
 		instructions.addActionListener(this);
+		instructions.setRolloverIcon(new ImageIcon(MyImages.directionsClosed));
+		instructions.setBorder(null);
 		c.add(instructions);
 		
-		exit = new JButton("EXIT");
-		exit.setFont(new Font("Monospaced", Font.PLAIN, 20));
+		exit = new JButton(new ImageIcon(MyImages.exitOpen));
 		exit.setBounds(120, 340, 160, 50);
 		exit.addActionListener(this);
+		exit.setRolloverIcon(new ImageIcon(MyImages.exitClosed));
+		exit.setBorder(null);
 		c.add(exit);
 		
 		setVisible(true);
-		setLocationRelativeTo(null);
 	}
 	
 	public void run()
@@ -120,7 +126,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			title.setVisible(false);
 			
 	        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-	        scroll.setBounds(120, 50, 160, 200);
+	        scroll.setBounds(40, 50, 320, 325);
 	        
 			creditsText.setVisible(true);
 	        creditsText.setText("             Credits: \n\n"
@@ -138,11 +144,12 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					  		  + "       Patrick Kenney\n\n");
 	
 	        creditsText.setEditable(false);
-	        creditsText.setBounds(120, 50, 160, 200);
+	        creditsText.setBounds(40, 50, 320, 325);
 	        
 			c.add(scroll);
 			
-			back.setBounds(120, 275, 160, 50);
+			//turn on the back button
+			back.setBounds(120, 400, 160, 50);
 			back.addActionListener(this);
 			back.setVisible(true);
 			c.add(back);
@@ -160,12 +167,16 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			
 			//make the tutorial check box visible
 			tutorial.setBounds(120, 50, 160, 200);
+			tutorial.setBackground(Color.black);
+			tutorial.setForeground(new Color(0, 162, 232));
+			tutorial.setFont(new Font("Monospaced", Font.BOLD, 20));
+			tutorial.setBorder(null);
 			tutorial.addItemListener(this);
 			tutorial.setVisible(true);
 			c.add(tutorial);
 			
 			//turn on the back button
-			back.setBounds(120, 275, 160, 50);
+			back.setBounds(120, 400, 160, 50);
 			back.addActionListener(this);
 			back.setVisible(true);
 			c.add(back);
