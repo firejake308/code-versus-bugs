@@ -27,19 +27,23 @@ import java.awt.event.*;
  */
 public class StartMenu extends JFrame implements Runnable, ActionListener, ItemListener
 {
+	//front page stuff
 	private JLabel title;
 	private JButton start;
 	private JButton credits;
 	private JButton options;
 	private JButton instructions;
 	private JButton exit;
+	private JLabel deco1;
+	private JLabel deco2;
 	
+	//inside pages stuff
 	private JTextArea creditsText = new JTextArea("");
 	private JScrollPane scroll = new JScrollPane(creditsText);
 	private JCheckBox tutorial = new JCheckBox("Tutorial", true);
 	private JTextArea instructionsText = new JTextArea();
 	private JScrollPane instructionsScroll = new JScrollPane(instructionsText);
-	private JButton back = new JButton("Back");
+	private JButton back = new JButton(new ImageIcon(MyImages.backOpen));
 	private Container c;
 	
 	public StartMenu()
@@ -58,6 +62,14 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setBounds(0,50,400,50);
 		c.add(title);
+		
+		deco1 = new JLabel(new ImageIcon(MyImages.minion));
+		deco1.setBounds(10, 390, 70, 70);
+		c.add(deco1);
+		
+		deco2 = new JLabel(new ImageIcon(MyImages.minion));
+		deco2.setBounds(310, 390, 70, 70);
+		c.add(deco2);
 		
 		start = new JButton(new ImageIcon(MyImages.startOpen));
 		start.setBounds(120,100,160,50);
@@ -125,10 +137,12 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			exit.setVisible(false);
 			title.setVisible(false);
 			
+			scroll.setVisible(true);
 	        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	        scroll.setBounds(40, 50, 320, 325);
 	        
 			creditsText.setVisible(true);
+			creditsText.setFont(new Font("Monospaced", Font.BOLD, 15));
 	        creditsText.setText("             Credits: \n\n"
 					  		  + "          Developers:\n\n"
 					  		  + "          Adel hassan\n"
@@ -152,6 +166,8 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			back.setBounds(120, 400, 160, 50);
 			back.addActionListener(this);
 			back.setVisible(true);
+			back.setRolloverIcon(new ImageIcon(MyImages.backClosed));
+			back.setBorder(null);
 			c.add(back);
 		}
 		
@@ -170,7 +186,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			tutorial.setBackground(Color.black);
 			tutorial.setForeground(new Color(0, 162, 232));
 			tutorial.setFont(new Font("Monospaced", Font.BOLD, 20));
-			tutorial.setBorder(null);
+			tutorial.setFocusable(false);
 			tutorial.addItemListener(this);
 			tutorial.setVisible(true);
 			c.add(tutorial);
@@ -179,6 +195,8 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			back.setBounds(120, 400, 160, 50);
 			back.addActionListener(this);
 			back.setVisible(true);
+			back.setRolloverIcon(new ImageIcon(MyImages.backClosed));
+			back.setBorder(null);
 			c.add(back);
 		}
 		
@@ -194,6 +212,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			
 			//make the instructions visible
 			instructionsText.setVisible(true);
+			instructionsText.setFont(new Font("Monospaced", Font.BOLD, 15));
 			instructionsText.setText("Welcome to Code Versus Bugs! In this game, you play as a computer virus tracker who fights"
 					+ " malicious malware by placing epic towers.\n\n"
 					+ "CONTROLS\n\n"
@@ -201,9 +220,9 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					+ " things up. They are:\n"
 					+ "ESCAPE:\tBrings up a dialog to quit the game.\n"
 					+ "SPACE:\tWorks the same as clicking the \n\tpause/play button.\n"
-					+ "D:\tPlaces a Disc Thrower tower, if you \n\thave the necessary funds.\n"
-					+ "N:\tPlaces a Number Generator tower, if \n\tyou have the necessary funds.\n"
-					+ "S:\tPlaces a Scanner tower, if you have the \tnecessary funds.\n\n"
+					+ "D:\tPlaces a Disc Thrower\n\ttower, if you have the\n\tnecessary funds.\n"
+					+ "N:\tPlaces a Number Generator\n\ttower, if you have\n\tthe necessary funds.\n"
+					+ "S:\tPlaces a Scanner tower, \n\tif you have the \n\tnecessary funds.\n\n"
 					+ "GAMEPLAY\n\n"
 					+ "Code Versus Bugs is a tower defense-style game. Malwares come in from the top of the map,"
 					+ " then follow the track to the CPU. As a cybersecurity expert, your job is to place towers"
@@ -233,6 +252,8 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			back.setBounds(120, 400, 160, 50);
 			back.addActionListener(this);
 			back.setVisible(true);
+			back.setRolloverIcon(new ImageIcon(MyImages.backClosed));
+			back.setBorder(null);
 			c.add(back);
 		}
 		

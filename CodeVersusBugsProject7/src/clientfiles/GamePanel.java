@@ -538,6 +538,7 @@ public class GamePanel extends JPanel
     									rangeOn = true;
     									tempRangeIndicator = new Ellipse2D.Double(getMouseX()-NumberGenerator.rangeToSet, getMouseY()-NumberGenerator.rangeToSet, 
     											NumberGenerator.rangeToSet*2, NumberGenerator.rangeToSet*2);
+    									break;
     		case SCANNER:				if (!ShopPanel.checkPlacement())
 											setCursor(invalidScannerCursor);
 										else

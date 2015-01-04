@@ -222,6 +222,13 @@ public class Game extends JFrame implements Runnable
 				
 				//reset miscellaneous static variables
 				Malware.routerOn = false;
+				DiscThrower.damageToSet = 25;
+				DiscThrower.speedToSet = 30;
+				NumberGenerator.damageToSet = 0;
+				NumberGenerator.speedToSet = 80;
+				Scanner.damageToSet = 0.35;
+				Scanner.arcAngleToSet = 90;
+				Tower.resetHealth();
 			}
 		}
 		else if(Game.gameState == Game.PAUSED)

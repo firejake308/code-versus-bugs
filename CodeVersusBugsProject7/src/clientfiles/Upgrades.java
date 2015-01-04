@@ -49,6 +49,7 @@ public abstract class Upgrades
 {
 	public static JButton   deleteTower         = new JButton();
 	public static JButton	cureTower			= new JButton();
+	public static JButton   connect				= new JButton();
 	public static JPanel    upgrade             = new JPanel();
 	public static int       displayedUpgradeID  = 1000;
 	
@@ -96,6 +97,9 @@ public abstract class Upgrades
 		
 		cureTower.setBounds(105+(width/10-25)/2-37, 35, 100, 25);
 		cureTower.setText("Cure Tower");
+		
+		connect.setBounds(105+(width/10-25)/2-37, 60, 100, 25);
+		connect.setText("Connect");
 		
 		upgrade.addMouseListener(new MouseAdapter()
 		{
@@ -189,6 +193,23 @@ public abstract class Upgrades
 		    	cureTower();
 		    }
 		});
+		
+		connect.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				showConnectInfo();
+			}
+		});
+		
+		connect.addActionListener(new ActionListener()
+		{
+			
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	connectTower();
+		    }
+		});
 	}
 	
 	public static void showUpgradePanel(int id)
@@ -200,6 +221,7 @@ public abstract class Upgrades
 		updateStatistics();
 		upgrade.add(deleteTower);
 		upgrade.add(cureTower);
+		upgrade.add(connect);
 		
 		if (typeOfTower == TowerType.DISC_THROWER)
 			DiscThrower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
@@ -209,6 +231,10 @@ public abstract class Upgrades
 			Scanner.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.FIREWALL)
 			Scanner.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.ENCRYPTER)
+			Encrypter.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.COMMUNICATIONS_TOWER)
+			CommunicationsTower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		
 		upgrade.add(upgradePath1);
 		upgrade.add(upgradePath2);
@@ -243,8 +269,8 @@ public abstract class Upgrades
 		//Tower.allTowers[displayedUpgradeID].accuracy = Tower.allTowers[displayedUpgradeID].hits / Tower.allTowers[displayedUpgradeID].shotsFired;
 		
 		statistics.setText("    Kills: " + Tower.allTowers[displayedUpgradeID].kills + "\n   Shots Fired: " 
-										 + Tower.allTowers[displayedUpgradeID].shotsFired /* + "\n   Hits: " + Tower.allTowers[displayedUpgradeID].hits 
-										 + "\n   Accuracy: " + Tower.allTowers[displayedUpgradeID].accuracy*/);
+										 + Tower.allTowers[displayedUpgradeID].shotsFired + "\n   Damage: "
+										 + Tower.allTowers[displayedUpgradeID].damage);
 		upgrade.add(statistics);
 	}
 	
@@ -308,6 +334,32 @@ public abstract class Upgrades
 				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.scanner0));
 			else if(Tower.allTowers[displayedUpgradeID] instanceof Encrypter)
 				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.encrypter0));
+		}
+	}
+	
+	public static void showConnectInfo()
+	{
+		upgradesInfo.setText(" Connect:\n$500\n\n Requires a communications tower with the information hub upgrade");
+	}
+	
+	public static void connectTower()
+	{
+		boolean activeCommTower = false;
+		
+		for (int i = 0; i < GamePanel.numTowers; i++)
+		{
+			if (Tower.allTowers[i] == null)
+				return;
+			if (Tower.allTowers[i] instanceof CommunicationsTower)
+			{
+				if (((CommunicationsTower) Tower.allTowers[i]).informationHub)
+					activeCommTower = true;
+			}
+		}
+		
+		if (!Tower.allTowers[displayedUpgradeID].isConnected && activeCommTower && Game.makePurchase(500))
+		{	
+			Tower.allTowers[displayedUpgradeID].isConnected = true;
 		}
 	}
 	
@@ -528,6 +580,34 @@ public abstract class Upgrades
 											((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 300;
 											break;
 			case 432:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 240;
+											break;
+											
+											
+											
+											
+			case 611:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).damageToAdd += 5;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
+											break;
+			case 612:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).rangeToAdd += Game.widthOfGamePanel * .02;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
+											break;
+			case 613:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).damageToAdd += 10;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
+											break;
+			case 621:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).speedToAdd -= 3;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
+											break;
+			case 622:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).shareRange = true;
+											break;
+			case 631:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .02;
+											break;
+			case 632:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .03;
+											break;
+			case 633:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).informationHub = true;
 											break;
 			}
 		

@@ -85,6 +85,7 @@ public abstract class Tower implements ActionListener
 	protected int health;
 	protected int maxHealth;
 	private boolean infected = false;
+	public boolean isConnected = false;
 	private boolean spawnedWorm = false;
 	private static int healthToSet = 50;
 	
@@ -235,6 +236,10 @@ public abstract class Tower implements ActionListener
 	public static void increaseHealth(int increase)
 	{
 		healthToSet += increase;
+	}
+	public static void resetHealth()
+	{
+		healthToSet = 0;
 	}
 	public void dealDamage(int damage)
 	{
