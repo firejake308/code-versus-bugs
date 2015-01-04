@@ -1,6 +1,8 @@
 package clientfiles;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
@@ -68,16 +70,49 @@ public abstract class Upgrades
 		int height = Game.gamePanel.getHeight() / 10;
 		int width = Game.gamePanel.getWidth();
 		
-		//TODO check setBounds stuff
+		//format the upgrades panel
 		upgrade.setBounds(0, height * 9, width, height);
 		upgrade.setBackground(Color.CYAN);
 		upgrade.setVisible(true);
 		upgrade.setLayout(null);
 		
+		//set bounds of upgrade buttons
 		upgradePath1.setBounds(width/10 + 100, 10, 150, height-20);
 		upgradePath2.setBounds(width/10 + 255, 10, 150, height-20);
 		upgradePath3.setBounds(width/10 + 410, 10, 150, height-20);
 		
+		//snazzify the buttons
+		Image buttonOpen = MyImages.buttonOpen.getScaledInstance(150, height-20, Image.SCALE_SMOOTH);
+		Image buttonClosed = MyImages.buttonClosed.getScaledInstance(150, height-20, Image.SCALE_SMOOTH);
+		
+		upgradePath1.setIcon(new ImageIcon(buttonOpen));
+		upgradePath2.setIcon(new ImageIcon(buttonOpen));
+		upgradePath3.setIcon(new ImageIcon(buttonOpen));
+		
+		upgradePath1.setRolloverIcon(new ImageIcon(buttonClosed));
+		upgradePath2.setRolloverIcon(new ImageIcon(buttonClosed));
+		upgradePath3.setRolloverIcon(new ImageIcon(buttonClosed));
+		
+		upgradePath1.setBorder(null);
+		upgradePath2.setBorder(null);
+		upgradePath3.setBorder(null);
+		
+		upgradePath1.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		upgradePath2.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		upgradePath3.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		
+		upgradePath1.setForeground(new Color(0, 162, 232));
+		upgradePath2.setForeground(new Color(0, 162, 232));
+		upgradePath3.setForeground(new Color(0, 162, 232));
+		
+		upgradePath1.setHorizontalTextPosition(SwingConstants.CENTER);
+		upgradePath1.setVerticalTextPosition(SwingConstants.CENTER);
+		upgradePath2.setHorizontalTextPosition(SwingConstants.CENTER);
+		upgradePath2.setVerticalTextPosition(SwingConstants.CENTER);
+		upgradePath3.setHorizontalTextPosition(SwingConstants.CENTER);
+		upgradePath3.setVerticalTextPosition(SwingConstants.CENTER);
+		
+		//format JLabels
 		statistics.setBounds(5, 5, 100, 80);
 		statistics.setBackground(Color.CYAN);
 		
@@ -92,14 +127,20 @@ public abstract class Upgrades
 		infoScroll.setBounds((int) (width / 1.5) - 75, 10, 160, height - 20);
 		infoScroll.setBorder(null);
 		
-		deleteTower.setBounds(105+(width/10-25)/2-37, 10, 100, 25);
-		deleteTower.setText("Delete");
+		//format side buttons
+		Image deleteImg = MyImages.delete.getScaledInstance(100, (int)(height/3), Image.SCALE_SMOOTH);
+		deleteTower.setBounds(105+(width/10-25)/2-37, 3, 100, (int)(height * .3));
+		deleteTower.setIcon(new ImageIcon(deleteImg));
 		
-		cureTower.setBounds(105+(width/10-25)/2-37, 35, 100, 25);
-		cureTower.setText("Cure Tower");
+		Image cureImg = MyImages.cure.getScaledInstance(100, (int)(height/3), Image.SCALE_SMOOTH);
+		cureTower.setBounds(105+(width/10-25)/2-37, 3 + (int)(height * .3), 100, height/3);
+		cureTower.setIcon(new ImageIcon(cureImg));
 		
-		connect.setBounds(105+(width/10-25)/2-37, 60, 100, 25);
-		connect.setText("Connect");
+		Image connectImg = MyImages.connect.getScaledInstance(100, (int)(height/3), Image.SCALE_SMOOTH);
+		connect.setBounds(105+(width/10-25)/2-37, 2 + 2*(int)(height * .3), 100, height/3);
+		connect.setIcon(new ImageIcon(connectImg));
+		
+		System.out.println(connect.getSize());
 		
 		upgrade.addMouseListener(new MouseAdapter()
 		{
@@ -235,6 +276,11 @@ public abstract class Upgrades
 			Encrypter.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.COMMUNICATIONS_TOWER)
 			CommunicationsTower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		
+		//wrap text on upgrade buttons
+		upgradePath1.setText("<html><center>"+upgradePath1.getText()+"</center></html>");
+		upgradePath2.setText("<html><center>"+upgradePath2.getText()+"</center></html>");
+		upgradePath3.setText("<html><center>"+upgradePath3.getText()+"</center></html>");
 		
 		upgrade.add(upgradePath1);
 		upgrade.add(upgradePath2);

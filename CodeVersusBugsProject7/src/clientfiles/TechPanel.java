@@ -151,17 +151,90 @@ public class TechPanel extends JPanel implements ActionListener
 		moneyMult = new JButton("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/5"+"</html>");
 		
 		//set bounds using fractions of width and height*
-		damage.setBounds(width/6-50, 25, 100, height/14);
-		speed.setBounds(width/6-50, height/14 + 35, 100, height/14);
-		range.setBounds(width/6-50, height/7 + 45, 100, height/14);
+		damage.setBounds(width/6-80, 25, 160, 50);
+		speed.setBounds(width/6-80, 50 + 35, 160, 50);
+		range.setBounds(width/6-80, 2*50 + 45, 160, 50);
 		
-		buffer.setBounds(width/2-50, 25, 100, height/14);
-		lives.setBounds(width/2-50, height/14 + 35, 100, height/14);
-		router.setBounds(width/2-50, height/7 + 45, 100, height/14);
+		buffer.setBounds(width/2-80, 25, 160, 50);
+		lives.setBounds(width/2-80, 50 + 35, 160, 50);
+		router.setBounds(width/2-80, 2*50 + 45, 160, 50);
 		
-		slow.setBounds(5*width/6-50, 25, 100, height/14);
-		money.setBounds(5*width/6-50, height/14 + 35, 100, height/14);
-		moneyMult.setBounds(5*width/6-50, height/7 + 45, 100, height/14);
+		slow.setBounds(5*width/6-80, 25, 160, 50);
+		money.setBounds(5*width/6-80, 50 + 35, 160, 50);
+		moneyMult.setBounds(5*width/6-80, 2*50 + 45, 160, 50);
+		
+		//set images
+		Image buttonOpen = MyImages.buttonOpen;
+		Image buttonClosed = MyImages.buttonClosed;
+		damage.setIcon(new ImageIcon(buttonOpen));
+		speed.setIcon(new ImageIcon(buttonOpen));
+		range.setIcon(new ImageIcon(buttonOpen));
+		buffer.setIcon(new ImageIcon(buttonOpen));
+		lives.setIcon(new ImageIcon(buttonOpen));
+		router.setIcon(new ImageIcon(buttonOpen));
+		slow.setIcon(new ImageIcon(buttonOpen));
+		money.setIcon(new ImageIcon(buttonOpen));
+		moneyMult.setIcon(new ImageIcon(buttonOpen));
+		
+		damage.setRolloverIcon(new ImageIcon(buttonClosed));
+		speed.setRolloverIcon(new ImageIcon(buttonClosed));
+		range.setRolloverIcon(new ImageIcon(buttonClosed));
+		lives.setRolloverIcon(new ImageIcon(buttonClosed));
+		buffer.setRolloverIcon(new ImageIcon(buttonClosed));
+		router.setRolloverIcon(new ImageIcon(buttonClosed));
+		slow.setRolloverIcon(new ImageIcon(buttonClosed));
+		money.setRolloverIcon(new ImageIcon(buttonClosed));
+		moneyMult.setRolloverIcon(new ImageIcon(buttonClosed));
+		
+		damage.setBorder(null);
+		speed.setBorder(null);
+		range.setBorder(null);
+		lives.setBorder(null);
+		buffer.setBorder(null);
+		router.setBorder(null);
+		slow.setBorder(null);
+		money.setBorder(null);
+		moneyMult.setBorder(null);
+		
+		damage.setHorizontalTextPosition(SwingConstants.CENTER);
+		speed.setHorizontalTextPosition(SwingConstants.CENTER);
+		range.setHorizontalTextPosition(SwingConstants.CENTER);
+		lives.setHorizontalTextPosition(SwingConstants.CENTER);
+		buffer.setHorizontalTextPosition(SwingConstants.CENTER);
+		router.setHorizontalTextPosition(SwingConstants.CENTER);
+		slow.setHorizontalTextPosition(SwingConstants.CENTER);
+		money.setHorizontalTextPosition(SwingConstants.CENTER);
+		moneyMult.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		damage.setVerticalTextPosition(SwingConstants.CENTER);
+		speed.setVerticalTextPosition(SwingConstants.CENTER);
+		range.setVerticalTextPosition(SwingConstants.CENTER);
+		lives.setVerticalTextPosition(SwingConstants.CENTER);
+		buffer.setVerticalTextPosition(SwingConstants.CENTER);
+		router.setVerticalTextPosition(SwingConstants.CENTER);
+		slow.setVerticalTextPosition(SwingConstants.CENTER);
+		money.setVerticalTextPosition(SwingConstants.CENTER);
+		moneyMult.setVerticalTextPosition(SwingConstants.CENTER);
+		
+		damage.setForeground(new Color(153, 217, 234));
+		speed.setForeground(new Color(153, 217, 234));
+		range.setForeground(new Color(153, 217, 234));
+		lives.setForeground(new Color(153, 217, 234));
+		buffer.setForeground(new Color(153, 217, 234));
+		router.setForeground(new Color(153, 217, 234));
+		slow.setForeground(new Color(153, 217, 234));
+		money.setForeground(new Color(153, 217, 234));
+		moneyMult.setForeground(new Color(153, 217, 234));
+		
+		damage.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		speed.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		range.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		lives.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		buffer.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		router.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		slow.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		money.setFont(new Font("Monospaced", Font.PLAIN, 15));
+		moneyMult.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		
 		//set descriptions
 		damage.setToolTipText("Increases the damage on all Disc Throwers and Scanners. Disc Throwers get 5 extra damage, "

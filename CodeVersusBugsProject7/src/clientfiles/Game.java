@@ -59,12 +59,12 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 7500;
+	private static int money = 750;
 	public static int lives = 5000;
-	public static int level = 10;
+	public static int level = 1;
 	
 	public static boolean tutorial = true;
-	public static int tutorialSlide = 92;
+	public static int tutorialSlide = 1;
 	public static boolean livesTutorialPlayed = false;
 	public static int savedSlide = 1;
 	
@@ -480,6 +480,10 @@ public class Game extends JFrame implements Runnable
 	
 	public void run()
 	{
+		//just to be sure, try to disable the start menu
+		if(startMenu.isShowing())
+			startMenu.setVisible(false);
+		
 		//each time the game is run, process movements and render
 		processMovements(numFramesPassed);
 		renderGameState();

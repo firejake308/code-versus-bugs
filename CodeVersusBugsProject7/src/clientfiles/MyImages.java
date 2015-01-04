@@ -55,6 +55,11 @@ public class MyImages
 	public static BufferedImage exitClosed;
 	public static BufferedImage backOpen;
 	public static BufferedImage backClosed;
+	public static BufferedImage buttonOpen;
+	public static BufferedImage buttonClosed;
+	public static BufferedImage delete;
+	public static BufferedImage cure;
+	public static BufferedImage connect;	
 	//malware
 	public static BufferedImage minion;
 	public static BufferedImage tankMinion;
@@ -176,6 +181,11 @@ public class MyImages
 			exitClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/exitBtnClosed.png"));
 			backOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/backBtnOpen.png"));
 			backClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/backBtnClosed.png"));
+			buttonOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/btnOpen.png"));
+			buttonClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/btnClosed.png"));
+			delete = ImageIO.read(MyImages.class.getResourceAsStream("resources/delete.png"));
+			cure = ImageIO.read(MyImages.class.getResourceAsStream("resources/cure.png"));
+			connect = ImageIO.read(MyImages.class.getResourceAsStream("resources/connect.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
