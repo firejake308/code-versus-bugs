@@ -3,6 +3,7 @@ package clientfiles;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 
 import javax.swing.*;
 /**TechPanel.java
@@ -31,7 +32,7 @@ import javax.swing.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class TechPanel extends JPanel implements ActionListener
+public class TechPanel extends JPanel implements ActionListener, Serializable
 {
 	//width and height of the panel for compatibility across multiple devices
 	int width;
@@ -85,7 +86,7 @@ public class TechPanel extends JPanel implements ActionListener
 		moneyPoints = 0;
 		moneyMultPoints = 0;
 		
-		//enable escape to brng up quit dialog
+		//enable escape to bring up quit dialog
 		addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent e)
@@ -339,8 +340,20 @@ public class TechPanel extends JPanel implements ActionListener
 				Game.tutorialSlide = 29;
 		}
 		else if(aFlag == false)
+		{
 			//set invisible like normal
 			super.setVisible(false);
+			
+			//also, enable save/load
+			Game.saveButton.setEnabled(true);
+			Game.loadButton.setEnabled(true);
+			
+			if(Game.tutorial && Game.level == 2)
+			{
+				Game.tutorialSlide = 399;
+				Game.gamePanel.nextSlide();
+			}
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e)

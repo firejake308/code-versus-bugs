@@ -11,7 +11,7 @@ public class CommunicationsTower extends Tower
 	
 	public static int damageToSet = 0;
 	public static int speedToSet = 0;
-	public static int rangeToSet = (int) (Game.widthOfGamePanel * .10);
+	public static int rangeToSet = (int) ((Game.screenSize.width - 100) * .10);
 	public static int healthToSet = 0;   // immortal
 	
 	public boolean shareRange = false;
@@ -99,11 +99,11 @@ public class CommunicationsTower extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Damage Support: $400\n Tower boosts other's damage more");
+				case 1:					Upgrades.upgradesInfo.setText(" Damage Support:\n $400\n Tower boosts other's\n damage more");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Range Support: $500\n Tower boosts other's range more");
+				case 2:					Upgrades.upgradesInfo.setText(" Range Support:\n $500\n Tower boosts other's\n range more");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Legendary Damage: $600\n Tower boosts other's damage even more");
+				case 3:					Upgrades.upgradesInfo.setText("Legendary Damage:\n $600\n Tower boosts other's\n damage even more");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -114,9 +114,9 @@ public class CommunicationsTower extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Fire Speed: $750\n Increases nearby tower's attack speed more");
+				case 1:					Upgrades.upgradesInfo.setText(" Fire Speed:\n $750\n Increases nearby tower's\n attack speed more");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Share Range: $1000\n Towers can shoot into this tower's range");
+				case 2:					Upgrades.upgradesInfo.setText(" Share Range:\n $1000\n Towers can shoot into\n this tower's range");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -127,11 +127,11 @@ public class CommunicationsTower extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range: $500\n Increases tower range");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n $500\n Increases tower range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range: $800\n Greatly increases tower range");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n $800\n Greatly increases tower range");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Information Hub: $1500\n Allows connected towers to share upgrades");
+				case 3:					Upgrades.upgradesInfo.setText(" Information Hub:\n $1500\n Allows connected towers to\n share upgrades");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

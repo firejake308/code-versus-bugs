@@ -383,9 +383,10 @@ public abstract class Upgrades
 		}
 	}
 	
-	public static void showConnectInfo()
+	
+	public static void showCureInfo()
 	{
-		upgradesInfo.setText(" Connect:\n$500\n\n Requires a communications tower with the information hub upgrade");
+		upgradesInfo.setText(" Cure Tower:\n $50\n Requires Back Up\n Cures infected towers");
 	}
 	
 	public static void connectTower()
@@ -409,11 +410,11 @@ public abstract class Upgrades
 		}
 	}
 	
-	public static void showCureInfo()
+	public static void showConnectInfo()
 	{
-		upgradesInfo.setText(" Cure Tower:\n $50\n Requires Back Up\n Cures infected towers");
+		upgradesInfo.setText(" Connect:\n$500\n\n Requires a communications tower with the information hub upgrade");
 	}
-
+	
 	public static void getUpgradeID(int upgradePath)
 	{
 		int upgradeID = 0;

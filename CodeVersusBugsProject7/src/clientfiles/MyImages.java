@@ -59,7 +59,9 @@ public class MyImages
 	public static BufferedImage buttonClosed;
 	public static BufferedImage delete;
 	public static BufferedImage cure;
-	public static BufferedImage connect;	
+	public static BufferedImage connect;
+	public static BufferedImage save;
+	public static BufferedImage load;
 	//malware
 	public static BufferedImage minion;
 	public static BufferedImage tankMinion;
@@ -186,6 +188,8 @@ public class MyImages
 			delete = ImageIO.read(MyImages.class.getResourceAsStream("resources/delete.png"));
 			cure = ImageIO.read(MyImages.class.getResourceAsStream("resources/cure.png"));
 			connect = ImageIO.read(MyImages.class.getResourceAsStream("resources/connect.png"));
+			save = ImageIO.read(MyImages.class.getResourceAsStream("resources/save.png"));
+			load = ImageIO.read(MyImages.class.getResourceAsStream("resources/load.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));

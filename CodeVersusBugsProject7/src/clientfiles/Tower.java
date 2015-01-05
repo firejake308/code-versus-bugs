@@ -15,6 +15,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.swing.Icon;
@@ -62,7 +63,7 @@ import clientfiles.Malware.State;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public abstract class Tower implements ActionListener
+public abstract class Tower implements ActionListener, Serializable
 {	
 	public static Tower[] allTowers = new Tower[100];
 	protected static JButton[] sprites = new JButton[100];

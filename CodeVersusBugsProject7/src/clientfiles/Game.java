@@ -39,6 +39,7 @@ package clientfiles;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -84,6 +85,8 @@ public class Game extends JFrame implements Runnable
 	
 	static public JButton pauseButton;
 	static public JButton fastForwardButton;
+	static public JButton saveButton;
+	static public JButton loadButton;
 	
 	public static int widthOfGamePanel;
 	public static int heightOfGamePanel;
@@ -115,6 +118,92 @@ public class Game extends JFrame implements Runnable
 	public static int getMoney() 
 	{
 		return money;
+	}
+	public static void saveGame()
+	{
+		//reset miscellaneous static variables
+		Tower.resetHealth();
+		try
+		{
+			File staticInts = new File("staticInts.txt");
+			FileOutputStream fileOutput = new FileOutputStream(staticInts);
+			if(Malware.routerOn)
+				fileOutput.write(1);
+			else
+				fileOutput.write(0);
+			fileOutput.write(DiscThrower.damageToSet);
+			fileOutput.write(DiscThrower.speedToSet);
+			fileOutput.write(NumberGenerator.damageToSet);
+			fileOutput.write(NumberGenerator.speedToSet);
+			fileOutput.write((int)(Scanner.damageToSet * 1000));
+			fileOutput.write(Scanner.arcAngleToSet);
+			fileOutput.write(level);
+			fileOutput.write(lives);
+			fileOutput.write(money);
+			fileOutput.write(tutorialSlide);
+			fileOutput.write(GamePanel.numTowers);
+			fileOutput.write(Malware.numMalwares);
+			
+			File objs = new File("objs.txt");
+			ObjectOutputStream objOutput = new ObjectOutputStream(new FileOutputStream("objs.txt"));
+			objOutput.writeObject(Tower.allTowers);
+			objOutput.writeObject(Tower.sprites);
+			objOutput.writeObject(techPanel);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	public static void loadGame()
+	{
+		try
+		{
+			//read integers and booleans
+			FileInputStream fileInput = new FileInputStream("staticInts.txt");
+			int router = fileInput.read();
+			if(router == 1)
+				Malware.routerOn = true;
+			else
+				Malware.routerOn = false;
+			DiscThrower.damageToSet = fileInput.read();
+			DiscThrower.speedToSet = fileInput.read();
+			NumberGenerator.damageToSet = fileInput.read();
+			NumberGenerator.speedToSet = fileInput.read();
+			Scanner.damageToSet = fileInput.read() / 1000;
+			Scanner.arcAngleToSet = fileInput.read();
+			level = fileInput.read();
+			lives = fileInput.read();
+			money = fileInput.read();
+			tutorialSlide = fileInput.read();
+			gamePanel.numTowers = fileInput.read();
+			Malware.numMalwares = fileInput.read();
+			
+			//read objects
+			ObjectInputStream objInput = new ObjectInputStream(new FileInputStream("objs.txt"));
+			Tower.allTowers = (Tower[]) objInput.readObject();
+			Tower.sprites = (JButton[]) objInput.readObject();
+			techPanel = (TechPanel) objInput.readObject();
+			techPanel.initializeTechPanel();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		//update info panel
+		gf.life.setText("Bytes Remaining: " + Game.lives);
+		gf.moneyLabel.setText("$" + Game.getMoney() + " money");
+		gf.levelCounter.setText("Level: " + Game.level);
+		
+		//re-add towers to gamepanel
+		for(int t=0; t<Tower.sprites.length; t++)
+		{
+			if(Tower.sprites[t] == null)
+				break;
+			else
+				gamePanel.add(Tower.sprites[t]);
+		}
 	}
 	public static void initializeGame()
 	{
@@ -263,8 +352,12 @@ public class Game extends JFrame implements Runnable
 				Game.gamePanel.setVisible(true);
 				Game.techPanel.setVisible(false);
 				
-				//special case for tutorial slide 17
-				if(Game.tutorialSlide == 17)
+				//disable save/load once round starts
+				Game.saveButton.setEnabled(false);
+				Game.loadButton.setEnabled(false);
+				
+				//special case for tutorial slide 17 and 406
+				if(Game.tutorialSlide == 17 || Game.tutorialSlide == 406)
 					Game.gamePanel.nextSlide();
 			}
 			

@@ -269,7 +269,7 @@ public class ShopPanel extends JPanel implements ActionListener
 			else
 			{
 				Rectangle curr = new Rectangle(Tower.allTowers[t].getX(), Tower.allTowers[t].getY(), 
-						Tower.sprites[t].getWidth(), Tower.sprites[t].getY());
+						Tower.sprites[t].getWidth(), Tower.sprites[t].getHeight());
 				if(curr.intersects(proposedTower))
 					return false;
 			}

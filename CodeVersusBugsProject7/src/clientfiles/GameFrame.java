@@ -66,6 +66,8 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.shopPanel = new ShopPanel();
 		Game.pauseButton = new JButton(PauseButtonListener.sprite);
 		Game.fastForwardButton = new JButton(new ImageIcon(MyImages.fastForwardOff));
+		Game.saveButton = new JButton(new ImageIcon(MyImages.save));
+		Game.loadButton = new JButton(new ImageIcon(MyImages.load));
 		
 		//set layout for game
 		Container mainWindow = getContentPane();
@@ -83,6 +85,14 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.fastForwardButton.setBounds(105, 5, 30, 30);
 		Game.fastForwardButton.addActionListener(this);
 		mainWindow.add(Game.fastForwardButton);
+		
+		Game.saveButton.setBounds(105, 40, 30, 30);
+		Game.saveButton.addActionListener(this);
+		mainWindow.add(Game.saveButton);
+		
+		Game.loadButton.setBounds(105, 75, 30, 30);
+		Game.loadButton.addActionListener(this);
+		mainWindow.add(Game.loadButton);
 		
 		Game.infoPanel.setBounds(145,5,screenSize.width-145,50);
 		
@@ -238,8 +248,12 @@ public class GameFrame extends JFrame implements ActionListener
 	{
 		if (e.getSource() == Game.pauseButton)
 			Game.pauseListener();
-		if (e.getSource() == Game.fastForwardButton)
+		else if (e.getSource() == Game.fastForwardButton)
 			Game.fastForwardListener();
+		else if(e.getSource() == Game.saveButton)
+			Game.saveGame();
+		else if(e.getSource() == Game.loadButton)
+			Game.loadGame();
 	}
 	
 }

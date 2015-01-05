@@ -2,6 +2,7 @@ package clientfiles;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -38,7 +39,7 @@ import javax.swing.ImageIcon;
  * limitations under the License.
  */
 
-public class Projectile
+public class Projectile implements Serializable
 {
 	public static ArrayList<Projectile> allProjectiles = new ArrayList<Projectile>();
 	public static ArrayList<Projectile> recycleBin = new ArrayList<Projectile>();

@@ -1069,6 +1069,35 @@ public class GamePanel extends JPanel
 			case 132:
 				tutorial.setVisible(false);
 				break;
+			//save load tutorial to run level 2
+			case 400:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9*h/10, w, h/10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("Now that you've upgraded your hardware, ...");
+				break;
+			case 401:
+				tutorial.setText("you can place more towers, upgrade your current...");
+				break;
+			case 402:
+				tutorial.setText("ones, save the game, or load a new game. ...");
+				break;
+			case 403:
+				tutorial.setText("The save and load buttons are in the top left ...");
+				break;
+			case 404:
+				tutorial.setText("corner, underneath the fast-forward button and to...");
+				break;
+			case 405:
+				tutorial.setText("the right of the play button. When you're ready, ...");
+				break;
+			case 406:
+				tutorial.setText("press play to begin the next round.");
+				break;
+			case 407:
+				tutorial.setVisible(false);
+				break;
 			//only runs when a life is lost
 			case 500:
 				tutorial.setVisible(true);
