@@ -350,6 +350,7 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 			
 			if(Game.tutorial && Game.level == 2)
 			{
+				Game.savedSlide = Game.tutorialSlide;
 				Game.tutorialSlide = 399;
 				Game.gamePanel.nextSlide();
 			}

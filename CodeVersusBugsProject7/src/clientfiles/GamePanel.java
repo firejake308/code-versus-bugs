@@ -1097,6 +1097,7 @@ public class GamePanel extends JPanel
 				break;
 			case 407:
 				tutorial.setVisible(false);
+				Game.tutorialSlide = Game.savedSlide;
 				break;
 			//only runs when a life is lost
 			case 500:
