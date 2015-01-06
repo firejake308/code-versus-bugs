@@ -674,6 +674,12 @@ public abstract class Tower implements ActionListener, Serializable
 			{
 				if (Upgrades.displayedUpgradeID != i)
 				{
+					if (Upgrades.upgradesActive)
+					{
+						//hide upgrade panel and range indicator
+						Tower.allTowers[Upgrades.displayedUpgradeID].rangeOn = false;
+						Upgrades.removeUpgradePanel();
+					}
 					//show panel and range indicator
 					Upgrades.showUpgradePanel(i);
 					rangeOn = true;

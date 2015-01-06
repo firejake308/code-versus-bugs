@@ -64,6 +64,7 @@ public abstract class Upgrades
 	private static JScrollPane infoScroll;
 	
 	public static TowerType typeOfTower  		= TowerType.NONE;
+	public static boolean	upgradesActive		= false;
 	
 	public static void initializeUpgrades()
 	{
@@ -291,6 +292,7 @@ public abstract class Upgrades
 		
 		//move tutorial out of the way
 		Game.gamePanel.moveTutorial();
+		upgradesActive = true;
 	}
 	
 	public static void removeUpgradePanel()
@@ -308,6 +310,7 @@ public abstract class Upgrades
 		Game.gamePanel.removeFromLayeredPane(upgrade);
 		displayedUpgradeID = 98;
 		upgradesInfo.setText("");
+		upgradesActive = false;
 	}
 	
 	public static void updateStatistics()
@@ -393,6 +396,7 @@ public abstract class Upgrades
 	{
 		boolean activeCommTower = false;
 		
+		//search for an active info hub
 		for (int i = 0; i < GamePanel.numTowers; i++)
 		{
 			if (Tower.allTowers[i] == null)
@@ -404,6 +408,7 @@ public abstract class Upgrades
 			}
 		}
 		
+		//connect tower if have money, there is an info hub, and the tower isn't already connected
 		if (!Tower.allTowers[displayedUpgradeID].isConnected && activeCommTower && Game.makePurchase(500))
 		{	
 			Tower.allTowers[displayedUpgradeID].isConnected = true;
@@ -629,8 +634,16 @@ public abstract class Upgrades
 			case 432:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 240;
 											break;
 											
-											
-											
+			case 511:						((Encrypter)Tower.allTowers[displayedUpgradeID]).killsPerRound = 20;
+											break;
+			case 512:						((Encrypter)Tower.allTowers[displayedUpgradeID]).killsPerRound = 30;
+											break;
+			case 521:						((Encrypter)Tower.allTowers[displayedUpgradeID]).deencrypter = true;
+											break;
+			case 531:						((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerate = true;
+											((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 300;
+											break;
+			case 532:						((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 240;
 											
 			case 611:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
 											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).damageToAdd += 5;

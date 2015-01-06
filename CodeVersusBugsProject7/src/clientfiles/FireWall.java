@@ -110,11 +110,11 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Stronger Wall: $150\nWall can block 20 viruses before overflowing");
+				case 1:					Upgrades.upgradesInfo.setText("Stronger Wall: $150\nWall can block 20 viruses before overflowing");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Wall: $250\nWall can block 25 viruses before overflowing");
+				case 2:					Upgrades.upgradesInfo.setText("Extreme Wall: $250\nWall can block 25 viruses before overflowing");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Invincible Wall: $400\nWall can block 40 viruses before overflowing");
+				case 3:					Upgrades.upgradesInfo.setText("Invincible Wall: $400\nWall can block 40 viruses before overflowing");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -166,7 +166,6 @@ public class FireWall extends Tower
 			
 			timeSinceLastRegen = regenerationInterval;
 		}
-		
 		if (killsLeft == 0)
 			return;
 		
