@@ -135,7 +135,9 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
-		Game.scaleOfSprites = (Game.widthOfGamePanel / 50) / 26.44;	
+		Game.xScale = (Game.widthOfGamePanel / 1366.0);
+		Game.yScale = (Game.heightOfGamePanel / 768.0);
+		System.out.println(Game.yScale);
 		
 		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .12);
 		NumberGenerator.rangeToSet = (int) (Game.widthOfGamePanel * .15);

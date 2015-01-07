@@ -135,7 +135,7 @@ public abstract class Tower implements ActionListener, Serializable
 		this.icon = icon;
 		
 		sprites[id] = new JButton(icon);
-		sprites[id].setBounds(getX(), getY(), (int)(icon.getIconWidth()*Game.scaleOfSprites), (int)(icon.getIconHeight()*Game.scaleOfSprites));
+		sprites[id].setBounds(getX(), getY(), (int)(icon.getIconWidth()*Game.xScale), (int)(icon.getIconHeight()*Game.yScale));
 		sprites[id].addActionListener(this);
 		
 		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
@@ -184,7 +184,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public int getCenterX()
 	{
-		return (int) (x + Game.scaleOfSprites * sprites[id].getWidth() / 2);
+		return (int) (x + Game.xScale * sprites[id].getWidth() / 2);
 	}
 	/**returns the y of the center of the tower
 	 * 
@@ -192,7 +192,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public int getCenterY()
 	{
-		return y + (int) (Game.scaleOfSprites * sprites[id].getHeight() / 2);
+		return y + (int) (Game.yScale * sprites[id].getHeight() / 2);
 	}
 	/**sets the x-coordinate of the center of the tower
 	 * 
@@ -200,7 +200,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void setCenterX(int xToSet)
 	{
-		x = xToSet - (int) (Game.scaleOfSprites * sprites[id].getWidth() / 2);
+		x = xToSet - (int) (Game.xScale * sprites[id].getWidth() / 2);
 	}
 	/**sets the y-coordinate of the center of the tower
 	 * 
@@ -208,7 +208,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void setCenterY(int yToSet)
 	{
-		y = yToSet - (int) (Game.scaleOfSprites * sprites[id].getHeight() / 2);
+		y = yToSet - (int) (Game.yScale * sprites[id].getHeight() / 2);
 	}
 	/**
 	 * Returns the location of the tower on the game panel. Use this for drawing.
@@ -610,8 +610,8 @@ public abstract class Tower implements ActionListener, Serializable
 		
 		//reset image
 		AffineTransform at = new AffineTransform();
-		at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-		at.translate(getX()/Game.scaleOfSprites, getY()/Game.scaleOfSprites);
+		at.scale(Game.xScale, Game.yScale);
+		at.translate(getX()/Game.xScale, getY()/Game.yScale);
 		g2d.drawImage(icon.getImage(), at, null);
 		sprites[id].setIcon(icon);
 		
@@ -623,7 +623,7 @@ public abstract class Tower implements ActionListener, Serializable
 			AffineTransform op = new AffineTransform();
 			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
 				getCenterY()-MyImages.redArrow.getHeight()/2);
-			op.rotate(angleOfArrow, getCenterX() - getX(), y + (int) (Game.scaleOfSprites * sprites[id].getWidth() / 2) - getY());
+			op.rotate(angleOfArrow, getCenterX() - getX(), y + (int) (Game.xScale * sprites[id].getWidth() / 2) - getY());
 			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
 			g2d.drawImage(MyImages.redArrow, op, null);
 		}
@@ -644,8 +644,8 @@ public abstract class Tower implements ActionListener, Serializable
 		else if(this instanceof NumberGenerator)
 		{
 			AffineTransform op = new AffineTransform();
-			op.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-			op.translate(getX()/Game.scaleOfSprites, (getY() + sprites[id].getHeight())/Game.scaleOfSprites);
+			op.scale(Game.xScale, Game.yScale);
+			op.translate(getX()/Game.xScale, (getY() + sprites[id].getHeight())/Game.yScale);
 			g2d.drawImage(healthBar, op, null);
 		}
 	}

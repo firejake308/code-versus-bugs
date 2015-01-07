@@ -61,7 +61,7 @@ public abstract class Upgrades
 	
 	public static JTextArea statistics   		= new JTextArea();
 	public static JTextArea upgradesInfo 		= new JTextArea();
-	private static JScrollPane infoScroll;
+	private static JScrollPane infoScroll 		= new JScrollPane(upgradesInfo);
 	
 	public static TowerType typeOfTower  		= TowerType.NONE;
 	public static boolean	upgradesActive		= false;
@@ -122,7 +122,6 @@ public abstract class Upgrades
 		upgradesInfo.setLineWrap(true);
 		upgradesInfo.setWrapStyleWord(true);
 		
-		infoScroll = new JScrollPane(upgradesInfo);
 		infoScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		infoScroll.setPreferredSize(upgradesInfo.getSize());
 		infoScroll.setBounds((int) (width / 1.5) - 75, 10, 160, height - 20);
@@ -257,13 +256,23 @@ public abstract class Upgrades
 	public static void showUpgradePanel(int id)
 	{
 		typeOfTower = Tower.allTowers[id].type;
+		System.out.println(typeOfTower);
 		
 		displayedUpgradeID = id;
 		
 		updateStatistics();
 		upgrade.add(deleteTower);
-		upgrade.add(cureTower);
-		upgrade.add(connect);
+		upgrade.remove(cureTower);
+		upgrade.remove(connect);
+		//only add cure tower for kill-able towers
+		if(typeOfTower != TowerType.FIREWALL && typeOfTower != TowerType.COMMUNICATIONS_TOWER)
+		{
+			upgrade.add(cureTower);
+			//encrypters get to cure, but not connect
+			if(typeOfTower != TowerType.ENCRYPTER)
+				upgrade.add(connect);
+			System.out.println("turned on cure");
+		}
 		
 		if (typeOfTower == TowerType.DISC_THROWER)
 			DiscThrower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
@@ -302,6 +311,8 @@ public abstract class Upgrades
 		
 		Game.gamePanel.remove(statistics);
 		Game.gamePanel.remove(deleteTower);
+		Game.gamePanel.remove(cureTower);
+		Game.gamePanel.remove(connect);
 		Game.gamePanel.remove(upgradePath1);
 		Game.gamePanel.remove(upgradePath2);
 		Game.gamePanel.remove(upgradePath3); 

@@ -91,7 +91,8 @@ public class Game extends JFrame implements Runnable
 	public static int widthOfGamePanel;
 	public static int heightOfGamePanel;
 	
-	public static double scaleOfSprites;
+	public static double xScale;
+	public static double yScale;
 	public static double malwareSpeed = 1.0;
 	public static double moneyMultiplier = 1.0;
 	

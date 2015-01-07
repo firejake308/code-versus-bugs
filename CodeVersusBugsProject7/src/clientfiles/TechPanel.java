@@ -360,16 +360,15 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 	public void actionPerformed(ActionEvent e)
 	{
 		JButton clicked = (JButton) e.getSource();
-		pointsToSpend--;
+		
+		//special case for tutorial slide 29
+		if(Game.tutorialSlide == 29 && Game.tutorial)
+			Game.gamePanel.nextSlide();
 		
 		if(clicked == damage)
 		{
 			damagePoints++;
 			attackPoints++;
-			
-			//special case for tutorial slide 29
-			if(Game.tutorialSlide == 29 && Game.tutorial)
-				Game.gamePanel.nextSlide();
 			
 			//increase damage of pre-existing towers
 			for(int t = 0; t < Tower.allTowers.length; t++)

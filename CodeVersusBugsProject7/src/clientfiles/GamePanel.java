@@ -1098,7 +1098,8 @@ public class GamePanel extends JPanel
 				break;
 			case 407:
 				tutorial.setVisible(false);
-				Game.tutorialSlide = Game.savedSlide;
+				Game.tutorialSlide = Game.savedSlide - 1;
+				nextSlide();
 				break;
 			//only runs when a life is lost
 			case 500:
@@ -1266,25 +1267,25 @@ public class GamePanel extends JPanel
 			//draw map images
 			//modem
 			AffineTransform at = new AffineTransform();
-			at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) - Game.scaleOfSprites*MyImages.modem.getWidth()/2)/Game.scaleOfSprites, 
-					 ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 42 - Game.scaleOfSprites*MyImages.modem.getHeight()/2)/Game.scaleOfSprites);
+			at.scale(Game.xScale, Game.yScale);
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) - Game.xScale*MyImages.modem.getWidth()/2)/Game.xScale, 
+					 ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 42 - Game.yScale*MyImages.modem.getHeight()/2)/Game.yScale);
 			if(!Malware.routerOn)
 				g2d.drawImage(MyImages.modem, at, null);
 			else
 				g2d.drawImage(MyImages.router, at, null);
 			//cpu
 			at = new AffineTransform();
-			at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) + Game.widthOfGamePanel / 3 - (Game.widthOfGamePanel / 84) - MyImages.cpu.getWidth()/2)/Game.scaleOfSprites, 
-					(Game.heightOfGamePanel/6 - MyImages.cpu.getHeight()/2)/Game.scaleOfSprites);
+			at.scale(Game.xScale, Game.yScale);
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) + Game.widthOfGamePanel / 3 - (Game.widthOfGamePanel / 84) - MyImages.cpu.getWidth()/2)/Game.xScale, 
+					(Game.heightOfGamePanel/6 - MyImages.cpu.getHeight()/2)/Game.yScale);
 			g2d.drawImage(MyImages.cpu, at, null);
 			
 			//decoy cpu
 			at = new AffineTransform();
-			at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-			at.translate((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) - MyImages.decoyCPU.getWidth()/2, 
-					(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42));
+			at.scale(Game.xScale, Game.yScale);
+			at.translate(((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) - MyImages.decoyCPU.getWidth()/2)/Game.xScale, 
+					((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 84 - Game.yScale*MyImages.decoyCPU.getHeight()/2)/Game.yScale);
 			g2d.drawImage(MyImages.decoyCPU, at, null);
 		}
 	}
