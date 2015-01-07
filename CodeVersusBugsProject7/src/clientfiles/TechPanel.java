@@ -541,9 +541,20 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		setVisible(false);
 		Game.gamePanel.setVisible(true);
 	}
+	/**
+	 * Turns off the tutorial.
+	 */
 	public void disableTutorial()
 	{
 		tutorial.setVisible(false);
+	}
+	/**
+	 * Turns on the tutorial.
+	 */
+	public void enableTutorial()
+	{
+		Game.tutorial = true;
+		tutorial.setVisible(true);
 	}
 	public void paintComponent(Graphics g)
 	{

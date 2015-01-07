@@ -185,6 +185,9 @@ public class Game extends JFrame implements Runnable
 			Tower.sprites = (JButton[]) objInput.readObject();
 			techPanel = (TechPanel) objInput.readObject();
 			techPanel.initializeTechPanel();
+			
+			//turn off fast-forward for smoother transition
+			fastForward = false;
 		}
 		catch(Exception e)
 		{
@@ -349,8 +352,12 @@ public class Game extends JFrame implements Runnable
 			{
 				Game.endOfRound = false;
 				Game.gamePanel.lvlManager.nextlvl();
-				Game.gamePanel.setVisible(true);
-				Game.techPanel.setVisible(false);
+				//if it hasn't been done already, switch tech panel to game panel
+				if(Game.techPanel.isShowing())
+				{	
+					Game.gamePanel.setVisible(true);
+					Game.techPanel.setVisible(false);
+				}
 				
 				//disable save/load once round starts
 				Game.saveButton.setEnabled(false);

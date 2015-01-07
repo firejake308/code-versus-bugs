@@ -286,14 +286,17 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	public void itemStateChanged(ItemEvent e) 
 	{
 		int state = e.getStateChange();
+		
 		if(state == ItemEvent.DESELECTED)
 		{
-			Game.tutorial = false;
 			Game.tutorialSlide = 0;
 			Game.gamePanel.disableTutorial();
 			Game.techPanel.disableTutorial();
 		}
 		else if(state == ItemEvent.SELECTED)
-			Game.tutorial = true;
+		{
+			Game.gamePanel.enableTutorial();
+			Game.techPanel.enableTutorial();
+		}
 	}
 }

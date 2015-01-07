@@ -188,7 +188,8 @@ public class GamePanel extends JPanel
 		layeredPane = new JLayeredPane();
 		layeredPane.setSize(Game.screenSize.width -115, Game.screenSize.height -115);
 		layeredPane.add(drawingPanel, JLayeredPane.DEFAULT_LAYER);
-		layeredPane.add(tutorial, JLayeredPane.DRAG_LAYER);
+		if(Game.tutorial)
+			layeredPane.add(tutorial, JLayeredPane.DRAG_LAYER);
 		add(layeredPane);
 		
 		addMouseListener(new MouseAdapter()
@@ -1114,10 +1115,13 @@ public class GamePanel extends JPanel
 				tutorial.setText("the malwares reached your...");
 				break;
 			case 502:
-				tutorial.setText("CPU. Now, your Bytes...");
+				tutorial.setBounds(0, 9*h/10, w, h/10);
+				tutorial.setIcon(null);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("CPU. Now, your Bytes Remaining in...");
 				break;
 			case 503:
-				tutorial.setText("Remaining will decrease...");
+				tutorial.setText("your CPU will decrease...");
 				break;
 			case 504:
 				tutorial.setText("according to the remaining...");
@@ -1162,13 +1166,14 @@ public class GamePanel extends JPanel
 				Game.tutorialSlide = Game.savedSlide - 1;
 				Game.gameState = Game.PLAYING;
 				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				System.out.println(Game.tutorialSlide);
 				//go back
 				nextSlide();
 				break;
 		}
 		
 		//set size of tutorial to appropriate size if it's not in the bottom
-		if(!tutorial.getLocation().equals(new Point(0, 9 * h / 10)))
+		if(!tutorial.getLocation().equals(new Point(0, 9 * h / 10)) && !tutorial.getLocation().equals(new Point(0, 8 * h / 10)))
 			tutorial.setSize(tutorial.getPreferredSize().width + 5, tutorial.getPreferredSize().height + 5);
 	}
 	/**
@@ -1178,6 +1183,14 @@ public class GamePanel extends JPanel
 	{
 		Game.tutorial = false;
 		tutorial.setVisible(false);
+	}
+	/**
+	 * Turns on the tutorial.
+	 */
+	public void enableTutorial()
+	{
+		Game.tutorial = true;
+		tutorial.setVisible(true);
 	}
 	/**
 	 * Moves the tutorial up to make room for the upgrades panel, if the tutorial is in the way.
