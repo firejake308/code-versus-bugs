@@ -73,6 +73,8 @@ public class MyImages
 	public static BufferedImage exeFile;
 	public static BufferedImage secureFile;
 	public static BufferedImage virus;
+	public static BufferedImage tankVirus;
+	public static BufferedImage rushVirus;
 	public static BufferedImage spy;
 	public static BufferedImage bot;
 	//towers
@@ -202,6 +204,8 @@ public class MyImages
 			exeFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/exefile.png"));
 			secureFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/securefile.png"));
 			virus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus3.png"));
+			tankVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus4.png"));
+			rushVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus5.png"));
 			spy = ImageIO.read(MyImages.class.getResourceAsStream("resources/spy.png"));
 			bot = ImageIO.read(MyImages.class.getResourceAsStream("resources/bot.png"));
 			

@@ -151,7 +151,7 @@ public class StoryManager implements LevelManager
 		{
 			for(int l = 1; l <= 5; l++)
 			{
-				Malware.allMalware[v] = new Virus(l, startY);
+				Malware.allMalware[v] = new Virus(Malware.NORMAL, l, startY);
 				v++;
 			}
 			startY -= 70;

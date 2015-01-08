@@ -242,6 +242,12 @@ public abstract class Tower implements ActionListener, Serializable
 	{
 		healthToSet = 0;
 	}
+	public static int getHealthToSet() {
+		return healthToSet;
+	}
+	public static void setHealthToSet(int healthToSet) {
+		Tower.healthToSet = healthToSet;
+	}
 	public void dealDamage(int damage)
 	{
 		health -= damage;

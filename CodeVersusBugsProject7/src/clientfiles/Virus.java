@@ -9,13 +9,15 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 public class Virus extends Malware 
 {
 	public static BufferedImage sprite = MyImages.virus;
+	public static BufferedImage tankSprite = MyImages.tankVirus;
+	public static BufferedImage rushSprite = MyImages.rushVirus;
 	
 	private int lane;
 	public boolean canReplicate;
 	
-	public Virus(int lane, int y) 
+	public Virus(int type, int lane, int y) 
 	{
-		super(0, lane, y);
+		super(type, lane, y);
 		
 		//initialize instance variables
 		health = 100;
@@ -27,7 +29,7 @@ public class Virus extends Malware
 	
 	private Virus(Virus parent)
 	{
-		this(parent.lane, (int) (parent.y));
+		this(parent.type, parent.lane, (int) (parent.y));
 		
 		//for lanes 1,2, and 3
 		if(parent.path != lane4 || parent.path != lane5)

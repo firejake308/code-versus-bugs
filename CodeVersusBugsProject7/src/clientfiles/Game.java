@@ -60,7 +60,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 750;
+	private static int money = 7500;
 	public static int lives = 5000;
 	public static int level = 1;
 	
@@ -126,6 +126,7 @@ public class Game extends JFrame implements Runnable
 		Tower.resetHealth();
 		try
 		{
+			//record all static integer variables
 			File staticInts = new File("staticInts.txt");
 			FileOutputStream fileOutput = new FileOutputStream(staticInts);
 			if(Malware.routerOn)
@@ -138,18 +139,22 @@ public class Game extends JFrame implements Runnable
 			fileOutput.write(NumberGenerator.speedToSet);
 			fileOutput.write((int)(Scanner.damageToSet * 1000));
 			fileOutput.write(Scanner.arcAngleToSet);
+			fileOutput.write(Tower.getHealthToSet());
 			fileOutput.write(level);
 			fileOutput.write(lives);
 			fileOutput.write(money);
 			fileOutput.write(tutorialSlide);
 			fileOutput.write(GamePanel.numTowers);
 			fileOutput.write(Malware.numMalwares);
+			fileOutput.close();
 			
+			//write all objects
 			File objs = new File("objs.txt");
-			ObjectOutputStream objOutput = new ObjectOutputStream(new FileOutputStream("objs.txt"));
+			ObjectOutputStream objOutput = new ObjectOutputStream(new FileOutputStream(objs));
 			objOutput.writeObject(Tower.allTowers);
 			objOutput.writeObject(Tower.sprites);
 			objOutput.writeObject(techPanel);
+			objOutput.close();
 		}
 		catch(Exception e)
 		{
@@ -173,12 +178,14 @@ public class Game extends JFrame implements Runnable
 			NumberGenerator.speedToSet = fileInput.read();
 			Scanner.damageToSet = fileInput.read() / 1000;
 			Scanner.arcAngleToSet = fileInput.read();
+			Tower.setHealthToSet(fileInput.read());
 			level = fileInput.read();
 			lives = fileInput.read();
 			money = fileInput.read();
 			tutorialSlide = fileInput.read();
-			gamePanel.numTowers = fileInput.read();
+			GamePanel.numTowers = fileInput.read();
 			Malware.numMalwares = fileInput.read();
+			fileInput.close();
 			
 			//read objects
 			ObjectInputStream objInput = new ObjectInputStream(new FileInputStream("objs.txt"));
@@ -186,6 +193,7 @@ public class Game extends JFrame implements Runnable
 			Tower.sprites = (JButton[]) objInput.readObject();
 			techPanel = (TechPanel) objInput.readObject();
 			techPanel.initializeTechPanel();
+			objInput.close();
 			
 			//turn off fast-forward for smoother transition
 			fastForward = false;
