@@ -151,7 +151,7 @@ public class StoryManager implements LevelManager
 		{
 			for(int l = 1; l <= 5; l++)
 			{
-				Malware.allMalware[v] = new Virus(Malware.NORMAL, l, startY);
+				Malware.allMalware[v] = new Virus(Malware.TANK, l, startY);
 				v++;
 			}
 			startY -= 70;
@@ -229,8 +229,9 @@ public class StoryManager implements LevelManager
 		
 		switch(Game.level)
 		{
-			case 1:	
-				setMalwaresForLevel(15, 0, 0, 0, 0, 0, 0, 0);
+			case 1:	//TODO reset
+				setMalwaresForLevel(0, 0, 0, 0, 0, 15, 0, 0);
+				setFilesForLevel(10);
 				addMalwares();
 				break;
 			case 2:

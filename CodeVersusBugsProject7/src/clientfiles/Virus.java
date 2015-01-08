@@ -20,49 +20,32 @@ public class Virus extends Malware
 		super(type, lane, y);
 		
 		//initialize instance variables
-		health = 100;
-		reward = 10;
-		speed = (int) (w * 0.030);
+		if(type == NORMAL)
+		{
+			health = 100;
+			reward = 10;
+			speed = (int) (w * 0.030);
+		}
+		else if(type == RUSH)
+		{
+			health = 90;
+			reward = 11;
+			speed = (int) (w * 0.035);
+		}
+		else if(type == TANK)
+		{
+			health = 150;
+			reward = 15;
+			speed = (int) (w * 0.025);
+		}
 		this.lane = lane;
-		canReplicate = true;
+		canReplicate = false;
 	}
 	
 	private Virus(Virus parent)
 	{
 		this(parent.type, parent.lane, (int) (parent.y));
 		
-		//for lanes 1,2, and 3
-		if(parent.path != lane4 || parent.path != lane5)
-		{
-			//if on horizontal stretch, offest child virus x
-			if(parent.getDistance() < parent.path[7])
-			{
-				setX(parent.x - 50);
-			}
-			//else if on vertical stretch, offset child virus y
-			else 
-			{
-				setX(parent.x);
-				setY(parent.y + 50);
-			}
-		}
-		//for paths 4 and 5, basically same thing except for index of path part
-		//that we are comparing against
-		else
-		{
-			//if on horizontal stretch, offest child virus x
-			if(parent.getDistance() < parent.path[5])
-			{
-				setX(parent.x - 50);
-			}
-			//else if on vertical stretch, offset child virus y
-			else 
-			{
-				setX(parent.x);
-				setY(parent.y + 50);
-			}
-		}
-		setDistance(parent.distance - 50);
 		canReplicate = false;
 	}
 	
@@ -89,26 +72,127 @@ public class Virus extends Malware
 					//replicate the virus
 					if(canReplicate)
 					{
-						Malware.allMalware[numMalwares] = new Virus(this);
+						switch(type)
+						{
+							case TANK:
+								replicate(1);
+								break;
+							case NORMAL:
+								replicate(2);
+								break;
+							case RUSH:
+								replicate(4);
+								break;
+						}
 						System.out.println("virus replicated, and now there are "+numMalwares);
 						canReplicate = false;
 						speed = (int) (w * 0.030);
 					}
 					break;
 				}
-				/*else if(dist < 5 * Math.sqrt(sprite.getHeight() * sprite.getWidth()) && file.getY()> y 
-						&& getDistance() > path[5] && (lane == 4 || lane ==5))
-				{
-					speed = (int)(w * 0.015);
-					break;
-				}
-				else if(dist < 5 * Math.sqrt(sprite.getHeight() * sprite.getWidth()) && file.getY()> y 
-						&& getDistance() > path[7] && (lane == 1 || lane == 2 || lane == 3))
-				{
-					speed = (int)(w * 0.015);
-					break;
-				}*/
 			}
 		}
+	}
+	/**
+	 * Makes copies of a virus
+	 * 
+	 * @param copies the number of copies to make
+	 */
+	public void replicate(int copies)
+	{
+		int frontInterval = Math.min(50, (int)((path[pathPart] - distance)/copies));
+		int backInterval;
+		try
+		{
+			backInterval = Math.min(50, (int)((distance - path[pathPart-1])/copies));
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			backInterval = 50;
+		}
+		
+		System.out.println("copies/2 "+copies/2);
+		
+		//if the path is vertical
+		if(pathPart % 2 == 0)
+		{
+			//if going down
+			if(directions[pathPart] == 1)
+			{
+				//spawn viruses behind
+				for(int c = 1; c <= Math.ceil(copies / 2.0); c++)
+				{
+					Malware.allMalware[numMalwares] = new Virus(type, lane, (int)(y - c * backInterval));
+					Malware.allMalware[numMalwares-1].setCenterX(getCenterX());
+					Malware.allMalware[numMalwares-1].setDistance(getDistance() - c * backInterval);
+				}
+				//spawn viruses behind
+				for(int c = 1; c <= copies / 2; c++)
+				{
+					Malware.allMalware[numMalwares] = new Virus(type, lane, (int)(y + c * frontInterval));
+					Malware.allMalware[numMalwares-1].setCenterX(getCenterX());
+					Malware.allMalware[numMalwares-1].setDistance(getDistance() + c * frontInterval);
+				}
+			}
+			//if going up, switch sign on distance
+			else
+			{
+				//spawn viruses behind
+				for(int c = 1; c <= Math.ceil(copies / 2.0); c++)
+				{
+					Malware.allMalware[numMalwares] = new Virus(type, lane, (int)(y + c * backInterval));
+					Malware.allMalware[numMalwares-1].setCenterX(getCenterX());
+					Malware.allMalware[numMalwares-1].setDistance(getDistance() - c * backInterval);	
+					System.out.println(c);
+				}
+				//spawn viruses in front
+				for(int c = 1; c <= copies / 2; c++)
+				{
+					Malware.allMalware[numMalwares] = new Virus(type, lane, (int)(y - c * frontInterval));
+					Malware.allMalware[numMalwares-1].setCenterX(getCenterX());
+					Malware.allMalware[numMalwares-1].setDistance(getDistance() + c * frontInterval);
+				}
+			}
+		}
+				//if on horizontal part of track
+				else
+				{
+					//if going forward
+					if(directions[pathPart] == 1)
+					{
+						//spawn copies behind, at least 1
+						for(int c = 1; c <= Math.ceil(copies / 2.0); c++)
+						{
+							Malware.allMalware[numMalwares] = new Virus(this);
+							Malware.allMalware[numMalwares-1].setCenterX(getCenterX() - c * backInterval);
+							Malware.allMalware[numMalwares-1].setDistance(getDistance() - c * backInterval);
+						}
+						//spawn copies in front, may be 0
+						for(int c = 1; c <= copies / 2; c++)
+						{
+							Malware.allMalware[numMalwares] = new Virus(this);
+							Malware.allMalware[numMalwares-1].setCenterX(getCenterX() + c * frontInterval);
+							Malware.allMalware[numMalwares-1].setDistance(getDistance() + c * frontInterval);
+						}
+					}
+					//if going left, switch sign on distance
+					else
+					{
+						//spawn copies behind, at least 1
+						for(int c = 1; c <= Math.ceil(copies / 2.0); c++)
+						{
+							Malware.allMalware[numMalwares] = new Virus(this);
+							Malware.allMalware[numMalwares-1].setCenterX(getCenterX() - c * backInterval);
+							Malware.allMalware[numMalwares-1].setDistance(getDistance() + c * backInterval);
+						}
+						//spawn copies in front, may be 0
+						for(int c = 1; c <= copies / 2; c++)
+						{
+							Malware.allMalware[numMalwares] = new Virus(this);
+							Malware.allMalware[numMalwares-1].setCenterX(getCenterX() + c * frontInterval);
+							Malware.allMalware[numMalwares-1].setDistance(getDistance() - c * frontInterval);
+						}
+					}
+				}	
 	}
 }
