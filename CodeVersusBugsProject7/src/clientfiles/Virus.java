@@ -86,7 +86,6 @@ public class Virus extends Malware
 						}
 						System.out.println("virus replicated, and now there are "+numMalwares);
 						canReplicate = false;
-						speed = (int) (w * 0.030);
 					}
 					break;
 				}
