@@ -10,8 +10,9 @@ public class BonusFile
 {
 	public static final int EXE = 0;
 	public static final int DATA = 1;
-	public static final Point CPU = new Point((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - 
-			(Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3), (int) Game.gamePanel.path[1].getY());
+	public static final int PACKET = 2;
+	public static final Point CPU = new Point((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3), 
+			(int) Game.gamePanel.path[1].getY());
 	public static ArrayList<BonusFile> allFiles = new ArrayList<BonusFile>();
 	public static ArrayList<BonusFile> recycleBin = new ArrayList<BonusFile>();
 	
@@ -22,18 +23,45 @@ public class BonusFile
 	private BufferedImage sprite;
 	private int type;
 	private boolean encrypted;
+	private boolean travelingToHub = false;
 	private Point destination;
 	private Point origin;
 	private double distance;
 	private double TOTAL_DISTANCE;
+	
+	/**
+	 * Creates a file for use with comm towers.
+	 * 
+	 * @param orig the point at which to spawn the file
+	 * @param dest the point which the file is traveling to
+	 * @param toHub whether or not the file is headed to an info hub
+	 */
+	public BonusFile(Point orig, Point dest, boolean toHub)
+	{
+		speed = Game.widthOfGamePanel  * 0.02;
+		this.type = PACKET;
+		sprite = MyImages.packetFile;
+		
+		//initialize x, y,origin, and destination
+		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
+		setOrigin(orig.x, orig.y);
+		destination = dest;
+		distance = 0;
+		TOTAL_DISTANCE = origin.distance(destination);
+		System.out.println("origin "+origin+" destination "+destination);
+		ListIterator<BonusFile> iterator = allFiles.listIterator();
+		iterator.add(this);
+	}
+	
 	/**
 	 * Creates a file that carries important info.
 	 * 
 	 * @param type DATA or EXE
 	 * @param orig the starting point of the file
 	 * @param dest the destination of the file
+	 * @deprecated
 	 */
-	public BonusFile(int type, Point orig, Point dest) 
+	public BonusFile(int type, Point orig, Point dest)
 	{
 		//initialize instance variables
 		reward = 10;
@@ -50,10 +78,15 @@ public class BonusFile
 			this.type = type;
 			sprite = MyImages.dataFile;
 		}
+		else if(type == PACKET)
+		{
+			this.type = type;
+			sprite = MyImages.packetFile;
+		}
 		
 		//initialize x, y,origin, and destination
 		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
-		setOrigin((int)x, orig.y);
+		setOrigin((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3), orig.y + sprite.getHeight()/2);
 		destination = dest;
 		distance = 0;
 		TOTAL_DISTANCE = origin.distance(destination);
@@ -86,15 +119,16 @@ public class BonusFile
 		}
 		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
 		setY(y);
-		setOrigin((int)x, y);
-		destination = new Point((int)x, CPU.y);
+		setOrigin((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3), y + sprite.getHeight()/2);
+		destination = CPU;
 		distance = 0;
 		TOTAL_DISTANCE = y - CPU.y;
 		
 		ListIterator<BonusFile> iterator = allFiles.listIterator();
 		iterator.add(this);
 	}
-	public double getX() {
+	public double getX() 
+	{
 		return x;
 	}
 
@@ -110,10 +144,14 @@ public class BonusFile
 	{
 		x = xToSet - sprite.getWidth()/2;
 	}
+	private void setCenterY(int yToSet) 
+	{
+		y = yToSet - sprite.getHeight()/2;
+	}
 	public void setOrigin(int x, int y)
 	{
-		this.x = x;
-		this.y = y;
+		setCenterX(x);
+		setCenterY(y);
 		origin = new Point(x,y);
 	}
 	public int getType()
@@ -135,9 +173,10 @@ public class BonusFile
 			double angle;
 			double xDist;
 			double yDist;
+			
 			try
 			{
-				slope = (destination.y - origin.y) / (destination.x - origin.x);
+				slope = (double)(destination.y - origin.y) / (destination.x - origin.x);
 				angle = Math.abs(Math.atan(slope));
 			}
 			//if going straight up or down, angle is 90
@@ -148,7 +187,7 @@ public class BonusFile
 			yDist = Math.sin(angle);
 			xDist = Math.cos(angle);
 			//debug
-			//System.out.println("moving "+xDist+" on x-axis and "+yDist+" on y");
+			System.out.println("moving "+xDist+" on x-axis and "+yDist+" on y");
 			
 			if(destination.x >= origin.x && destination.y >= origin.y)
 			{
@@ -182,11 +221,47 @@ public class BonusFile
 			if(destination.equals(CPU))
 			{
 				System.out.println("a file made it across");
-					
+				
 				Game.lives+=reward;
 				Game.gf.life.setText("Bytes Remaining: " + Game.lives);
 				
 				addToRecycleBin();
+			}
+			
+			// if dealing with a packet
+			else if (type == 2)
+			{
+				if (travelingToHub)
+				{
+					CommunicationsTower.numOfPacketsToHub--;
+					CommunicationsTower.numOfPacketsToTower++;
+				}
+				else
+				{
+					CommunicationsTower.numOfPacketsToTower--;
+					
+					if (CommunicationsTower.numOfPacketsToTower == 0)
+					{
+						int towerTypeOfConnecting = -1;
+						
+						CommunicationsTower.towersConnected[CommunicationsTower.totalTowersConnected] = CommunicationsTower.connectingTower;
+						CommunicationsTower.totalTowersConnected++;
+						CommunicationsTower.uploadingTower = false;
+						
+						if (CommunicationsTower.connectingTower instanceof DiscThrower)
+							towerTypeOfConnecting = 0;
+						else if (CommunicationsTower.connectingTower instanceof NumberGenerator)
+							towerTypeOfConnecting = 1;
+						else if (CommunicationsTower.connectingTower instanceof Scanner)
+							towerTypeOfConnecting = 2;
+						
+						// update upgrades for the tower
+						CommunicationsTower.updateConnectedTowers(CommunicationsTower.connectingTower);
+						CommunicationsTower.upgradeConnectedTowers(CommunicationsTower.bestConnectedTowers[towerTypeOfConnecting], CommunicationsTower.connectingTower, true);
+					}
+					
+					addToRecycleBin();
+				}
 			}
 			//for files headed to other places
 			else

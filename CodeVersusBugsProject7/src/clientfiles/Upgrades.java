@@ -159,7 +159,7 @@ public abstract class Upgrades
 		{
 		    public void actionPerformed(ActionEvent e)
 		    {
-		    	getUpgradeID(1);
+		    	getUpgradeID(Tower.allTowers[displayedUpgradeID], 1, false);
 		    	upgradesInfo.setBackground(Color.CYAN);
 				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(1);
 		    }
@@ -178,7 +178,7 @@ public abstract class Upgrades
 		{
 		    public void actionPerformed(ActionEvent e)
 		    {
-		    	getUpgradeID(2);
+		    	getUpgradeID(Tower.allTowers[displayedUpgradeID], 2, false);
 		    	upgradesInfo.setBackground(Color.CYAN);
 				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(2);
 		    }
@@ -197,7 +197,7 @@ public abstract class Upgrades
 		{
 		    public void actionPerformed(ActionEvent e)
 		    {
-		    	getUpgradeID(3);
+		    	getUpgradeID(Tower.allTowers[displayedUpgradeID], 3, false);
 		    }
 		});
 		
@@ -268,10 +268,16 @@ public abstract class Upgrades
 		if(typeOfTower != TowerType.FIREWALL && typeOfTower != TowerType.COMMUNICATIONS_TOWER)
 		{
 			upgrade.add(cureTower);
+			
 			//encrypters get to cure, but not connect
 			if(typeOfTower != TowerType.ENCRYPTER)
 				upgrade.add(connect);
-			System.out.println("turned on cure");
+			
+			//temporarily disable connect if there is another tower uploading
+			if(CommunicationsTower.uploadingTower)
+				connect.setEnabled(false);
+			else
+				connect.setEnabled(true);
 		}
 		
 		if (typeOfTower == TowerType.DISC_THROWER)
@@ -423,6 +429,7 @@ public abstract class Upgrades
 		if (!Tower.allTowers[displayedUpgradeID].isConnected && activeCommTower && Game.makePurchase(500))
 		{	
 			Tower.allTowers[displayedUpgradeID].isConnected = true;
+			CommunicationsTower.connectTower(Tower.allTowers[displayedUpgradeID]);
 		}
 	}
 	
@@ -431,13 +438,13 @@ public abstract class Upgrades
 		upgradesInfo.setText(" Connect:\n$500\n\n Requires a communications tower with the information hub upgrade");
 	}
 	
-	public static void getUpgradeID(int upgradePath)
+	public static void getUpgradeID(Tower tower, int upgradePath, boolean hubUpdating)
 	{
 		int upgradeID = 0;
 		/**Explanation for upgradeID in upgradeTower(int upgradeID)**/
 		
 		//warn user if in tutorial
-		if(Game.tutorial && Game.tutorialSlide < 13)
+		if(Game.tutorial && Game.tutorialSlide < 13 && !hubUpdating)
 		{
 			Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
 			int choice = JOptionPane.showOptionDialog(Game.gf, "You're not supposed to upgrade that yet!", 
@@ -467,13 +474,15 @@ public abstract class Upgrades
 		{
 			upgradeID += 10;
 			
-			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath1;
+			upgradeID += tower.upgradesInPath1;
 			
-			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1)))
+			if (hubUpdating)
+				Game.addMoney(tower.getCostOfUpgrade(1));
+			if (Game.makePurchase(tower.getCostOfUpgrade(1)))
 			{
-				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(1);
-				Tower.allTowers[displayedUpgradeID].upgradesInPath1++;
-				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(1);
+				tower.realValue += tower.getCostOfUpgrade(1);
+				tower.upgradesInPath1++;
+				tower.displayUpgradeInfo(1);
 			}
 			else
 			{
@@ -481,18 +490,20 @@ public abstract class Upgrades
 				return;
 			}
 		}
-				
+		
 		else if (upgradePath == 2)
 		{
 			upgradeID += 20;
 			
-			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath2;
+			upgradeID += tower.upgradesInPath2;
 			
-			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(2)))
+			if (hubUpdating)
+				Game.addMoney(tower.getCostOfUpgrade(2));
+			if (Game.makePurchase(tower.getCostOfUpgrade(2)))
 			{
-				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(2);
-				Tower.allTowers[displayedUpgradeID].upgradesInPath2++;
-				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(2);
+				tower.realValue += tower.getCostOfUpgrade(2);
+				tower.upgradesInPath2++;
+				tower.displayUpgradeInfo(2);
 			}
 			else
 			{
@@ -504,13 +515,15 @@ public abstract class Upgrades
 		{
 			upgradeID += 30;
 			
-			upgradeID += Tower.allTowers[displayedUpgradeID].upgradesInPath3;
+			upgradeID += tower.upgradesInPath3;
 			
-			if (Game.makePurchase(Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(3)))
+			if (hubUpdating)
+				Game.addMoney(tower.getCostOfUpgrade(3));
+			if (Game.makePurchase(tower.getCostOfUpgrade(3)))
 			{
-				Tower.allTowers[displayedUpgradeID].realValue += Tower.allTowers[displayedUpgradeID].getCostOfUpgrade(3);
-				Tower.allTowers[displayedUpgradeID].upgradesInPath3++;
-				Tower.allTowers[displayedUpgradeID].displayUpgradeInfo(3);
+				tower.realValue += tower.getCostOfUpgrade(3);
+				tower.upgradesInPath3++;
+				tower.displayUpgradeInfo(3);
 			}
 			else
 			{
@@ -525,13 +538,11 @@ public abstract class Upgrades
 		}
 		
 		//System.out.println("Upgrade ID == " + upgradeID);
-		upgradeTower(upgradeID);
+		upgradeTower(upgradeID, tower);
 	}
 	
-	public static void upgradeTower(int upgradeID)
+	public static void upgradeTower(int upgradeID, Tower tower)
 	{
-		Tower tower = Tower.allTowers[displayedUpgradeID];
-		
 		/**UPGARADE ID == (TowerType + upgrade path + upgrade number)**/
 		switch (upgradeID) 
 		{
@@ -675,12 +686,34 @@ public abstract class Upgrades
 			case 622:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).shareRange = true;
 											break;
 			case 631:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .02;
+
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 			case 632:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .03;
+
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 			case 633:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).informationHub = true;
+											
+											if (!CommunicationsTower.mesh && !CommunicationsTower.star)
+											{
+												Object[] options = {"Star", "Mesh"};
+												int choice = JOptionPane.showOptionDialog(Game.gf, "What type of hub would you like?", 
+														"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+												if(choice == 0)
+													CommunicationsTower.star = true;
+												else
+													CommunicationsTower.mesh = true;
+											}
 											break;
 			}
+		// update all uploaded towers to hubs
+		if (tower.isConnected)
+			CommunicationsTower.updateConnectedTowers(tower);
 		
 		tower.addUpgradeOptions(displayedUpgradeID);
 	}

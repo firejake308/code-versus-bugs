@@ -99,7 +99,8 @@ public class CodeVersusBugs
 					framesThisSec=0;
 					lastFrameTime=0;
 					
-					Game.gf.fpsCounter.setText(Game.fps+" fps");
+					//System.out.println(Game.fps);
+					Game.gf.fpsDisplay.setDisplay(Game.fps);
 					Game.infoPanel.repaint();
 				}
 				
@@ -140,6 +141,7 @@ public class CodeVersusBugs
 		catch(Exception e)
 		{
 			JOptionPane.showMessageDialog(null,"something went wrong");
+			e.printStackTrace();
 		}
 	}
 }

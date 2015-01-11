@@ -41,6 +41,9 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	private JTextArea creditsText = new JTextArea("");
 	private JScrollPane scroll = new JScrollPane(creditsText);
 	private JCheckBox tutorial = new JCheckBox("Tutorial", true);
+	private JRadioButton storyMode = new JRadioButton("Story Mode", true);
+	private JRadioButton freeplayMode = new JRadioButton("Freeplay", false);
+	private ButtonGroup playMode = new ButtonGroup();
 	private JTextArea instructionsText = new JTextArea();
 	private JScrollPane instructionsScroll = new JScrollPane(instructionsText);
 	private JButton back = new JButton(new ImageIcon(MyImages.backOpen));
@@ -182,7 +185,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			title.setVisible(false);
 			
 			//make the tutorial check box visible
-			tutorial.setBounds(120, 50, 160, 200);
+			tutorial.setBounds(120, 50, 160, 50);
 			tutorial.setBackground(Color.black);
 			tutorial.setForeground(new Color(0, 162, 232));
 			tutorial.setFont(new Font("Monospaced", Font.BOLD, 20));
@@ -190,6 +193,28 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			tutorial.addItemListener(this);
 			tutorial.setVisible(true);
 			c.add(tutorial);
+			
+			//make mode options visible
+			storyMode.setBounds(60, 100, 160, 50);
+			storyMode.setBackground(Color.black);
+			storyMode.setForeground(new Color(0, 162, 232));
+			storyMode.setFont(new Font("Monospaced", Font.BOLD, 20));
+			storyMode.setFocusable(false);
+			storyMode.addItemListener(this);
+			storyMode.setVisible(true);
+			c.add(storyMode);
+			
+			freeplayMode.setBounds(220, 100, 160, 50);
+			freeplayMode.setBackground(Color.black);
+			freeplayMode.setForeground(new Color(0, 162, 232));
+			freeplayMode.setFont(new Font("Monospaced", Font.BOLD, 20));
+			freeplayMode.setFocusable(false);
+			freeplayMode.addItemListener(this);
+			freeplayMode.setVisible(true);
+			c.add(freeplayMode);
+			
+			playMode.add(storyMode);
+			playMode.add(freeplayMode);
 			
 			//turn on the back button
 			back.setBounds(120, 400, 160, 50);
@@ -266,13 +291,17 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 		
 		else if (temp == back)
 		{
+			//turn on inner page components
 			creditsText.setVisible(false);
 			instructionsText.setVisible(false);
 			back.setVisible(false);
 			scroll.setVisible(false);
 			instructionsScroll.setVisible(false);
 			tutorial.setVisible(false);
+			storyMode.setVisible(false);
+			freeplayMode.setVisible(false);
 			
+			//turn on main page components
 			title.setVisible(true);
 			start.setVisible(true);
 			credits.setVisible(true);
@@ -287,16 +316,41 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	{
 		int state = e.getStateChange();
 		
-		if(state == ItemEvent.DESELECTED)
+		//turn tutorial on/off
+		if(e.getSource() == tutorial)
 		{
-			Game.tutorialSlide = 0;
-			Game.gamePanel.disableTutorial();
-			Game.techPanel.disableTutorial();
+			if(state == ItemEvent.DESELECTED)
+			{
+				Game.tutorialSlide = 0;
+				Game.gamePanel.disableTutorial();
+				Game.techPanel.disableTutorial();
+			}
+			else if(state == ItemEvent.SELECTED)
+			{
+				Game.gamePanel.enableTutorial();
+				Game.techPanel.enableTutorial();
+			}
 		}
-		else if(state == ItemEvent.SELECTED)
+		
+		//switch between story and freeplay
+		if(e.getSource() == storyMode)
 		{
-			Game.gamePanel.enableTutorial();
-			Game.techPanel.enableTutorial();
+			//enter story mode
+			if(e.getStateChange() == ItemEvent.SELECTED)
+			{
+				System.out.println("enabled story mode");
+				Game.gamePanel.enterStoryMode();
+			}
+			//enter free play mode
+			else
+			{
+				System.out.println("enabled freeplay mode");
+				Game.gamePanel.enterFreeplay();
+				//tutorial doesn't work well with freeplay
+				Game.gamePanel.disableTutorial();
+				Game.techPanel.disableTutorial();
+				tutorial.setSelected(false);
+			}
 		}
 	}
 }

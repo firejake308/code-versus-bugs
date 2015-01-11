@@ -60,7 +60,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 7500;
+	private static int money = 20000;
 	public static int lives = 5000;
 	public static int level = 1;
 	
@@ -68,6 +68,7 @@ public class Game extends JFrame implements Runnable
 	public static int tutorialSlide = 1;
 	public static boolean livesTutorialPlayed = false;
 	public static int savedSlide = 1;
+	public static boolean freeplay = false;
 	
 	private static final long serialVersionUID = 1L;
 	public static GameFrame gf;
@@ -114,7 +115,7 @@ public class Game extends JFrame implements Runnable
 		else
 			money += income;
 		
-		gf.moneyLabel.setText("$" + money + " money");
+		gf.moneyLabel.setDisplay(money);
 	}
 	public static int getMoney() 
 	{
@@ -130,6 +131,10 @@ public class Game extends JFrame implements Runnable
 			File staticInts = new File("staticInts.txt");
 			FileOutputStream fileOutput = new FileOutputStream(staticInts);
 			if(Malware.routerOn)
+				fileOutput.write(1);
+			else
+				fileOutput.write(0);
+			if(Game.freeplay)
 				fileOutput.write(1);
 			else
 				fileOutput.write(0);
@@ -153,7 +158,7 @@ public class Game extends JFrame implements Runnable
 			ObjectOutputStream objOutput = new ObjectOutputStream(new FileOutputStream(objs));
 			objOutput.writeObject(Tower.allTowers);
 			objOutput.writeObject(Tower.sprites);
-			objOutput.writeObject(techPanel);
+			objOutput.writeObject(techPanel.getPointValues());
 			objOutput.close();
 		}
 		catch(Exception e)
@@ -172,6 +177,11 @@ public class Game extends JFrame implements Runnable
 				Malware.routerOn = true;
 			else
 				Malware.routerOn = false;
+			//turn on freeplay if necessary
+			if(fileInput.read() == 1)
+				gamePanel.enterFreeplay();
+			else
+				gamePanel.enterStoryMode();
 			DiscThrower.damageToSet = fileInput.read();
 			DiscThrower.speedToSet = fileInput.read();
 			NumberGenerator.damageToSet = fileInput.read();
@@ -191,8 +201,7 @@ public class Game extends JFrame implements Runnable
 			ObjectInputStream objInput = new ObjectInputStream(new FileInputStream("objs.txt"));
 			Tower.allTowers = (Tower[]) objInput.readObject();
 			Tower.sprites = (JButton[]) objInput.readObject();
-			techPanel = (TechPanel) objInput.readObject();
-			techPanel.initializeTechPanel();
+			techPanel.setPointValues((int[])objInput.readObject());
 			objInput.close();
 			
 			//turn off fast-forward for smoother transition
@@ -205,7 +214,7 @@ public class Game extends JFrame implements Runnable
 		
 		//update info panel
 		gf.life.setText("Bytes Remaining: " + Game.lives);
-		gf.moneyLabel.setText("$" + Game.getMoney() + " money");
+		gf.moneyLabel.setDisplay(money);
 		gf.levelCounter.setText("Level: " + Game.level);
 		
 		//re-add towers to gamepanel
@@ -570,12 +579,40 @@ public class Game extends JFrame implements Runnable
 			ShopPanel.warned = false;
 		}
 		
+		
+		
+		// call handlePackets on comm towers to allow for more to move
+		if (CommunicationsTower.timerResetHub <= CommunicationsTower.timerHub && !CommunicationsTower.mesh)
+		{
+			CommunicationsTower.handlePackets(true);
+			CommunicationsTower.timerHub = 0;
+		}
+		else
+		{
+			CommunicationsTower.timerHub++;
+			if (fastForward)
+				CommunicationsTower.timerHub++;
+		}
+		
+		if (CommunicationsTower.timerResetTower <= CommunicationsTower.timerTower)
+		{
+			CommunicationsTower.handlePackets(false);
+			CommunicationsTower.timerTower = 0;
+		}
+		else
+		{
+			CommunicationsTower.timerTower++;
+			if (fastForward)
+				CommunicationsTower.timerTower++;
+		}
+		
+		
 		//move any files that exist
 		for(BonusFile p:BonusFile.allFiles)
 		{
 			if(p != null)
 			{
-				p.move(frames);
+				p.move(frames * Game.speedModifier);
 			}
 		}
 		BonusFile.emptyBin();

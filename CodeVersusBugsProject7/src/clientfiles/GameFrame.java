@@ -48,9 +48,9 @@ public class GameFrame extends JFrame implements ActionListener
 	private Color epic = new Color(100,179,132);
 
 	//stuff in info panel
-	public JLabel moneyLabel;
+	public DigitalDisplay moneyLabel;
 	public JLabel life;
-	public JLabel fpsCounter;
+	public DigitalDisplay fpsDisplay;
 	public JLabel levelCounter;
 	
 	//the constructor instantiates the panels and sets the layout
@@ -94,24 +94,23 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.loadButton.addActionListener(this);
 		mainWindow.add(Game.loadButton);
 		
-		Game.infoPanel.setBounds(145,5,screenSize.width-145,50);
+		Game.infoPanel.setBounds(145,5,screenSize.width-145,100);
 		
 		//initialize money label and fps counter
-		moneyLabel = new JLabel("$" + Game.getMoney() + " money");
-		fpsCounter = new JLabel(Game.fps+" fps");
+		moneyLabel = new DigitalDisplay(5, "money");
+		fpsDisplay = new DigitalDisplay(2, "fps");
 		life = new JLabel("Bytes Remaining: " + Game.lives);
 		levelCounter = new JLabel("Level: " + Game.level);
 		
 		//fix up font size
 		moneyLabel.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
-		fpsCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
 		life.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*14)));
 		levelCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
 		
 		//add fpsCounter to info panel
 		Game.infoPanel.add(life);
 		Game.infoPanel.add(moneyLabel);
-		Game.infoPanel.add(fpsCounter);
+		Game.infoPanel.add(fpsDisplay);
 		Game.infoPanel.add(levelCounter);
 		
 		mainWindow.add(Game.shopPanel);
@@ -131,12 +130,12 @@ public class GameFrame extends JFrame implements ActionListener
 		//these are just here to make sure that
 		Game.gamePanel.setLayout(null);
 		Game.gamePanel.setBackground(epic);
-		Game.infoPanel.setBackground(epic);
+		Game.infoPanel.setBackground(Color.BLACK);
 		
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
-		Game.xScale = (Game.widthOfGamePanel / 1366.0);
-		Game.yScale = (Game.heightOfGamePanel / 768.0);
+		Game.xScale = (Game.widthOfGamePanel / 1256.0);
+		Game.yScale = (Game.heightOfGamePanel / 658.0);
 		System.out.println(Game.yScale);
 		
 		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .12);

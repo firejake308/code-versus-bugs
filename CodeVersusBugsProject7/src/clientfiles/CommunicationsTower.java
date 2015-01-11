@@ -1,6 +1,10 @@
 package clientfiles;
 
+import java.awt.Point;
+
 import javax.swing.ImageIcon;
+
+import clientfiles.Malware.State;
 
 public class CommunicationsTower extends Tower
 {
@@ -13,6 +17,24 @@ public class CommunicationsTower extends Tower
 	public static int speedToSet = 0;
 	public static int rangeToSet = (int) ((Game.screenSize.width - 100) * .10);
 	public static int healthToSet = 0;   // immortal
+	
+	public static boolean star = false;
+	public static boolean mesh = false;
+	public static boolean uploadingTower = false;
+	public static int numOfPacketsToHub = 0;
+	public static int numOfPacketsToTower = 0;
+	public static int timerResetHub = 150;
+	public static int timerHub = 0;
+	public static int timerResetTower = 150;
+	public static int timerTower = 0;
+	public static Tower connectingTower = null;
+	public static Tower towerHub = null;
+	
+	// tracks unlocked upgrades, first 0 = dt, 1 = ng, 2 = sc, second 0 = 1st path, 1 = 2nd path, 2 = 3rd path
+	public static int [][] upgradesUnlocked = new int[3][3];
+	public static Tower [] towersConnected = new Tower[100];
+	public static Tower [] bestConnectedTowers = new Tower [3];
+	public static int totalTowersConnected = 0;
 	
 	public boolean shareRange = false;
 	public boolean informationHub = false;
@@ -288,6 +310,296 @@ public class CommunicationsTower extends Tower
 					tower.damage += damageToAdd / 20;
 				}
 			}
+		}
+	}
+	
+	public static void connectTower(Tower tower)
+	{
+		boolean uploadTower = false;
+		
+		if (tower.type == TowerType.DISC_THROWER)
+		{
+			if (tower.upgradesInPath1 >= upgradesUnlocked[0][0])
+			{
+				upgradesUnlocked[0][0] = tower.upgradesInPath1;
+			}
+			else
+				uploadTower = true;
+			if (tower.upgradesInPath2 >= upgradesUnlocked[0][1])
+			{
+				upgradesUnlocked[0][1] = tower.upgradesInPath2;
+			}
+			else
+				uploadTower = true;
+			if (tower.upgradesInPath3 >= upgradesUnlocked[0][2])
+			{
+				upgradesUnlocked[0][2] = tower.upgradesInPath3;
+			}
+			else
+				uploadTower = true;
+		}
+		if (tower.type == TowerType.NUMBER_GENERATOR)
+		{
+			if (tower.upgradesInPath1 >= upgradesUnlocked[1][0])
+			{
+				upgradesUnlocked[1][0] = tower.upgradesInPath1;
+			}
+			else
+				uploadTower = true;
+			if (tower.upgradesInPath2 >= upgradesUnlocked[1][1])
+			{
+				upgradesUnlocked[1][1] = tower.upgradesInPath2;
+			}
+			else
+				uploadTower = true;
+			if (tower.upgradesInPath3 >= upgradesUnlocked[1][2])
+			{
+				upgradesUnlocked[1][2] = tower.upgradesInPath3;
+			}
+			else
+				uploadTower = true;
+		}
+		if (tower.type == TowerType.SCANNER)
+		{
+			if (tower.upgradesInPath1 >= upgradesUnlocked[2][0])
+			{
+				upgradesUnlocked[2][0] = tower.upgradesInPath1;
+			}
+			else
+				uploadTower = true;
+			if (tower.upgradesInPath2 >= upgradesUnlocked[2][1])
+			{
+				upgradesUnlocked[2][1] = tower.upgradesInPath2;
+			}
+			else
+				uploadTower = true;
+			if (tower.upgradesInPath3 >= upgradesUnlocked[2][2])
+			{
+				upgradesUnlocked[2][2] = tower.upgradesInPath3;
+			}
+			else
+				uploadTower = true;
+		}
+		
+		if (!uploadTower)
+		{
+			if (tower instanceof DiscThrower)
+				bestConnectedTowers[0] = tower;
+			if (tower instanceof NumberGenerator)
+				bestConnectedTowers[1] = tower;
+			if (tower instanceof Scanner)
+				bestConnectedTowers[2] = tower;
+			
+			towersConnected[totalTowersConnected] = tower;
+			totalTowersConnected++;
+			updateConnectedTowers(tower);
+			return;
+		}
+		uploadingTower = true;
+		connectingTower = tower;
+		
+		if (star)
+		{
+			if (tower instanceof DiscThrower)
+				numOfPacketsToHub = Math.abs((bestConnectedTowers[0].realValue - tower.realValue) / 25);
+			if (tower instanceof NumberGenerator)
+				numOfPacketsToHub = Math.abs((bestConnectedTowers[1].realValue - tower.realValue) / 25);
+			if (tower instanceof Scanner)
+				numOfPacketsToHub = Math.abs((bestConnectedTowers[2].realValue - tower.realValue) / 25);
+		}
+		else if (mesh)
+		{
+			if (tower instanceof DiscThrower)
+				numOfPacketsToTower = Math.abs((bestConnectedTowers[0].realValue - tower.realValue) / 25);
+			if (tower instanceof NumberGenerator)
+				numOfPacketsToTower = Math.abs((bestConnectedTowers[1].realValue - tower.realValue) / 25);
+			if (tower instanceof Scanner)
+				numOfPacketsToTower = Math.abs((bestConnectedTowers[2].realValue - tower.realValue) / 25);
+		}
+	}
+	
+	public static void handlePackets(boolean leavingFromHub)
+	{
+		// handle invalid exceptions
+		if (connectingTower == null)
+			return;
+		if (leavingFromHub && numOfPacketsToTower == 0)
+			return;
+		if (mesh && numOfPacketsToTower == 0)
+			return;
+		if (mesh && leavingFromHub)
+			return;
+		if (!mesh && !leavingFromHub && numOfPacketsToHub == 0)
+			return;
+		
+		Point origin = null;
+		Point destination = null;
+		double xOfTarget = 0;
+		double yOfTarget = 0;
+		int xOfTower = 0;
+		int yOfTower = 0;
+		double distanceFromOrigin = 10000;
+		double targetsDistance = 10000;
+		boolean commTowerSelected = false;
+		Tower originTower = null;
+		BonusFile packet = null;
+		
+		// going to tower
+		if (leavingFromHub || mesh)
+		{
+			xOfTarget = connectingTower.getCenterX();
+			yOfTarget = connectingTower.getCenterY();
+		}
+		
+		if (towerHub == null && star)
+		{
+			for (int i = 0; i < Tower.allTowers.length; i++)
+			{
+				if (Tower.allTowers[i] == null)
+					break;
+				if (Tower.allTowers[i] instanceof CommunicationsTower)
+				{
+					if (((CommunicationsTower)Tower.allTowers[i]).informationHub)
+					{
+						xOfTower = Tower.allTowers[i].getCenterX();
+						yOfTower = Tower.allTowers[i].getCenterY();
+						commTowerSelected = true;
+					}
+				}
+				
+				distanceFromOrigin = Math.sqrt(Math.pow(xOfTarget - xOfTower, 2) + Math.pow(yOfTarget - yOfTower, 2));
+				
+				if (distanceFromOrigin < targetsDistance && commTowerSelected)
+				{
+					towerHub = Tower.allTowers[i];
+					targetsDistance = distanceFromOrigin;
+				}
+				
+				commTowerSelected = false;
+			}
+		}
+		
+		if (towerHub == null && star)
+			return;
+		
+		// for going to hub
+		if (!leavingFromHub && star)
+		{
+			xOfTarget = towerHub.getCenterX();
+			yOfTarget = towerHub.getCenterY();
+		}
+		
+		// for going to hub from tower
+		if (leavingFromHub && star)
+		{
+			origin = new Point(towerHub.getCenterX(), towerHub.getCenterY());
+			destination = new Point(connectingTower.getCenterX(), connectingTower.getCenterY());
+		}
+		
+		// for mesh or going to hub
+		else
+		{
+			for (int i = 0; i < towersConnected.length; i++)
+			{
+				if (towersConnected[i] == null)
+					break;
+				if (towersConnected[i].type == connectingTower.type)
+				{
+					xOfTower = towersConnected[i].getCenterX();
+					yOfTower = towersConnected[i].getCenterY();
+				}
+				
+				distanceFromOrigin = Math.sqrt(Math.pow(xOfTarget - xOfTower, 2) + Math.pow(yOfTarget - yOfTower, 2));
+				
+				if (distanceFromOrigin < targetsDistance)
+				{
+					originTower = towersConnected[i];
+					targetsDistance = distanceFromOrigin;
+				}
+			}
+			
+			origin = new Point(originTower.getCenterX(), originTower.getCenterY());
+			if (mesh)
+				destination = new Point(connectingTower.getCenterX(), connectingTower.getCenterY());
+			else
+				destination = new Point(towerHub.getCenterX(), towerHub.getCenterY());
+		}
+		
+		System.out.println(origin + " " + destination);
+		if (origin != null && destination != null)
+		{
+			System.out.println(origin + " " + destination);
+			if (mesh || leavingFromHub)
+				packet = new BonusFile(origin, destination, false);
+			else if (star && !leavingFromHub)
+				packet = new BonusFile(origin, destination, true);
+		}
+	}
+	
+	/**
+	 * Updates the upgrades of already connected towers
+	 * @param tower
+	 */
+	public static void updateConnectedTowers(Tower tower)
+	{
+		TowerType typeOfUpgradedTower = tower.type;
+		int upgradedTowerID = -1;
+		
+		for (int i = 0; i < towersConnected.length; i++)
+		{
+			if (towersConnected[i] == null)
+				break;
+			if (towersConnected[i].type == typeOfUpgradedTower && tower != towersConnected[i])
+			{
+				upgradeConnectedTowers(tower, towersConnected[i], false);
+			}
+		}
+		
+		switch (typeOfUpgradedTower)
+		{
+			case DISC_THROWER:					upgradedTowerID = 0;
+												break;
+			case NUMBER_GENERATOR:				upgradedTowerID = 1;
+												break;
+			case SCANNER:						upgradedTowerID = 2;
+												break;
+			default:							return;
+		}
+		
+		if (tower.upgradesInPath1 > upgradesUnlocked[upgradedTowerID][0])
+			upgradesUnlocked[upgradedTowerID][0] = tower.upgradesInPath1;
+		if (tower.upgradesInPath2 > upgradesUnlocked[upgradedTowerID][1])
+			upgradesUnlocked[upgradedTowerID][1] = tower.upgradesInPath2;
+		if (tower.upgradesInPath3 > upgradesUnlocked[upgradedTowerID][2])
+			upgradesUnlocked[upgradedTowerID][2] = tower.upgradesInPath3;
+	}
+	
+	/**
+	 * upgrade connected tower if one has been upgraded or upgrade a new tower if it is added
+	 * 
+	 * @param betterTower
+	 * @param worseTower
+	 * @param addingNewTower
+	 */
+	public static void upgradeConnectedTowers(Tower betterTower, Tower worseTower, boolean addingNewTower)
+	{
+		while(betterTower.upgradesInPath1 > worseTower.upgradesInPath1)
+		{
+			Upgrades.getUpgradeID(worseTower, 1, true);
+		}
+		while(betterTower.upgradesInPath2 > worseTower.upgradesInPath2)
+		{
+			Upgrades.getUpgradeID(worseTower, 2, true);
+		}
+		while(betterTower.upgradesInPath3 > worseTower.upgradesInPath3)
+		{
+			Upgrades.getUpgradeID(worseTower, 3, true);
+		}
+		
+		if (addingNewTower)
+		{
+			connectingTower = null;
+			towerHub = null;
 		}
 	}
 }

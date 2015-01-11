@@ -72,6 +72,7 @@ public class MyImages
 	public static BufferedImage dataFile;
 	public static BufferedImage exeFile;
 	public static BufferedImage secureFile;
+	public static BufferedImage packetFile;
 	public static BufferedImage virus;
 	public static BufferedImage tankVirus;
 	public static BufferedImage rushVirus;
@@ -203,6 +204,7 @@ public class MyImages
 			dataFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/datafile.png"));
 			exeFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/exefile.png"));
 			secureFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/securefile.png"));
+			packetFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/packetFile.png"));
 			virus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus3.png"));
 			tankVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus4.png"));
 			rushVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus5.png"));

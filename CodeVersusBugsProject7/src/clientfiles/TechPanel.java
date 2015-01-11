@@ -555,6 +555,51 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		Game.tutorial = true;
 		tutorial.setVisible(true);
 	}
+	/**
+	 * Gets the point values of every upgrade.
+	 * @return
+	 */
+	public int[] getPointValues()
+	{
+		int [] points = {
+			attackPoints, 
+			defensePoints, 
+			supportPoints,
+			
+			damagePoints,
+			speedPoints,
+			rangePoints,
+			bufferPoints,
+			livesPoints,
+			routerPoints,
+			slowPoints,
+			moneyPoints,
+			moneyMultPoints
+			};
+		
+		return points;
+	}
+	/**
+	 * Sets the point values of all upgrades.
+	 * 
+	 * @param points an array of the point values to set
+	 */
+	public void setPointValues(int[] points)
+	{
+		attackPoints = points[0];
+		defensePoints = points[1];
+		supportPoints = points[0];
+		
+		damagePoints = points[3];
+		speedPoints = points[4];
+		rangePoints = points[5];
+		bufferPoints = points[6];
+		livesPoints = points[7];
+		routerPoints = points[8];
+		slowPoints = points[9];
+		moneyPoints = points[10];
+		moneyMultPoints = points[11];
+	}
 	public void paintComponent(Graphics g)
 	{
 		//attack

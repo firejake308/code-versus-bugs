@@ -1204,6 +1204,22 @@ public class GamePanel extends JPanel
 		if(tutorialArea.intersects(upgradesArea))
 			tutorial.setLocation(0, 8 * getHeight() / 10);
 	}
+	/**
+	 * Enables free play mode with a RandomManager
+	 */
+	public void enterFreeplay()
+	{
+		lvlManager = new RandomManager();
+		Game.freeplay = true;
+	}
+	/**
+	 * Enables story mode with a StoryManager
+	 */
+	public void enterStoryMode()
+	{
+		lvlManager = new StoryManager();
+		Game.freeplay = false;
+	}
 	private class DrawingPanel extends JPanel
 	{
 		public DrawingPanel()

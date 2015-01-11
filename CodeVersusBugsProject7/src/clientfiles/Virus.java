@@ -60,7 +60,7 @@ public class Virus extends Malware
 		{
 			BonusFile file = iter.next();
 			//only bother to check if the file is an exe
-			if(file.getType() == BonusFile.EXE && !file.isEncrypted())
+			if((file.getType() == BonusFile.EXE || file.getType() == BonusFile.PACKET) && !file.isEncrypted())
 			{
 				double dist = Math.sqrt(Math.pow(file.getX() - x, 2) + Math.pow(file.getY() - y, 2));
 				
