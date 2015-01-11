@@ -69,9 +69,9 @@ public class Worm extends Malware
 		distance4 = distance - 3*sprite.getHeight(null);
 		
 		//initialize instance variables
-		health = 600;
-		reward = 10;
-		range = 120;
+		health = 1400;
+		reward = 5;
+		range = (int) (Game.widthOfGamePanel * .03);
 		damage = 10;
 		speed = (int) (w * 0.020);
 		this.lane = lane;

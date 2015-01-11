@@ -48,7 +48,7 @@ public class BonusFile
 		destination = dest;
 		distance = 0;
 		TOTAL_DISTANCE = origin.distance(destination);
-		System.out.println("origin "+origin+" destination "+destination);
+		
 		ListIterator<BonusFile> iterator = allFiles.listIterator();
 		iterator.add(this);
 	}
@@ -187,7 +187,7 @@ public class BonusFile
 			yDist = Math.sin(angle);
 			xDist = Math.cos(angle);
 			//debug
-			System.out.println("moving "+xDist+" on x-axis and "+yDist+" on y");
+			//System.out.println("moving "+xDist+" on x-axis and "+yDist+" on y");
 			
 			if(destination.x >= origin.x && destination.y >= origin.y)
 			{

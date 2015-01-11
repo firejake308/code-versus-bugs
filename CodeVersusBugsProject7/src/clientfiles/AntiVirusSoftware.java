@@ -5,13 +5,8 @@ package clientfiles;
  * The image is currently a primitive sprite
  * 
  * UDPATE LOG
- * 11/8/14:
- * 		added primitive sprite
- * 11/16/2014:
- * 		[BALANCE] increased tower cost (20 -> 50)
- * 		added a static int icon that stores the DiscThrower image
- * 
- * TODO add rotating arrow
+ * 1/11/15:
+ * 		creation
  * 
  * ----------------------------------------------------------------------
  * 
@@ -33,22 +28,22 @@ package clientfiles;
 
 import javax.swing.ImageIcon;
 
-public class DiscThrower extends Tower
+public class AntiVirusSoftware extends Tower
 {
 	private static final long serialVersionUID = 1L;
-	public static int cost = 500;
-	public static ImageIcon icon = new ImageIcon(MyImages.dt0);
-	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
-	public static int damageToSet = 35;
-	public static int speedToSet = 60;
-	public static int rangeToSet = (int) ((Game.screenSize.width - 100) * .09);
+	public static int cost = 3000;
+	public static ImageIcon icon = new ImageIcon(MyImages.antiVirusSoftware);
+	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidAntiVirusSoftware);
+	public static int damageToSet = 50;
+	public static int speedToSet = 20;
+	public static int rangeToSet = (int) ((Game.screenSize.height - 100) * .3);
 	
-	public DiscThrower(int xToSet, int yToSet, int idToSet) 
+	public AntiVirusSoftware(int xToSet, int yToSet, int idToSet)
 	{
 		super(icon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {300, 600, 500, 1000000, 0, 0, 0, 0, 0, 300, 500, 10000000, 0, 0, 0, 0, 0, 0, 200, 400, 500, 10000000, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {1000, 2000, 3000, 1000000, 0, 0, 0, 0, 0, 1000, 2000, 3000, 10000000, 0, 0, 0, 0, 0, 1500, 3000, 2000, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		//cost = 50;
@@ -64,17 +59,15 @@ public class DiscThrower extends Tower
 		range = rangeToSet;
 		timerReset = speedToSet;
 		
-		type = TowerType.DISC_THROWER;
+		type = TowerType.ANTIVIRUS_SOFTWARE;
 		damage = damageToSet;
-		
-		angleOfArrow = 0;
 		
 		realValue += cost;
 		
+		healthBar = MyImages.healthBar0;
+		
 		//make user pay for towers
 		Game.makePurchase(cost);
-		
-		System.out.println(range + " " + (int) ((Game.screenSize.width - 100) * .075) + " " + rangeToSet);
 	}
 	
 	public static void increaseDamage(int increase)
@@ -86,9 +79,9 @@ public class DiscThrower extends Tower
 	{
 		switch (allTowers[idOfTower].upgradesInPath1)
 		{
-			case 1:					Upgrades.upgradePath1.setText("Harder Discs");
+			case 1:					Upgrades.upgradePath1.setText("Harder Shields");
 									break;
-			case 2:					Upgrades.upgradePath1.setText("Impervious Discs");
+			case 2:					Upgrades.upgradePath1.setText("Impervious Shields");
 									break;
 			case 3:					Upgrades.upgradePath1.setText("Quicker Firing");
 									break;
@@ -99,11 +92,13 @@ public class DiscThrower extends Tower
 		
 		switch (allTowers[idOfTower].upgradesInPath2)
 		{
-			case 1:					Upgrades.upgradePath2.setText("Powerful Discs");
+			case 1:					Upgrades.upgradePath2.setText("Powerful Shields");
 									break;
-			case 2:					Upgrades.upgradePath2.setText("Stronger Discs");
+			case 2:					Upgrades.upgradePath2.setText("Stronger Shields");
 									break;
-			case 3:					Upgrades.upgradePath2.setText("Path Closed");
+			case 3:					Upgrades.upgradePath2.setText("Killer Shields");
+									break;
+			case 4:					Upgrades.upgradePath2.setText("Path Closed");
 									break;
 			default:				break;
 		}
@@ -128,11 +123,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Harder Discs: $300\nDiscs can attack 2 viruses before being destroyed");
+				case 1:					Upgrades.upgradesInfo.setText("Harder Shields: $1000\nDiscs can attack 2 viruses before being destroyed"); // TODO
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs: $600\nDiscs can attack 3 viruses before being  destroyed");
+				case 2:					Upgrades.upgradesInfo.setText(" Impervious Shields: $2000\nDiscs can attack 3 viruses before being  destroyed");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing: $500\nAttack speed increase");
+				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing: $3000\nAttack speed increase");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -143,11 +138,13 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs: $300\n Discs are more powerful");
+				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Shields: $1000\n Discs are more powerful");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs: $500\n Discs are even more powerful");
+				case 2:					Upgrades.upgradesInfo.setText(" Stronger Shields: $2000\n Discs are even more powerful");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 3:					Upgrades.upgradesInfo.setText(" Killerr Shields: $3000\n Discs are even more powerful");
+										break;
+				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}
@@ -156,11 +153,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range: $200\n Increases tower range");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range: $1500\n Increases tower range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range: $400\n Greatly increases tower range");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range: $3000\n Greatly increases tower range");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Backup Tower: $500\n Allows the tower to be cured");
+				case 3:					Upgrades.upgradesInfo.setText(" Backup Tower: $2000\n Allows the tower to be cured");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

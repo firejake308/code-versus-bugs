@@ -46,21 +46,21 @@ public class Minion extends Malware
 		{
 			case NORMAL:
 				//initialize instance variables
-				health = 100;
+				health = 60;
 				reward = 1;
 				speed = (int) (w * 0.025);
 				break;
 			case TANK:
 				//initialize instance variables
-				health = 150;
-				reward = 3;
+				health = 200;
+				reward = 2;
 				speed = (int) (w * 0.025 * 0.85);
 				break;
 			case RUSH:
 				//initialize instance variables
-				health = 75;
+				health = 150;
 				reward = 2;
-				speed = (int) (w * 0.025 * 1.15);
+				speed = (int) (w * 0.025 * 1.2);
 				break;
 		}
 	}

@@ -141,15 +141,17 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		setLayout(null);
 		
 		//initialize the buttons
-		damage = new JButton("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
-		speed = new JButton("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
-		range = new JButton("<html><div style = \"text-align:center\">Tower Range<br>"+rangePoints+"/5"+"</html>");
-		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
-		lives = new JButton("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
-		router = new JButton("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/5"+"</html>");
-		slow = new JButton("<html><div style = \"text-align:center\">Slow Malware<br>"+slowPoints+"/5"+"</html>");
-		money = new JButton("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
-		moneyMult = new JButton("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/5"+"</html>");
+		damage = new JButton("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/15"+"</html>");
+		speed = new JButton("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/15"+"</html>");
+		range = new JButton("<html><div style = \"text-align:center\">Tower Range<br>"+rangePoints+"/15"+"</html>");
+		
+		buffer = new JButton("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/15"+"</html>");
+		lives = new JButton("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/15"+"</html>");
+		router = new JButton("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/10"+"</html>");
+		
+		slow = new JButton("<html><div style = \"text-align:center\">Slow Malware<br>"+slowPoints+"/15"+"</html>");
+		money = new JButton("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/15"+"</html>");
+		moneyMult = new JButton("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/1"+"</html>");
 		
 		//set bounds using fractions of width and height*
 		damage.setBounds(width/6-80, 25, 160, 50);
@@ -242,11 +244,13 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 				+ "and Scanners get 0.5 damage per tick.");
 		speed.setToolTipText("Increases the attack speed of Disc Throwers and Number Generators.");
 		range.setToolTipText("Increases the range of your towers by 10%.");
+		
 		buffer.setToolTipText("Increases the size of your towers' buffers, making them more resistant to worm attacks."
 				+ " This allows each tower to take 1 more hit.");
 		lives.setToolTipText("Boost your uncorrupted data by 1000 bytes.");
 		router.setToolTipText("Upgrade your modem to a router so that it can connect to the decoy CPU. Malwares that hit the decoy CPU"
 				+ " do not corrupt any important data.");
+		
 		slow.setToolTipText("Slow down all future viruses by 3%.");
 		money.setToolTipText("Boost your money by $100");
 		moneyMult.setToolTipText("Earn 50% more money per kill.");
@@ -313,25 +317,25 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 			super.setVisible(true);
 			
 			//make the buttons clickable again if user can spend more points on them
-				if(damagePoints < 5)
+				if(damagePoints < 15)
 					damage.setEnabled(true);
-				if(attackPoints >= 3 && speedPoints < 5)
+				if(attackPoints >= 8 && speedPoints < 15)
 					speed.setEnabled(true);
-				if(attackPoints >= 3 && rangePoints < 5)
+				if(attackPoints >= 8 && rangePoints < 15)
 					range.setEnabled(true);
 				
-				if(bufferPoints < 5)
+				if(bufferPoints < 15)
 					buffer.setEnabled(true);
-				if(defensePoints >= 3 && livesPoints < 5)
+				if(defensePoints >= 8 && livesPoints < 15)
 					lives.setEnabled(true);
-				if(defensePoints >= 6 && routerPoints < 5)
+				if(defensePoints >= 16 && routerPoints < 10)
 					router.setEnabled(true);
 				
-				if(slowPoints < 5)
+				if(slowPoints < 15)
 					slow.setEnabled(true);
-				if(supportPoints > 3 && moneyPoints < 5)
+				if(supportPoints > 8 && moneyPoints < 15)
 					money.setEnabled(true);
-				if(supportPoints > 10 && moneyMultPoints < 1)
+				if(supportPoints > 23 && moneyMultPoints < 1)
 					moneyMult.setEnabled(true);
 			
 			//special case for tutorial slide 28
@@ -378,21 +382,22 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 					break;
 				else if(curr.getType() == TowerType.DISC_THROWER)
 				{
-					curr.damage += 5;
+					curr.damage += 2;
 				}
 				else if(curr.getType() == TowerType.NUMBER_GENERATOR)
 				{
-					curr.damage += 1;
+					curr.damage += 0.5;
 				}
 				else if(curr.getType() == TowerType.SCANNER)
 				{
-					curr.damage += .5;
+					curr.damage += .15;
 				}
 			}
 			
 			//update damage for future towers
-			DiscThrower.increaseDamage(5);
-			NumberGenerator.increaseDamage(1);
+			DiscThrower.increaseDamage(2);
+			NumberGenerator.increaseDamage(0.5);
+			Scanner.increaseDamage(0.15);
 		}
 		
 		else if(clicked == speed)
@@ -428,13 +433,13 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 					break;
 				else if(curr instanceof DiscThrower || curr instanceof NumberGenerator || curr instanceof Scanner)
 				{
-					curr.range *= 1.1;
+					curr.range *= 1.05;
 				}
 			}
 			
-			DiscThrower.rangeToSet *= 1.1;
-			NumberGenerator.rangeToSet *= 1.1;
-			Scanner.rangeToSet *= 1.1;
+			DiscThrower.rangeToSet *= 1.05;
+			NumberGenerator.rangeToSet *= 1.05;
+			Scanner.rangeToSet *= 1.05;
 		}
 		else if (clicked == buffer)
 		{
@@ -454,20 +459,20 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 					break;
 				else if(curr.getType() != TowerType.FIREWALL)
 				{
-					curr.health += 10;
+					curr.health += 2;
 				}
 			}
 			
 			//increase health of all future towers
-			Tower.increaseHealth(10);
+			Tower.increaseHealth(2);
 		}
 		else if(clicked == lives)
 		{
 			livesPoints++;
 			defensePoints++;
 			
-			//add 1000 bytes
-			Game.lives += 1000;
+			//add 500 bytes
+			Game.lives += 500;
 			Game.gf.life.setDisplay(Game.lives);
 		}
 		else if(clicked == router)
@@ -478,6 +483,7 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 			
 			//turn on router
 			Malware.routerOn = true;
+			Malware.routerChance += 2;
 			//image is changed in game panel
 		}
 		else if(clicked == slow)
@@ -495,6 +501,7 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		}
 		else if(clicked == money)
 		{
+			//update point values
 			moneyPoints++;
 			supportPoints++;
 			
@@ -509,30 +516,33 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		}
 		
 		//update point values
-		damage.setText("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/5"+"</html>");
-		speed.setText("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/5"+"</html>");
-		range.setText("<html><div style = \"text-align:center\">Tower Range<br>"+rangePoints+"/5"+"</html>");
+		damage.setText("<html><div style = \"text-align:center\">Damage<br>"+damagePoints+"/15"+"</html>");
+		speed.setText("<html><div style = \"text-align:center\">Attack Speed<br>"+speedPoints+"/15"+"</html>");
+		range.setText("<html><div style = \"text-align:center\">Tower Range<br>"+rangePoints+"/15"+"</html>");
 		
-		buffer.setText("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/5"+"</html>");
-		lives.setText("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/5"+"</html>");
-		router.setText("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/5"+"</html>");
+		buffer.setText("<html><div style = \"text-align:center\">Buffer Upgrade<br>"+bufferPoints+"/15"+"</html>");
+		lives.setText("<html><div style = \"text-align:center\">Lives<br>"+livesPoints+"/15"+"</html>");
+		router.setText("<html><div style = \"text-align:center\">Router<br>"+routerPoints+"/10"+"</html>");
 		
-		slow.setText("<html><div style = \"text-align:center\">Slow Malware<br>"+slowPoints+"/5"+"</html>");
-		money.setText("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/5"+"</html>");
-		moneyMult.setText("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/5"+"</html>");
+		slow.setText("<html><div style = \"text-align:center\">Slow Malware<br>"+slowPoints+"/15"+"</html>");
+		money.setText("<html><div style = \"text-align:center\">Money<br>"+moneyPoints+"/15"+"</html>");
+		moneyMult.setText("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/1"+"</html>");
 		
 		//disable all buttons after a point is spent
-		damage.setEnabled(false);
-		speed.setEnabled(false);
-		range.setEnabled(false);
-		
-		buffer.setEnabled(false);
-		lives.setEnabled(false);
-		router.setEnabled(false);
-		
-		slow.setEnabled(false);
-		money.setEnabled(false);
-		moneyMult.setEnabled(false);
+		if(pointsToSpend == 0)
+		{
+			damage.setEnabled(false);
+			speed.setEnabled(false);
+			range.setEnabled(false);
+			
+			buffer.setEnabled(false);
+			lives.setEnabled(false);
+			router.setEnabled(false);
+			
+			slow.setEnabled(false);
+			money.setEnabled(false);
+			moneyMult.setEnabled(false);
+		}
 		
 		setVisible(false);
 		Game.gamePanel.setVisible(true);

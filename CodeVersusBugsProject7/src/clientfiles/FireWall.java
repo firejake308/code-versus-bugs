@@ -15,7 +15,7 @@ public class FireWall extends Tower
 	public static int cost = 200;
 	public static ImageIcon normalIcon = new ImageIcon(MyImages.firewall);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
-	public static int damageToSet = 100;
+	public static int damageToSet = 200;
 	public static int speedToSet = 0;
 	public static int rangeToSet = 0;
 	public int killsLeft;
@@ -31,7 +31,7 @@ public class FireWall extends Tower
 		super(normalIcon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {150, 250, 400, 1000000, 0, 0, 0, 0, 0, 150, 300, 10000000, 0, 0, 0, 0, 0, 0, 500, 400, 10000000, 10000000, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {300, 400, 600, 1000000, 0, 0, 0, 0, 0, 300, 500, 10000000, 0, 0, 0, 0, 0, 0, 750, 500, 10000000, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		projectileDurability = 0;
@@ -110,11 +110,11 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Stronger Wall: $150\nWall can block 20 viruses before overflowing");
+				case 1:					Upgrades.upgradesInfo.setText("Stronger Wall: $300\nWall can block 20 viruses before overflowing");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Extreme Wall: $250\nWall can block 25 viruses before overflowing");
+				case 2:					Upgrades.upgradesInfo.setText("Extreme Wall: $400\nWall can block 25 viruses before overflowing");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Invincible Wall: $400\nWall can block 40 viruses before overflowing");
+				case 3:					Upgrades.upgradesInfo.setText("Invincible Wall: $600\nWall can block 40 viruses before overflowing");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -125,9 +125,9 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Dangerous Wall: $150\nWall deals more damage to worms and trojans");
+				case 1:					Upgrades.upgradesInfo.setText("Dangerous Wall: $300\nWall deals more damage to worms and trojans");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Killer Wall: $300\nWall deals even more damage to worms and trojans");
+				case 2:					Upgrades.upgradesInfo.setText("Killer Wall: $500\nWall deals even more damage to worms and trojans");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -138,9 +138,9 @@ public class FireWall extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Regenerate Wall: $500\nAllows the wall to rebuild overtime, can attack more");
+				case 1:					Upgrades.upgradesInfo.setText("Regenerate Wall: $750\nAllows the wall to rebuild overtime, can attack more");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Faster Rejuvination: $400\nIncreases regeneration speeds");
+				case 2:					Upgrades.upgradesInfo.setText("Faster Rejuvination: $500\nIncreases regeneration speeds");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

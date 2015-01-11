@@ -118,6 +118,8 @@ public class MyImages
 	public static BufferedImage firewallBroken;
 	public static BufferedImage commTower;
 	public static BufferedImage invalidCommTower;
+	public static BufferedImage antiVirusSoftware;
+	public static BufferedImage invalidAntiVirusSoftware;
 	public static BufferedImage healthBar0;
 	public static BufferedImage healthBar1;
 	public static BufferedImage healthBar2;
@@ -147,6 +149,8 @@ public class MyImages
 	public static BufferedImage r7lethal;
 	public static BufferedImage r8lethal;
 	public static BufferedImage r9lethal;
+	public static BufferedImage shield;
+
 	//map
 	public static BufferedImage cpu;
 	public static BufferedImage decoyCPU;
@@ -251,6 +255,8 @@ public class MyImages
 			firewallBroken = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewallBroken.png"));
 			commTower = ImageIO.read(MyImages.class.getResourceAsStream("resources/commTower.png"));
 			invalidCommTower = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidCommTower.png"));
+			antiVirusSoftware = ImageIO.read(MyImages.class.getResourceAsStream("resources/avs.png"));
+			invalidAntiVirusSoftware = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidAVS.png"));
 			healthBar0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar0.png"));
 			healthBar1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar1.png"));
 			healthBar2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar2.png"));
@@ -280,6 +286,7 @@ public class MyImages
 			r7lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r7lethal.png"));
 			r8lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r8lethal.png"));
 			r9lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r9lethal.png"));
+			shield = ImageIO.read(MyImages.class.getResourceAsStream("resources/shield.png"));
 			
 			//map
 			cpu = ImageIO.read(MyImages.class.getResourceAsStream("resources/cpu.png"));

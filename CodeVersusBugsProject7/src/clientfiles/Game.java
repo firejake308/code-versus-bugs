@@ -60,7 +60,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 20000;
+	private static int money = 75000;
 	public static int lives = 5000;
 	public static int level = 1;
 	
@@ -140,7 +140,7 @@ public class Game extends JFrame implements Runnable
 				fileOutput.write(0);
 			fileOutput.write(DiscThrower.damageToSet);
 			fileOutput.write(DiscThrower.speedToSet);
-			fileOutput.write(NumberGenerator.damageToSet);
+			fileOutput.write((int) NumberGenerator.damageToSet); // TODO check, added (int) cast
 			fileOutput.write(NumberGenerator.speedToSet);
 			fileOutput.write((int)(Scanner.damageToSet * 1000));
 			fileOutput.write(Scanner.arcAngleToSet);
@@ -213,9 +213,9 @@ public class Game extends JFrame implements Runnable
 		}
 		
 		//update info panel
-		gf.life.setDisplay(lives);
+		gf.life.setDisplay(Game.lives);
 		gf.moneyDisplay.setDisplay(money);
-		gf.levelCounter.setDisplay(level);
+		gf.levelCounter.setDisplay(Game.level);
 		
 		//re-add towers to gamepanel
 		for(int t=0; t<Tower.sprites.length; t++)
@@ -388,12 +388,11 @@ public class Game extends JFrame implements Runnable
 			
 			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 			Game.gameState = Game.PLAYING;
-			
-			//special case for minion types tutorial
-			if(level == 5 && Game.tutorial && Game.tutorialSlide <= 30)
-				Game.gamePanel.nextSlide();
 			//move onto files tutorial
-			if(level == 20 && Game.tutorial && Game.tutorialSlide <= 72)
+			if(level == 10 && Game.tutorial && Game.tutorialSlide <= 72)
+				Game.gamePanel.nextSlide();
+			//special case for minion types tutorial
+			if(level == 12 && Game.tutorial && Game.tutorialSlide <= 30)
 				Game.gamePanel.nextSlide();
 			//move onto viruses tutorial
 			if(level == 21 && Game.tutorial && Game.tutorialSlide <= 92)

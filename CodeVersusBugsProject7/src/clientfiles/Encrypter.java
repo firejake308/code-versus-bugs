@@ -29,6 +29,9 @@ public class Encrypter extends Tower
 		rangeOfSplash = 0;
 		splashEffect = false;
 		
+		int [] costsOfUpgradesGoBetween = {300, 500, 1000000, 0, 0, 0, 0, 0, 0, 1000, 10000000, 0, 0, 0, 0, 0, 0, 0, 750, 500, 10000000, 0, 0, 0, 0, 0, 0};
+		costsOfUpgrades = costsOfUpgradesGoBetween;
+		
 		diameterOfTower = 50;
 		
 		x = 0;
@@ -64,8 +67,6 @@ public class Encrypter extends Tower
 									break;
 			case 3:					Upgrades.upgradePath1.setText("Path Closed");
 									break;
-			case 4:					Upgrades.upgradePath1.setText("Path Closed");
-									break;
 			default:				break;
 		}
 		switch(upgradesInPath2)
@@ -82,6 +83,8 @@ public class Encrypter extends Tower
 									break;
 			case 2:					Upgrades.upgradePath3.setText("Faster Rejuvination");
 									break;
+			case 3:					Upgrades.upgradePath3.setText("Path Closed");
+									break;
 		}
 	}
 
@@ -92,14 +95,12 @@ public class Encrypter extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Increased Efficiency: $150\nEncrypter can encrypt 20 files before overflowing");
+				case 1:					Upgrades.upgradesInfo.setText("Increased Efficiency: $300\nEncrypter can encrypt 20 files before overflowing");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Extreme efficiency: $250\nEncrypter can encrypt an impressive 30 files before"
+				case 2:					Upgrades.upgradesInfo.setText("Extreme efficiency: $500\nEncrypter can encrypt an impressive 30 files before"
 						+ " overflowing.");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
-										break;
-				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}
@@ -108,7 +109,7 @@ public class Encrypter extends Tower
 			switch(upgradesInPath2)
 			{
 				case 1:
-					Upgrades.upgradesInfo.setText("De-encrypt Trojans: $100\nDe-ecnrypts Trojans, like scanners, and makes "
+					Upgrades.upgradesInfo.setText("De-encrypt Trojans: $1000\nDe-ecnrypts Trojans, like scanners, and makes "
 							+ "them visible to your other towers");
 					break;
 				case 2:
@@ -122,10 +123,10 @@ public class Encrypter extends Tower
 			switch(upgradesInPath3)
 			{
 			case 1:
-				Upgrades.upgradesInfo.setText("Regenerate: $500\nAllows the encrypter to recharge overtime, can attack more");
+				Upgrades.upgradesInfo.setText("Regenerate: $750\nAllows the encrypter to recharge overtime, can attack more");
 				break;
 			case 2:
-				Upgrades.upgradesInfo.setText("Faster Rejuvination: $400\nIncreases regeneration speeds");
+				Upgrades.upgradesInfo.setText("Faster Rejuvination: $500\nIncreases regeneration speeds");
 				break;
 			case 3:
 			case 4:

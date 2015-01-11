@@ -15,7 +15,7 @@ public class CommunicationsTower extends Tower
 	
 	public static int damageToSet = 0;
 	public static int speedToSet = 0;
-	public static int rangeToSet = (int) ((Game.screenSize.width - 100) * .10);
+	public static int rangeToSet = (int) ((Game.screenSize.width - 100) * .05);
 	public static int healthToSet = 0;   // immortal
 	
 	public static boolean star = false;
@@ -40,7 +40,7 @@ public class CommunicationsTower extends Tower
 	public boolean informationHub = false;
 	public double damageToAdd = 10;
 	public double speedToAdd = -5;
-	public double rangeToAdd = (int) ((Game.screenSize.width - 100) * .02);
+	public double rangeToAdd = (int) ((Game.screenSize.width - 100) * .05);
 	
 	public CommunicationsTower(int xToSet, int yToSet, int idToSet)
 	{

@@ -1,28 +1,19 @@
 package clientfiles;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.Serializable;
 import java.util.Random;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import clientfiles.Malware.State;
 
@@ -65,6 +56,7 @@ import clientfiles.Malware.State;
  */
 public abstract class Tower implements ActionListener, Serializable
 {	
+	private static final long serialVersionUID = 1L;
 	public static Tower[] allTowers = new Tower[100];
 	protected static JButton[] sprites = new JButton[100];
 	protected  int[] costsOfUpgrades = new int[27];
@@ -99,7 +91,7 @@ public abstract class Tower implements ActionListener, Serializable
 	
 	//upgrades
 	protected int projectileDurability;
-	protected boolean splashEffect; //TODO add animation
+	protected boolean splashEffect;
 	protected boolean lethalRandoms = false;
 	protected boolean buffed;
 	
@@ -135,7 +127,7 @@ public abstract class Tower implements ActionListener, Serializable
 		this.icon = icon;
 		
 		sprites[id] = new JButton(icon);
-		sprites[id].setBounds(getX(), getY(), (int)(icon.getIconWidth()*Game.xScale), (int)(icon.getIconHeight()*Game.yScale));
+		sprites[id].setBounds(getX(), getY(), (int) (Game.xScale*icon.getIconWidth()), (int) (Game.yScale*icon.getIconHeight()));
 		sprites[id].addActionListener(this);
 		
 		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
@@ -184,7 +176,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public int getCenterX()
 	{
-		return (int) (x + Game.xScale * sprites[id].getWidth() / 2);
+		return (int) (x + Game.xScale * icon.getIconWidth() / 2);
 	}
 	/**returns the y of the center of the tower
 	 * 
@@ -192,7 +184,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public int getCenterY()
 	{
-		return y + (int) (Game.yScale * sprites[id].getHeight() / 2);
+		return y + (int) (Game.yScale * icon.getIconHeight() / 2);
 	}
 	/**sets the x-coordinate of the center of the tower
 	 * 
@@ -200,7 +192,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void setCenterX(int xToSet)
 	{
-		x = xToSet - (int) (Game.xScale * sprites[id].getWidth() / 2);
+		x = xToSet - (int) (Game.xScale * icon.getIconWidth() / 2);
 	}
 	/**sets the y-coordinate of the center of the tower
 	 * 
@@ -208,7 +200,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void setCenterY(int yToSet)
 	{
-		y = yToSet - (int) (Game.yScale * sprites[id].getHeight() / 2);
+		y = yToSet - (int) (Game.yScale * icon.getIconHeight() / 2);
 	}
 	/**
 	 * Returns the location of the tower on the game panel. Use this for drawing.
@@ -385,7 +377,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void attack(Malware target, TowerType towerType)
 	{
-		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR)
+		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR || towerType == TowerType.ANTIVIRUS_SOFTWARE)
 		{
 			double xOfTower = getCenterX();
 			double yOfTower = getCenterY();
@@ -492,7 +484,6 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 		
 		i = 0;
-		commTowerSelected = false; //TODO temporary bugfix, don't know if im doing it right
 		
 		if (!targetFound)
 		{
@@ -519,7 +510,6 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 		
 		i = 0;
-		commTowerSelected = false; //TODO temporary bugfix, don't know if im doing it right
 		
 		if (target.type == TowerType.COMMUNICATIONS_TOWER || target.type == TowerType.FIREWALL || target.type == TowerType.ENCRYPTER)
 			validTower = false;
@@ -562,7 +552,6 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 		
 		i = 0;
-		commTowerSelected = false; //TODO temporary bugfix, don't know if im doing it right
 		
 		// check range of comm towers
 		for (int t = 0; t < GamePanel.numTowers; t++)
@@ -623,16 +612,15 @@ public abstract class Tower implements ActionListener, Serializable
 		at.translate(getX()/Game.xScale, getY()/Game.yScale);
 		g2d.drawImage(icon.getImage(), at, null);
 		sprites[id].setIcon(icon);
-		
-		sprites[id].setBounds(getScreenX(), getScreenY(), sprites[id].getWidth(), sprites[id].getHeight());
+		sprites[id].setBounds(getX(), getY(), (int) (Game.xScale*icon.getIconWidth()), (int) (Game.yScale*icon.getIconHeight()));
 		
 		//rotate arrow for disc throwers
 		if(this instanceof DiscThrower)
 		{
 			AffineTransform op = new AffineTransform();
 			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
-				getCenterY()-MyImages.redArrow.getHeight()/2);
-			op.rotate(angleOfArrow, getCenterX() - getX(), y + (int) (Game.xScale * sprites[id].getWidth() / 2) - getY());
+						 getCenterY()-MyImages.redArrow.getHeight()/2);
+			op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
 			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
 			g2d.drawImage(MyImages.redArrow, op, null);
 		}
@@ -649,8 +637,8 @@ public abstract class Tower implements ActionListener, Serializable
 		{
 			sprites[id].setBackground(new Color(0,0,0,0));
 		}
-		//draw health bar for num gens
-		else if(this instanceof NumberGenerator)
+		//draw health bar for num gens and avs's
+		else if(this instanceof NumberGenerator || this instanceof AntiVirusSoftware)
 		{
 			AffineTransform op = new AffineTransform();
 			op.scale(Game.xScale, Game.yScale);

@@ -97,6 +97,11 @@ public class GamePanel extends JPanel
 	private Point ctHotspot;
 	private Cursor communicationsCursor;
 	private Cursor invalidCommunicationsCursor;
+	private Image avsSprite;
+	private Image avsInvalidSprite;
+	private Point avsHotspot;
+	private Cursor avsCursor;
+	private Cursor invalidAVSCursor;
 	
 	
 	static private final long serialVersionUID = 1;
@@ -138,6 +143,11 @@ public class GamePanel extends JPanel
 		ctHotspot = new Point(15, 15);
 		communicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctSprite,ctHotspot,"Communications Tower");
 		invalidCommunicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctInvalidSprite,ctHotspot,"Communications Tower");
+		avsSprite = AntiVirusSoftware.icon.getImage();
+		avsInvalidSprite = AntiVirusSoftware.invalidIcon.getImage();
+		avsHotspot = new Point(15, 15);
+		avsCursor = Toolkit.getDefaultToolkit().createCustomCursor(avsSprite,avsHotspot,"AVS");
+		invalidAVSCursor = Toolkit.getDefaultToolkit().createCustomCursor(avsInvalidSprite,avsHotspot,"AVS Tower");
 		
 		this.setFocusable(true);
 		lvlManager = new StoryManager();
@@ -367,6 +377,22 @@ public class GamePanel extends JPanel
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
             			break;	
+            		case ANTIVIRUS_SOFTWARE:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new AntiVirusSoftware(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currAVS = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currAVS.setCenterX(e.getX());
+	                    currAVS.setCenterY(e.getY());
+	                    
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;	
             		case NONE:
             		default:
             			rangeOn = false;                   	
@@ -394,6 +420,9 @@ public class GamePanel extends JPanel
             			break;
             		case COMMUNICATIONS_TOWER:
             			setCursor(communicationsCursor);
+            			break;
+            		case ANTIVIRUS_SOFTWARE:
+            			setCursor(avsCursor);
             			break;
             		case NONE:
             		default:
@@ -459,6 +488,28 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
+        		if(e.getKeyCode()==KeyEvent.VK_F)
+        		{
+        			TowerType towerToPlace = TowerType.FIREWALL;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_E)
+        		{
+        			TowerType towerToPlace = TowerType.ENCRYPTER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_A)
+        		{
+        			TowerType towerToPlace = TowerType.ANTIVIRUS_SOFTWARE;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		
         		if(e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
@@ -566,6 +617,15 @@ public class GamePanel extends JPanel
 							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-CommunicationsTower.rangeToSet, getMouseY()-CommunicationsTower.rangeToSet, 
 							    				CommunicationsTower.rangeToSet*2, CommunicationsTower.rangeToSet*2);
 										break;
+    		case ANTIVIRUS_SOFTWARE:	if (!ShopPanel.checkPlacement())
+											setCursor(invalidAVSCursor);
+										else
+											setCursor(avsCursor);
+							    		rangeOn = true;  // this stuff was missing but i added it
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-AntiVirusSoftware.rangeToSet, getMouseY()-AntiVirusSoftware.rangeToSet, 
+							    				AntiVirusSoftware.rangeToSet*2, AntiVirusSoftware.rangeToSet*2);
+										break;
+										
 			default:					setCursor(Cursor.getDefaultCursor());
 										break;
     	}
@@ -758,7 +818,7 @@ public class GamePanel extends JPanel
 				tutorial.setIcon(null);
 				break;
 			case 49:
-				tutorial.setText("See you in round 10!");
+				tutorial.setText("See you in round 21!");
 				tutorial.setSize(w/3, h/10);
 				break;
 			case 50:
@@ -842,7 +902,7 @@ public class GamePanel extends JPanel
 				Game.gameState = Game.PLAYING;
 				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 				break;
-			//files and trojans tutorial
+			//files tutorial
 			case 73:
 				tutorial.setVisible(true);
 				tutorial.setIcon(null);
@@ -865,63 +925,28 @@ public class GamePanel extends JPanel
 				tutorial.setText("distance to cover. A file that makes it safely to the...");
 				break;
 			case 77:
-				tutorial.setText("CPU will add 10 bytes of data. However, there are ...");
+				tutorial.setText("CPU will add a few bytes of data. You can also use...");
 				break;
 			case 78:
-				tutorial.setText("other things on the Internet that want to get to...");
+				tutorial.setText("files for your own purposes. Try saving up for a...");
 				break;
 			case 79:
-				tutorial.setText("your computer, including Trojan horses. Trojans...");
+				tutorial.setLocation(0, 440);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setText("communications tower.");
 				break;
 			case 80:
-				tutorial.setText("are programs that seem legit, but actually contain...");
+				tutorial.setBounds(0,9*h/10, w, h/10);
+				tutorial.setText("Once you upgrade it to an info hub (3rd path), ...");
 				break;
 			case 81:
-				tutorial.setText("malicious code. In this game, they appear as...");
+				tutorial.setText("you can connect your towers to it, for $500 each. ...");
 				break;
 			case 82:
-				tutorial.setText("encrypted files, and there are only 2 ways to ...");
+				tutorial.setText("Connected towers share upgrades. Good luck!");
 				break;
 			case 83:
-				tutorial.setText("reveal their true identity: You can scan them...");
-				break;
-			case 84:
-				tutorial.setText("with an antivirus scanner or de-encrypt them...");
-				break;
-			case 85:
-				tutorial.setText("with an upgraded encrypter. Although encrypters...");
-				break;
-			case 86:
-				tutorial.setText("are cheaper, scanners deal damage, so...");
-			case 87:
-				tutorial.setText("I recommend placing a scanner on this corner.");
-				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
-				break;
-			case 88:
-				if(Game.getMoney() < 1000)
-					Game.addMoney(1000 - Game.getMoney());
-				tutorial.setText("Buy a scanner now.");
-				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
-				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
-				tutorial.setLocation(0, 215);
-				break;
-			case 89:
-				//tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
-				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
-				tutorial.setIcon(null);
-				tutorial.setText("Now, the scanner will reveal the Trojans' true...");
-				break;
-			case 90:
-				tutorial.setText("identity. Remember, Trojans have high health, so...");
-				break;
-			case 91:
-				tutorial.setText("You probably want a disc thrower that covers ...");
-				break;
-			case 92:
-				tutorial.setText("the right side of the map. You're all set! Go get 'em!");
 				tutorial.setVisible(false);
-				Game.gameState = Game.PLAYING;
-				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 				break;
 			//viruses tutorial
 			case 93:
@@ -981,6 +1006,7 @@ public class GamePanel extends JPanel
 				tutorial.setVisible(false);
 				Game.gameState = Game.PLAYING;
 				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				Game.tutorialSlide = 30;
 				break;
 			//spywares tutorial
 			case 108:
@@ -1237,6 +1263,53 @@ public class GamePanel extends JPanel
 			for(int trackPart = 0; trackPart < path.length; trackPart++)
 			{
 				g2d.fill(path[trackPart]);
+			}
+			
+			//draw connections. begin by looking for a comm tower
+			for(int t = 0; t < GamePanel.numTowers; t++)
+			{
+				if(Tower.allTowers[t] instanceof CommunicationsTower)
+				{
+					//if the comm tower is a star layout, draw lines from all connected towers to the hub
+					if(CommunicationsTower.star)
+					{	
+						for(int t2 = 0; t2 < numTowers; t2++)
+						{	
+							if(Tower.allTowers[t2].isConnected)
+							{
+								g2d.setStroke(new BasicStroke(5));
+								g2d.drawLine(Tower.allTowers[t].getCenterX(), Tower.allTowers[t].getCenterY(), 
+										Tower.allTowers[t2].getCenterX(), Tower.allTowers[t2].getCenterY());
+							}
+						}
+					}
+					//draw mesh
+					else
+					{
+						//loop through all towers
+						for (int t1=0; t1<numTowers; t1++)
+						{
+							//if tower is connected
+							if(Tower.allTowers[t1].isConnected)
+							{
+								TowerType type = Tower.allTowers[t1].getType();
+								//loop through all other towers
+								for(int t2 = 0; t2 < numTowers; t2++)
+								{
+									//check if 2nd tower is connected and of same type
+									if(Tower.allTowers[t2].isConnected && Tower.allTowers[t2].getType() == type)
+									{
+										//draw line connecting towers
+										g2d.setColor(Color.yellow);
+										g2d.setStroke(new BasicStroke(5));
+										g2d.drawLine(Tower.allTowers[t1].getCenterX(), Tower.allTowers[t1].getCenterY(), 
+												Tower.allTowers[t2].getCenterX(), Tower.allTowers[t2].getCenterY());
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 			
 			//draw all files

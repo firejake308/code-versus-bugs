@@ -19,8 +19,8 @@ public class Scanner extends Tower
 	public static ImageIcon icon = new ImageIcon(MyImages.scanner0);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidScanner);
 	
-	public static double damageToSet = .35;
-	public static int rangeToSet = (int) (Game.widthOfGamePanel * .10);
+	public static double damageToSet = .25;
+	public static int rangeToSet = (int) (Game.widthOfGamePanel * .05);
 	public static int arcAngleToSet = 90;
 	
 	public int tickCounter = 0;
@@ -89,7 +89,7 @@ public class Scanner extends Tower
 		}
 	}
 	
-	public static void increaseDamage(int increase)
+	public static void increaseDamage(double increase)
 	{
 		damageToSet += increase;
 	}

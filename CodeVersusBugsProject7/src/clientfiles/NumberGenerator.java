@@ -46,16 +46,16 @@ public class NumberGenerator extends Tower
 										new ImageIcon(MyImages.random4), new ImageIcon(MyImages.random5),
 										new ImageIcon(MyImages.random6), new ImageIcon(MyImages.random7),
 										new ImageIcon(MyImages.random8), new ImageIcon(MyImages.random9)};
-	public static int speedToSet = 80;
-	public static int rangeToSet = (int) (Game.widthOfGamePanel * .15);
-	public static int damageToSet = 0;
+	public static int speedToSet = 120;
+	public static int rangeToSet = (int) (Game.widthOfGamePanel * .8);
+	public static double damageToSet = 0.0;
 	
 	public NumberGenerator(int xToSet, int yToSet, int idToSet) 
 	{
 		super(icon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {1000, 600, 10000000, 0, 0, 0, 0, 0, 0, 300, 10000000, 0, 0, 0, 0, 0, 0, 0, 400, 10000000, 0, 0, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {1000, 600, 10000000, 0, 0, 0, 0, 0, 0, 300, 600, 10000000, 0, 0, 0, 0, 0, 0, 400, 600, 10000000, 0, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		cost = 60;
@@ -81,7 +81,7 @@ public class NumberGenerator extends Tower
 		Game.makePurchase(cost);
 	}
 	
-	public static void increaseDamage(int increase)
+	public static void increaseDamage(double increase)
 	{
 		damageToSet += increase;
 	}
@@ -103,7 +103,9 @@ public class NumberGenerator extends Tower
 		{
 			case 1:					Upgrades.upgradePath2.setText("Lethal Numbers");
 									break;
-			case 2:					Upgrades.upgradePath2.setText("Path Closed");
+			case 2:					Upgrades.upgradePath2.setText("Killer Numbers");
+									break;
+			case 3:					Upgrades.upgradePath2.setText("Path Closed");
 									break;
 			default:				break;
 		}
@@ -112,7 +114,9 @@ public class NumberGenerator extends Tower
 		{
 			case 1:					Upgrades.upgradePath3.setText("Wider Range");
 									break;
-			case 2:					Upgrades.upgradePath3.setText("Path Closed");
+			case 2:					Upgrades.upgradePath3.setText("Extreme Range");
+									break;
+			case 3:					Upgrades.upgradePath3.setText("Path Closed");
 									break;
 			default:				break;
 		}
@@ -124,7 +128,7 @@ public class NumberGenerator extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Network Disruptor: $100\nDisables all viruses within range of the disruption");
+				case 1:					Upgrades.upgradesInfo.setText("Network Disruptor: $1000\nDisables all viruses within range of the disruption");
 										break;
 				case 2:					Upgrades.upgradesInfo.setText("Disruptor Range: $600\nIncreases range of disruption");
 										break;
@@ -139,7 +143,9 @@ public class NumberGenerator extends Tower
 			{
 				case 1:					Upgrades.upgradesInfo.setText("Lethal Numbers: $300\nNumbers now deal a small amount of damage");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 2:					Upgrades.upgradesInfo.setText("Killer Numbers: $600\nNumbers now deal more damage");
+										break;
+				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}
@@ -150,7 +156,9 @@ public class NumberGenerator extends Tower
 			{
 				case 1:					Upgrades.upgradesInfo.setText("Wider Range: $400\nIncreases tower range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 2:					Upgrades.upgradesInfo.setText("Extreme Range: $750\nIncreases tower range");
+										break;
+				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}

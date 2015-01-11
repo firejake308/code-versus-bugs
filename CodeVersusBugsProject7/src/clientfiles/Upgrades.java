@@ -28,6 +28,8 @@ import javax.swing.*;
  * 		More upgrades added, a cure button is added
  * 12/20/2014:
  * 		Scanner upgrades added (first ones)
+ * 1/11/15:
+ * 		New Tower upgrades added
  * 
  * @author Patrick Kenney
  * 
@@ -460,7 +462,7 @@ public abstract class Upgrades
 		// intentionally no breaks, therefore it adds 100 each time
 		switch(typeOfTower)
 		{
-			case NONE:						return;
+			case NONE:						return; // TODO
 			case COMMUNICATIONS_TOWER:		upgradeID += 100;
 			case ENCRYPTER:					upgradeID += 100;
 			case FIREWALL:					upgradeID += 100;
@@ -555,15 +557,15 @@ public abstract class Upgrades
 											System.out.println("projectile durability++");
 											break;
 			case 113:						//Faster attack speed?,etc.
-											tower.timerReset = 24;
+											tower.timerReset -= 15;
 											System.out.println("attack speed++");
 											break;
 											
 			case 121:						//increase damage
-											tower.damage += 15;
+											tower.damage += 10;
 											System.out.println("damage++");
 											break;
-			case 122:						tower.damage += 10;
+			case 122:						tower.damage += 15;
 											System.out.println("damage++");
 											break;
 											
@@ -592,18 +594,20 @@ public abstract class Upgrades
 											break;
 											
 			case 211:						tower.splashEffect = true;
-											tower.rangeOfSplash = 1.2;
+											tower.rangeOfSplash = 1.1;
 											System.out.println("splash effect = true");
 											break;
 										
-			case 212:						tower.rangeOfSplash = 1.5;
+			case 212:						tower.rangeOfSplash = 1.3;
 											System.out.println("disruptor range enhanced");
 											break;
 										
-			case 221:						tower.damage = 5;
+			case 221:						tower.damage += 5;
 											tower.lethalRandoms = true;
 											Tower.sprites[displayedUpgradeID].setIcon(NumberGenerator.lethalIcon);
 											System.out.println("killer numbers");
+											break;
+			case 222:						tower.damage += 10;
 											break;
 											
 			case 231:						tower.range += tower.range / 4;
@@ -613,11 +617,18 @@ public abstract class Upgrades
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
+			case 232:						tower.range += tower.range / 4;
+											System.out.println("wider range");
 											
-			case 311:						Tower.allTowers[displayedUpgradeID].damage = .45;
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+											
+			case 311:						Tower.allTowers[displayedUpgradeID].damage += .05;
 											System.out.println("damage++");
 											break;
-			case 312:						Tower.allTowers[displayedUpgradeID].damage = .55;
+			case 312:						Tower.allTowers[displayedUpgradeID].damage += .1;
 											System.out.println("damage++");
 											break;
 			case 321:						Tower.allTowers[displayedUpgradeID].backedUp = true;
@@ -628,70 +639,73 @@ public abstract class Upgrades
 											break;
 			
 			case 331:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(20);
-											System.out.println("range++");
+											System.out.println("arc angle++");
 											
 											//update scanner range
 											tower.scan = new Arc2D.Double(tower.getX(), tower.getY(), tower.getRange(), tower.getRange(), 0, ((Scanner)tower).getArcAngle(), Arc2D.PIE);
 											break;
 			case 332:						((Scanner)Tower.allTowers[displayedUpgradeID]).increaseArcAngle(25);
-											System.out.println("range++");
+											System.out.println("arc angle++");
 											
 											//update scanner range
 											tower.scan = new Arc2D.Double(tower.getX(), tower.getY(), tower.getRange(), tower.getRange(), 0, ((Scanner)tower).getArcAngle(), Arc2D.PIE);
 											break;
 											
+											
 			case 411:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 20;
 											break;
 			case 412:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 25;
 											break;
-			case 413:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 40;
+			case 413:						((FireWall)Tower.allTowers[displayedUpgradeID]).killsPerRound = 30;
 											break;
-			case 421:						((FireWall)Tower.allTowers[displayedUpgradeID]).damage = 200;
+			case 421:						((FireWall)Tower.allTowers[displayedUpgradeID]).damage = 400;
 											break;
-			case 422:						((FireWall)Tower.allTowers[displayedUpgradeID]).damage = 300;
+			case 422:						((FireWall)Tower.allTowers[displayedUpgradeID]).damage = 500;
 											break;
 			case 431:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerate = true;
-											((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 300;
+											((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 600;
 											break;
-			case 432:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 240;
+			case 432:						((FireWall)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 480;
 											break;
+											
 											
 			case 511:						((Encrypter)Tower.allTowers[displayedUpgradeID]).killsPerRound = 20;
 											break;
-			case 512:						((Encrypter)Tower.allTowers[displayedUpgradeID]).killsPerRound = 30;
+			case 512:						((Encrypter)Tower.allTowers[displayedUpgradeID]).killsPerRound = 25;
 											break;
 			case 521:						((Encrypter)Tower.allTowers[displayedUpgradeID]).deencrypter = true;
 											break;
 			case 531:						((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerate = true;
-											((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 300;
+											((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 600;
 											break;
-			case 532:						((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 240;
+			case 532:						((Encrypter)Tower.allTowers[displayedUpgradeID]).regenerationInterval = 480;
 											
+			
 			case 611:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
 											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).damageToAdd += 5;
 											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
 											break;
 			case 612:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
-											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).rangeToAdd += Game.widthOfGamePanel * .02;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).rangeToAdd += Game.widthOfGamePanel * .01;
 											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
 											break;
 			case 613:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
-											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).damageToAdd += 10;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).damageToAdd += 5;
 											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
 											break;
 			case 621:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).removeUpgrades();
-											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).speedToAdd -= 3;
+											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).speedToAdd -= 5;
 											((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).upgradeTowers();
 											break;
 			case 622:						((CommunicationsTower) Tower.allTowers[displayedUpgradeID]).shareRange = true;
 											break;
-			case 631:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .02;
+			case 631:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .01;
 
 											//update range indicator
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
-			case 632:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .03;
+			case 632:						Tower.allTowers[displayedUpgradeID].range += Game.widthOfGamePanel * .02;
 
 											//update range indicator
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
@@ -709,6 +723,37 @@ public abstract class Upgrades
 												else
 													CommunicationsTower.mesh = true;
 											}
+											break;
+											
+											
+			case 711:						Tower.allTowers[displayedUpgradeID].projectileDurability = 2;
+											break;
+			case 712:						Tower.allTowers[displayedUpgradeID].projectileDurability = 3;
+											break;
+			case 713:						Tower.allTowers[displayedUpgradeID].timerReset -= 5;
+											break;
+											
+			case 721:						Tower.allTowers[displayedUpgradeID].damage += 5;
+											break;
+			case 722:						Tower.allTowers[displayedUpgradeID].damage += 10;
+											break;
+			case 723:						Tower.allTowers[displayedUpgradeID].damage += 10;
+											break;
+											
+			case 731:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .3;
+			
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+			case 732:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .3;
+			
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+											
+			case 733:						tower.backedUp = true;
 											break;
 			}
 		// update all uploaded towers to hubs

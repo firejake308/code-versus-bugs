@@ -34,6 +34,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private JButton buyFireWall;
 	private JButton buyEncrypter;
 	private JButton buyCommunicationsTower;
+	private JButton buyAVS;
 	
 	public static JLabel info = new JLabel("");
 	public static boolean warned = false;
@@ -45,6 +46,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon fwImage = new ImageIcon(MyImages.firewallShopImage);
 	private Icon enImage = Encrypter.icon;
 	private Icon ctImage = CommunicationsTower.icon;
+	private Icon avsImage = AntiVirusSoftware.icon;
 	
 	public static int timer=0;
 	
@@ -56,6 +58,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyFireWall = new JButton(fwImage);
 		buyEncrypter = new JButton(enImage);
 		buyCommunicationsTower = new JButton(ctImage);
+		buyAVS = new JButton(avsImage);
 		
 		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -67,9 +70,13 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyFireWall.setBounds(20, 305, 51, 50);
 		buyEncrypter.setBounds(20, 370, 51, 63);
 		buyCommunicationsTower.setBounds(20, 440, 51, 50);
+		buyAVS.setBounds(20, 500, 51, 50);
 		
 		//makes button background transparent
 		buyCommunicationsTower.setBackground(new Color(0,0,0,0));
+		//scale image of avs
+		Image scaledAVS = MyImages.antiVirusSoftware.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+		buyAVS.setIcon(new ImageIcon(scaledAVS));
 		
 		buyDiscThrower.addActionListener(this);
 		buyNumberGenerator.addActionListener(this);
@@ -77,6 +84,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyFireWall.addActionListener(this);
 		buyEncrypter.addActionListener(this);
 		buyCommunicationsTower.addActionListener(this);
+		buyAVS.addActionListener(this);
 		
 		setLayout(null);
 		add(info);
@@ -86,6 +94,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		add(buyFireWall);
 		add(buyEncrypter);
 		add(buyCommunicationsTower);
+		add(buyAVS);
 		
 		buyDiscThrower.addMouseListener(new MouseAdapter()
 		{
@@ -170,6 +179,20 @@ public class ShopPanel extends JPanel implements ActionListener
             	}
 			}
 		});
+		
+		buyAVS.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				if (!warned)
+				{
+            		if (Game.getMoney() < AntiVirusSoftware.cost)
+            			changeInfo("$"+AntiVirusSoftware.cost, true);
+            		else
+            			changeInfo("$"+AntiVirusSoftware.cost, false);
+            	}
+			}
+		});
 	}
 	public static void changeInfo(String text, boolean warning)
 	{
@@ -251,6 +274,11 @@ public class ShopPanel extends JPanel implements ActionListener
 		{
 			proposedTower = new Rectangle(x-CommunicationsTower.icon.getIconWidth()/2, y-CommunicationsTower.icon.getIconHeight()/2, 
 					CommunicationsTower.icon.getIconWidth(), CommunicationsTower.icon.getIconHeight());
+		}
+		else if(towerToPlace == TowerType.ANTIVIRUS_SOFTWARE)
+		{
+			proposedTower = new Rectangle(x-AntiVirusSoftware.icon.getIconWidth()/2, y-AntiVirusSoftware.icon.getIconHeight()/2, 
+					AntiVirusSoftware.icon.getIconWidth(), AntiVirusSoftware.icon.getIconHeight());
 		}
 		//next, loop through all path parts and check for intersection with proposed tower
 		for(int pathPart = 0; pathPart < Game.gamePanel.path.length; pathPart++)
@@ -439,7 +467,32 @@ public class ShopPanel extends JPanel implements ActionListener
 					return;
 			}
 			
-			changeInfo("Encrypter Selected",false);
+			changeInfo("Comm Tower Selected",false);
+		}
+		else if (temp == buyAVS)
+		{
+			towerType = TowerType.ANTIVIRUS_SOFTWARE;
+			
+			//reset if already selected
+			if (towerToPlace == TowerType.ANTIVIRUS_SOFTWARE)
+			{
+				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
+				return;
+			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Futuristic Advanced Shield Thrower?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
+			
+			changeInfo("FAST Selected",false);
 		}
 		
 		validateBuy(towerType);
@@ -504,6 +557,15 @@ public class ShopPanel extends JPanel implements ActionListener
 			else
 				changeInfo("Not Enough Money!", true);
 		}
+		else if(type == TowerType.ANTIVIRUS_SOFTWARE)
+		{
+			if(Game.getMoney() >= CommunicationsTower.cost)
+			{
+				towerToPlace = TowerType.ANTIVIRUS_SOFTWARE;
+			}
+			else
+				changeInfo("Not Enough Money!", true);
+		}
 	}
 	
 	public void paintComponent(Graphics g)
@@ -512,6 +574,11 @@ public class ShopPanel extends JPanel implements ActionListener
 		//draw num gen health bar
 		AffineTransform op = new AffineTransform();
 		op.translate(20, 150 + ngImage.getIconHeight());
+		g2d.drawImage(MyImages.healthBar0, op, null);
+		
+		//draw FAST health bar
+		op = new AffineTransform();
+		op.translate(20, 550);
 		g2d.drawImage(MyImages.healthBar0, op, null);
 	}
 }

@@ -45,7 +45,7 @@ public class GameFrame extends JFrame implements ActionListener
 {
 	
 	static private final long serialVersionUID = 1;
-	private Color epic = new Color(100,179,132);
+	private Color epic = new Color(34, 157, 68);
 
 	//stuff in info panel
 	public DigitalDisplay moneyDisplay;
@@ -130,7 +130,7 @@ public class GameFrame extends JFrame implements ActionListener
 		//these are just here to make sure that
 		Game.gamePanel.setLayout(null);
 		Game.gamePanel.setBackground(epic);
-		Game.infoPanel.setBackground(Color.BLACK);
+		Game.infoPanel.setBackground(epic);
 		
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
@@ -138,10 +138,11 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.yScale = (Game.heightOfGamePanel / 658.0);
 		System.out.println(Game.yScale);
 		
-		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .12);
-		NumberGenerator.rangeToSet = (int) (Game.widthOfGamePanel * .15);
-		Scanner.rangeToSet = (int) (Game.widthOfGamePanel * .10);
-		CommunicationsTower.rangeToSet = (int) (Game.widthOfGamePanel * .10);
+		//tower range initialization
+		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .09);
+		NumberGenerator.rangeToSet = (int) (Game.widthOfGamePanel * .1);
+		Scanner.rangeToSet = (int) (Game.widthOfGamePanel * .075);
+		CommunicationsTower.rangeToSet = (int) (Game.widthOfGamePanel * .075);
 		
 		//make path parts
 		Game.gamePanel.path = new Rectangle[18];

@@ -30,7 +30,6 @@ public class DigitalDisplay extends JPanel
 		setDisplay(new int[numDigits]);
 		this.text = text;
 		
-		setBackground(new Color(255, 255, 255));
 		setVisible(true);
 		setOpaque(true);
 		setSize(new Dimension(305,  100));
@@ -51,8 +50,6 @@ public class DigitalDisplay extends JPanel
 		{
 			display[i] = num % 10;
 			num /= 10;
-			//debug
-			//System.out.println(display[i]);
 			i--;
 		}
 		
@@ -70,41 +67,41 @@ public class DigitalDisplay extends JPanel
 			switch(digits[i])
 			{
 				case 0:
-					digitImages[i] = MyImages.random0;
+					digitImages[i] = MyImages.r0;
 					break;
 				case 1:
-					digitImages[i] = MyImages.random1;
+					digitImages[i] = MyImages.r1;
 					break;
 				case 2:
-					digitImages[i] = MyImages.random2;
+					digitImages[i] = MyImages.r2;
 					break;
 				case 3:
-					digitImages[i] = MyImages.random3;
+					digitImages[i] = MyImages.r3;
 					break;
 				case 4:
-					digitImages[i] = MyImages.random4;
+					digitImages[i] = MyImages.r4;
 					break;
 				case 5:
-					digitImages[i] = MyImages.random5;
+					digitImages[i] = MyImages.r5;
 					break;
 				case 6:
-					digitImages[i] = MyImages.random6;
+					digitImages[i] = MyImages.r6;
 					break;
 				case 7:
-					digitImages[i] = MyImages.random7;
+					digitImages[i] = MyImages.r7;
 					break;
 				case 8:
-					digitImages[i] = MyImages.random8;
+					digitImages[i] = MyImages.r8;
 					break;
 				case 9:
-					digitImages[i] = MyImages.random9;
+					digitImages[i] = MyImages.r9;
 					break;
 			}
 			
 			//now draw images
 			Graphics2D g2d = (Graphics2D) g;
 			AffineTransform at = new AffineTransform();
-			at.translate((i+1)*50, 25);
+			at.translate((i+1)*50, 20);
 			g2d.drawImage(digitImages[i], at, null);
 		}
 		

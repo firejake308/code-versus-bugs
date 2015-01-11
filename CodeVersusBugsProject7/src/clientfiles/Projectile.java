@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -126,6 +128,14 @@ public class Projectile implements Serializable
 			
 			// affects speed of virus
 			manipulatorForVirus = 0;
+		}
+		else if(Tower.allTowers[idOfOwner] instanceof AntiVirusSoftware)
+		{
+			sprite = MyImages.shield;
+			speed = 6;
+			
+			// affects speed of virus
+			manipulatorForVirus = 1;
 		}
 		
 		a = aToSet;
@@ -324,7 +334,18 @@ public class Projectile implements Serializable
 			System.out.println("A projectile in the top left corner was deleted");
 		}
 	}
-	
+	/**
+	 * Clears all projectiles from the screen.
+	 */
+	public static void clearProjectiles()
+	{
+		Iterator<Projectile> iter = allProjectiles.iterator();
+		while(iter.hasNext())
+		{
+			Projectile curr = iter.next();
+			curr.addToRecycleBin();
+		}
+	}
 	public void drawProjectile(Graphics g)
 	{
 		g.drawImage(sprite, (int)x, (int)y, null);
