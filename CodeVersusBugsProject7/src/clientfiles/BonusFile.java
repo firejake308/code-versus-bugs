@@ -223,7 +223,7 @@ public class BonusFile
 				System.out.println("a file made it across");
 				
 				Game.lives+=reward;
-				Game.gf.life.setText("Bytes Remaining: " + Game.lives);
+				Game.gf.life.setDisplay(Game.lives);
 				
 				addToRecycleBin();
 			}

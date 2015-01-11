@@ -492,6 +492,7 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 		
 		i = 0;
+		commTowerSelected = false; //TODO temporary bugfix, don't know if im doing it right
 		
 		if (!targetFound)
 		{
@@ -518,6 +519,7 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 		
 		i = 0;
+		commTowerSelected = false; //TODO temporary bugfix, don't know if im doing it right
 		
 		if (target.type == TowerType.COMMUNICATIONS_TOWER || target.type == TowerType.FIREWALL || target.type == TowerType.ENCRYPTER)
 			validTower = false;
@@ -560,6 +562,7 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 		
 		i = 0;
+		commTowerSelected = false; //TODO temporary bugfix, don't know if im doing it right
 		
 		// check range of comm towers
 		for (int t = 0; t < GamePanel.numTowers; t++)

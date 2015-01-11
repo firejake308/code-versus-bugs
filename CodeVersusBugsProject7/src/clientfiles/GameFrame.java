@@ -48,10 +48,10 @@ public class GameFrame extends JFrame implements ActionListener
 	private Color epic = new Color(100,179,132);
 
 	//stuff in info panel
-	public DigitalDisplay moneyLabel;
-	public JLabel life;
+	public DigitalDisplay moneyDisplay;
+	public DigitalDisplay life;
 	public DigitalDisplay fpsDisplay;
-	public JLabel levelCounter;
+	public DigitalDisplay levelCounter;
 	
 	//the constructor instantiates the panels and sets the layout
 	public GameFrame()
@@ -97,19 +97,19 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.infoPanel.setBounds(145,5,screenSize.width-145,100);
 		
 		//initialize money label and fps counter
-		moneyLabel = new DigitalDisplay(5, "money");
-		fpsDisplay = new DigitalDisplay(2, "fps");
-		life = new JLabel("Bytes Remaining: " + Game.lives);
-		levelCounter = new JLabel("Level: " + Game.level);
+		moneyDisplay = new DigitalDisplay(5, "money");
+		fpsDisplay = new DigitalDisplay(5, "fps");
+		life = new DigitalDisplay(5, "bytes");
+		levelCounter = new DigitalDisplay(5, "level");
 		
 		//fix up font size
-		moneyLabel.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
-		life.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*14)));
-		levelCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
+		moneyDisplay.setDisplay(Game.getMoney());
+		life.setDisplay(Game.lives);
+		levelCounter.setDisplay(Game.level);
 		
 		//add fpsCounter to info panel
 		Game.infoPanel.add(life);
-		Game.infoPanel.add(moneyLabel);
+		Game.infoPanel.add(moneyDisplay);
 		Game.infoPanel.add(fpsDisplay);
 		Game.infoPanel.add(levelCounter);
 		

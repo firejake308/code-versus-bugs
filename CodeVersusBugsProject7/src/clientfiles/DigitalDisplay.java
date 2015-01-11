@@ -34,14 +34,6 @@ public class DigitalDisplay extends JPanel
 		setVisible(true);
 		setOpaque(true);
 		setSize(new Dimension(305,  100));
-		
-		addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				System.out.println("mouse moved");
-			}
-		});
 	}
 	
 	public void setDisplay(int[] d)
@@ -59,7 +51,8 @@ public class DigitalDisplay extends JPanel
 		{
 			display[i] = num % 10;
 			num /= 10;
-			System.out.println(display[i]);
+			//debug
+			//System.out.println(display[i]);
 			i--;
 		}
 		

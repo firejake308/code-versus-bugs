@@ -468,7 +468,7 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 			
 			//add 1000 bytes
 			Game.lives += 1000;
-			Game.gf.life.setText("Bytes Remaining: " + Game.lives);
+			Game.gf.life.setDisplay(Game.lives);
 		}
 		else if(clicked == router)
 		{
@@ -522,20 +522,17 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		moneyMult.setText("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/5"+"</html>");
 		
 		//disable all buttons after a point is spent
-		if(pointsToSpend == 0)
-		{
-			damage.setEnabled(false);
-			speed.setEnabled(false);
-			range.setEnabled(false);
-			
-			buffer.setEnabled(false);
-			lives.setEnabled(false);
-			router.setEnabled(false);
-			
-			slow.setEnabled(false);
-			money.setEnabled(false);
-			moneyMult.setEnabled(false);
-		}
+		damage.setEnabled(false);
+		speed.setEnabled(false);
+		range.setEnabled(false);
+		
+		buffer.setEnabled(false);
+		lives.setEnabled(false);
+		router.setEnabled(false);
+		
+		slow.setEnabled(false);
+		money.setEnabled(false);
+		moneyMult.setEnabled(false);
 		
 		setVisible(false);
 		Game.gamePanel.setVisible(true);

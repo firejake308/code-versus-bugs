@@ -115,7 +115,7 @@ public class Game extends JFrame implements Runnable
 		else
 			money += income;
 		
-		gf.moneyLabel.setDisplay(money);
+		gf.moneyDisplay.setDisplay(money);
 	}
 	public static int getMoney() 
 	{
@@ -213,9 +213,9 @@ public class Game extends JFrame implements Runnable
 		}
 		
 		//update info panel
-		gf.life.setText("Bytes Remaining: " + Game.lives);
-		gf.moneyLabel.setDisplay(money);
-		gf.levelCounter.setText("Level: " + Game.level);
+		gf.life.setDisplay(lives);
+		gf.moneyDisplay.setDisplay(money);
+		gf.levelCounter.setDisplay(level);
 		
 		//re-add towers to gamepanel
 		for(int t=0; t<Tower.sprites.length; t++)
