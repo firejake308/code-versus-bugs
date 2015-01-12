@@ -208,7 +208,7 @@ public class MyImages
 			dataFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/datafile.png"));
 			exeFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/exefile.png"));
 			secureFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/securefile.png"));
-			packetFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/packetFile.png"));
+			packetFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/packetfile.png"));
 			virus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus3.png"));
 			tankVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus4.png"));
 			rushVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus5.png"));
