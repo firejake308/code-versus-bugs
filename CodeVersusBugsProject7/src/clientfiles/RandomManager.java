@@ -236,7 +236,64 @@ public class RandomManager implements LevelManager
 			
 			//set malwares for level and add
 			setMalwaresForLevel(m1, m2, m3, 0, 0, v1, v2, v3, 0, 0);
-			setFilesForLevel(0);
+			setFilesForLevel(10);
+			addMalwares();
+		}
+		else if(Game.level < 40)
+		{
+			//decide on total number of malwares through formula
+			malwaresThisLevel = (int)(500 + 35 * Math.pow(Game.level-1, 1.2));
+			
+			//arrays for different types of malware
+			int[] m = new int[8];
+			
+			m[0] = generator.nextInt(malwaresThisLevel/8);
+			m[1] = generator.nextInt(malwaresThisLevel/4 - m[0]);
+			m[2] = generator.nextInt(3*malwaresThisLevel/8 - m[0] - m[1]);
+			m[3] = generator.nextInt(malwaresThisLevel/2 - m[0] - m[1] - m[2]);
+			m[4] = generator.nextInt(5*malwaresThisLevel/8 - m[0] - m[1] - m[2] - m[3]);
+			m[5] = generator.nextInt(3*malwaresThisLevel/4 - m[0] - m[1] - m[2] - m[3] - m[4]);
+			m[6] = generator.nextInt(7*malwaresThisLevel/8 - m[0] - m[1] - m[2] - m[3] - m[4] - m[5]);
+			m[7] = malwaresThisLevel - (m[0] + m[1] + m[2] + m[3] + m[4] + m[5] + m[6]);
+			
+			//set malwares for level and add
+			if(generator.nextBoolean())
+				setMalwaresForLevel(m[7], m[6], m[5], m[4], m[3], m[2], m[1], m[0], 0, 0);
+			else
+				setMalwaresForLevel(m[6], m[7], m[0], m[4], m[5], m[3], m[1], m[2], 0, 0);
+			setFilesForLevel(10);
+			addMalwares();
+		}
+		else
+		{
+			//decide on total number of malwares through formula
+			malwaresThisLevel = (int)(750 + 35 * Math.pow(Game.level-1, 1.2));
+			
+			//array for different types of malware
+			int[] m = new int[9];
+			
+			m[0] = generator.nextInt(malwaresThisLevel/9);
+			m[1] = generator.nextInt(2*malwaresThisLevel/9 - m[0]);
+			m[2] = generator.nextInt(3*malwaresThisLevel/9 - m[0] - m[1]);
+			m[3] = generator.nextInt(4*malwaresThisLevel/9 - m[0] - m[1] - m[2]);
+			m[4] = generator.nextInt(5*malwaresThisLevel/9 - m[0] - m[1] - m[2] - m[3]);
+			m[5] = generator.nextInt(6*malwaresThisLevel/9 - m[0] - m[1] - m[2] - m[3] - m[4]);
+			m[6] = generator.nextInt(7*malwaresThisLevel/9 - m[0] - m[1] - m[2] - m[3] - m[4] - m[5]);
+			m[7] = generator.nextInt(7*malwaresThisLevel/9 - m[0] - m[1] - m[2] - m[3] - m[4] - m[5] - m[6]);
+			m[8] = malwaresThisLevel - (m[0] + m[1] + m[2] + m[3] + m[4] + m[5] + m[6] - m[7]);
+			
+			//account for bots now
+			int bots = Game.level - 40;
+			if(Game.level > 50)
+				bots *= 1.5;
+			malwaresThisLevel += bots;
+			
+			//set malwares for level and add
+			if(generator.nextBoolean())
+				setMalwaresForLevel(m[7], m[6], m[5], m[4], m[3], m[2], m[1], m[0], m[8], bots);
+			else
+				setMalwaresForLevel(m[6], m[4], m[0], m[8], m[5], m[3], m[1], m[2], m[7], bots);
+			setFilesForLevel(10);
 			addMalwares();
 		}
 	}
@@ -246,7 +303,6 @@ public class RandomManager implements LevelManager
 	 */
 	@Override
 	public int getMalwaresThisLevel() {
-		// TODO Auto-generated method stub
 		return malwaresThisLevel;
 	}
 

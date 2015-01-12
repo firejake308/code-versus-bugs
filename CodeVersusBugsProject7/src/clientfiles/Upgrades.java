@@ -294,6 +294,8 @@ public abstract class Upgrades
 			Encrypter.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.COMMUNICATIONS_TOWER)
 			CommunicationsTower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.ANTIVIRUS_SOFTWARE)
+			AntiVirusSoftware.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		
 		//wrap text on upgrade buttons
 		upgradePath1.setText("<html><center>"+upgradePath1.getText()+"</center></html>");
@@ -462,7 +464,8 @@ public abstract class Upgrades
 		// intentionally no breaks, therefore it adds 100 each time
 		switch(typeOfTower)
 		{
-			case NONE:						return; // TODO
+			case NONE:						return;
+			case ANTIVIRUS_SOFTWARE:		upgradeID += 100;
 			case COMMUNICATIONS_TOWER:		upgradeID += 100;
 			case ENCRYPTER:					upgradeID += 100;
 			case FIREWALL:					upgradeID += 100;
@@ -740,13 +743,13 @@ public abstract class Upgrades
 			case 723:						Tower.allTowers[displayedUpgradeID].damage += 10;
 											break;
 											
-			case 731:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .3;
+			case 731:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .1;
 			
 											//update range indicator
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
 												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
-			case 732:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .3;
+			case 732:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .1;
 			
 											//update range indicator
 											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 

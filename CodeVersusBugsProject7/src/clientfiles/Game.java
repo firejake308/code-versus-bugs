@@ -60,7 +60,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 75000;
+	private static int money = 750;
 	public static int lives = 5000;
 	public static int level = 1;
 	
@@ -124,10 +124,9 @@ public class Game extends JFrame implements Runnable
 	public static void saveGame()
 	{
 		//reset miscellaneous static variables
-		Tower.resetHealth();
 		try
 		{
-			//record all static integer variables
+			//record all static integer and boolean variables
 			File staticInts = new File("staticInts.txt");
 			FileOutputStream fileOutput = new FileOutputStream(staticInts);
 			if(Malware.routerOn)
@@ -140,11 +139,29 @@ public class Game extends JFrame implements Runnable
 				fileOutput.write(0);
 			fileOutput.write(DiscThrower.damageToSet);
 			fileOutput.write(DiscThrower.speedToSet);
-			fileOutput.write((int) NumberGenerator.damageToSet); // TODO check, added (int) cast
 			fileOutput.write(NumberGenerator.speedToSet);
 			fileOutput.write((int)(Scanner.damageToSet * 1000));
 			fileOutput.write(Scanner.arcAngleToSet);
 			fileOutput.write(Tower.getHealthToSet());
+			if(CommunicationsTower.star)
+				fileOutput.write(1);
+			else
+				fileOutput.write(0);
+			if(CommunicationsTower.mesh)
+				fileOutput.write(1);
+			else
+				fileOutput.write(0);
+			if(CommunicationsTower.uploadingTower)
+				fileOutput.write(1);
+			else
+				fileOutput.write(0);
+			fileOutput.write(CommunicationsTower.numOfPacketsToHub);
+			fileOutput.write(CommunicationsTower.numOfPacketsToTower);
+			fileOutput.write(CommunicationsTower.timerResetHub);
+			fileOutput.write(CommunicationsTower.timerHub);
+			fileOutput.write(CommunicationsTower.timerResetTower);
+			fileOutput.write(CommunicationsTower.timerTower);
+			
 			fileOutput.write(level);
 			fileOutput.write(lives);
 			fileOutput.write(money);
@@ -156,9 +173,12 @@ public class Game extends JFrame implements Runnable
 			//write all objects
 			File objs = new File("objs.txt");
 			ObjectOutputStream objOutput = new ObjectOutputStream(new FileOutputStream(objs));
+			objOutput.writeDouble(NumberGenerator.damageToSet);
 			objOutput.writeObject(Tower.allTowers);
 			objOutput.writeObject(Tower.sprites);
 			objOutput.writeObject(techPanel.getPointValues());
+			objOutput.writeObject(CommunicationsTower.connectingTower);
+			objOutput.writeObject(CommunicationsTower.towerHub);
 			objOutput.close();
 		}
 		catch(Exception e)
@@ -184,11 +204,31 @@ public class Game extends JFrame implements Runnable
 				gamePanel.enterStoryMode();
 			DiscThrower.damageToSet = fileInput.read();
 			DiscThrower.speedToSet = fileInput.read();
-			NumberGenerator.damageToSet = fileInput.read();
 			NumberGenerator.speedToSet = fileInput.read();
-			Scanner.damageToSet = fileInput.read() / 1000;
+			Scanner.damageToSet = fileInput.read() / 1000.0;
 			Scanner.arcAngleToSet = fileInput.read();
 			Tower.setHealthToSet(fileInput.read());
+			
+			//set comm tower static variables
+			if(fileInput.read() == 1)
+				CommunicationsTower.star = true;
+			else
+				CommunicationsTower.star = false;
+			if(fileInput.read() == 1)
+				CommunicationsTower.mesh = true;
+			else
+				CommunicationsTower.mesh = false;
+			if(fileInput.read() == 1)
+				CommunicationsTower.uploadingTower = true;
+			else
+				CommunicationsTower.uploadingTower = false;
+			CommunicationsTower.numOfPacketsToHub=fileInput.read();
+			CommunicationsTower.numOfPacketsToTower=fileInput.read();
+			CommunicationsTower.timerResetHub=fileInput.read();
+			CommunicationsTower.timerHub=fileInput.read();
+			CommunicationsTower.timerResetTower=fileInput.read();
+			CommunicationsTower.timerTower=fileInput.read();
+			
 			level = fileInput.read();
 			lives = fileInput.read();
 			money = fileInput.read();
@@ -199,9 +239,12 @@ public class Game extends JFrame implements Runnable
 			
 			//read objects
 			ObjectInputStream objInput = new ObjectInputStream(new FileInputStream("objs.txt"));
+			NumberGenerator.damageToSet = objInput.read();
 			Tower.allTowers = (Tower[]) objInput.readObject();
 			Tower.sprites = (JButton[]) objInput.readObject();
 			techPanel.setPointValues((int[])objInput.readObject());
+			CommunicationsTower.connectingTower = (Tower) objInput.readObject();
+			CommunicationsTower.towerHub = (Tower) objInput.readObject();
 			objInput.close();
 			
 			//turn off fast-forward for smoother transition
@@ -339,6 +382,23 @@ public class Game extends JFrame implements Runnable
 				Scanner.damageToSet = 0.35;
 				Scanner.arcAngleToSet = 90;
 				Tower.resetHealth();
+				CommunicationsTower.star = false;
+				CommunicationsTower.mesh = false;
+				CommunicationsTower.uploadingTower = false;
+				CommunicationsTower.numOfPacketsToHub = 0;
+				CommunicationsTower.numOfPacketsToTower = 0;
+				CommunicationsTower.timerResetHub = 150;
+				CommunicationsTower.timerHub = 0;
+				CommunicationsTower.timerResetTower = 150;
+				CommunicationsTower.timerTower = 0;
+				CommunicationsTower.connectingTower = null;
+				CommunicationsTower.towerHub = null;
+				
+				//turn on freeplay if was playing freeplay earlier
+				if(freeplay)
+					gamePanel.enterFreeplay();
+				else
+					gamePanel.enterStoryMode();
 			}
 		}
 		else if(Game.gameState == Game.PAUSED)

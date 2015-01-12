@@ -162,6 +162,8 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	
 	        creditsText.setEditable(false);
 	        creditsText.setBounds(40, 50, 320, 325);
+	        creditsText.setBackground(Color.black);
+		    creditsText.setForeground(new Color(0, 162, 232));
 	        
 			c.add(scroll);
 			
@@ -244,7 +246,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					+ "This game is played primarily with the mouse, but there are optional hotkeys you can use to speed"
 					+ " things up. They are:\n"
 					+ "ESCAPE:\tBrings up a dialog to quit the game.\n"
-					+ "SPACE:\tWorks the same as clicking the \n\tpause/play button.\n"
+					+ "SPACE:\tWorks the same as\n\tclicking the \n\tpause/play button.\n"
 					+ "D:\tPlaces a Disc Thrower\n\ttower, if you have the\n\tnecessary funds.\n"
 					+ "N:\tPlaces a Number Generator\n\ttower, if you have\n\tthe necessary funds.\n"
 					+ "S:\tPlaces a Scanner tower, \n\tif you have the \n\tnecessary funds.\n\n"
@@ -261,12 +263,21 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					+ " Versus Bugs. You may turn off the tutorial by going to Options from the start menu and"
 					+ " deselecting the checkbox labeled \"Tutorial.\" The checkbox is selected by default. If you"
 					+ " do wish to keep the in-game tutorial, several transluscent blue boxes will appear to"
-					+ " inform and guide you. You may click a check box to move on to the next tutorial slide."
+					+ " inform and guide you. You may click the box to move on to the next tutorial slide.\n\n"
+					+ "FREEPLAY MODE\n\n"
+					+ "There is an option to play in either story mode or freeplay mode. The default is story mode,"
+					+ " since this is recommended for beginners. Story mode features carefully structured levels and"
+					+ " designed to teach new players about the game. Freeplay mode is designed for experienced"
+					+ " players, since it features more hectic, randomly generated levels that get progressively"
+					+ " harder. There is no tutorial for freeplay mode, so only veterans should venture into it."
 					);
 			instructionsText.setEditable(false);
 		    instructionsText.setBounds(40, 50, 320, 325);
 		    instructionsText.setLineWrap(true);
 		    instructionsText.setWrapStyleWord(true);
+		    instructionsText.setCaretPosition(0);
+		    instructionsText.setBackground(Color.black);
+		    instructionsText.setForeground(new Color(0, 162, 232));
 		    
 		    instructionsScroll.setVisible(true);
 		    instructionsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
