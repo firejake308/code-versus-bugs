@@ -269,7 +269,17 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					+ " since this is recommended for beginners. Story mode features carefully structured levels and"
 					+ " designed to teach new players about the game. Freeplay mode is designed for experienced"
 					+ " players, since it features more hectic, randomly generated levels that get progressively"
-					+ " harder. There is no tutorial for freeplay mode, so only veterans should venture into it."
+					+ " harder. There is no tutorial for freeplay mode, so only veterans should venture into it.\n\n"
+					+ "CONTROL BUTTONS\n\n"
+					+ "There are several buttons in the top left corner of the screen. The largest of these is the play/pause"
+					+ " button, which freezes the malwares but allows you to place towers or plan out the death of"
+					+ " the malwares. This button is also used to start each round.\n"
+					+ "The other ubttons, in order from top to bottom and left to right, are: Fast Forward, Save, Load,"
+					+ " Help, Restart, and Quit.\n\n"
+					+ "THE HELP MENU\n\n"
+					+ "Pressing the button with the i in a circle will bring up a help menu. The help menu contains detailed"
+					+ " information about gameplay, malware types, and tower types. Pulling up the help menu is a great way"
+					+ " to learn more about malwares during a slow round since doing so doesn't pause the game."
 					);
 			instructionsText.setEditable(false);
 		    instructionsText.setBounds(40, 50, 320, 325);

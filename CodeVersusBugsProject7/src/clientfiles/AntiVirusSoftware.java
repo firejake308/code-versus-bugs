@@ -1,16 +1,4 @@
-package clientfiles;
-/**DiscThrower.java
- * This class extends Tower to create a class that creates DiscThrower objects
- * Contains methods to set and get x and y and also draw the tower
- * The image is currently a primitive sprite
- * 
- * UDPATE LOG
- * 1/11/15:
- * 		creation
- * 
- * ----------------------------------------------------------------------
- * 
- * Copyright 2014 Adel Hassan and Patrick Kenney
+/*Copyright 2014 Adel Hassan and Patrick Kenney
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +12,15 @@ package clientfiles;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package clientfiles;
 
 
 import javax.swing.ImageIcon;
-
+/**
+ * An advanced tower that is very expensive, but also has very high stats.
+ * 
+ * @author Adel Hassan and Patrick Kenney
+ */
 public class AntiVirusSoftware extends Tower
 {
 	private static final long serialVersionUID = 1L;

@@ -60,14 +60,20 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
+		//initialize the 4 JPanels
 		Game.infoPanel = new JPanel(new GridLayout(1,4));
 		Game.gamePanel = new GamePanel();
 		Game.techPanel = new TechPanel();
 		Game.shopPanel = new ShopPanel();
+		
+		//initialize the control buttons
 		Game.pauseButton = new JButton(PauseButtonListener.sprite);
 		Game.fastForwardButton = new JButton(new ImageIcon(MyImages.fastForwardOff));
 		Game.saveButton = new JButton(new ImageIcon(MyImages.save));
 		Game.loadButton = new JButton(new ImageIcon(MyImages.load));
+		Game.helpButton = new JButton(new ImageIcon(MyImages.info));
+		Game.restartButton = new JButton(new ImageIcon(MyImages.restart));
+		Game.quitButton = new JButton(new ImageIcon(MyImages.quit));
 		
 		//set layout for game
 		Container mainWindow = getContentPane();
@@ -80,8 +86,7 @@ public class GameFrame extends JFrame implements ActionListener
 		//add listener for pause button
 		Game.pauseButton.addActionListener(this);
 		
-		mainWindow.add(Game.infoPanel);
-		
+		//6 small buttons
 		Game.fastForwardButton.setBounds(105, 5, 30, 30);
 		Game.fastForwardButton.addActionListener(this);
 		mainWindow.add(Game.fastForwardButton);
@@ -94,7 +99,17 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.loadButton.addActionListener(this);
 		mainWindow.add(Game.loadButton);
 		
-		Game.infoPanel.setBounds(145,5,screenSize.width-145,100);
+		Game.helpButton.setBounds(140, 5, 30, 30);
+		Game.helpButton.addActionListener(this);
+		mainWindow.add(Game.helpButton);
+		
+		Game.restartButton.setBounds(140, 40, 30, 30);
+		Game.restartButton.addActionListener(this);
+		mainWindow.add(Game.restartButton);
+		
+		Game.quitButton.setBounds(140, 75, 30, 30);
+		Game.quitButton.addActionListener(this);
+		mainWindow.add(Game.quitButton);
 		
 		//initialize money label and fps counter
 		moneyDisplay = new DigitalDisplay(5, "money");
@@ -107,11 +122,14 @@ public class GameFrame extends JFrame implements ActionListener
 		life.setDisplay(Game.lives);
 		levelCounter.setDisplay(Game.level);
 		
-		//add fpsCounter to info panel
+		//add info displays to info panel
 		Game.infoPanel.add(life);
 		Game.infoPanel.add(moneyDisplay);
 		Game.infoPanel.add(fpsDisplay);
 		Game.infoPanel.add(levelCounter);
+		
+		mainWindow.add(Game.infoPanel);
+		Game.infoPanel.setBounds(170,5,screenSize.width-170,100);
 		
 		mainWindow.add(Game.shopPanel);
 		Game.shopPanel.setBounds(5,110,100,screenSize.height-110);
@@ -214,40 +232,12 @@ public class GameFrame extends JFrame implements ActionListener
 				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
 				Game.widthOfGamePanel /3, 
 				Game.widthOfGamePanel / 42);
-		/*addKeyListener(new KeyAdapter()
-		{
-			//pause the game whenerver escape is pressed
-			public void keyTyped(KeyEvent e)
-			{
-				if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-				{
-					Game.pauseButton.setText("");
-					Game.pauseButton.setIcon(PauseButtonListener.sprite);
-					
-					Game.gameState = Game.PAUSED;
-					
-					//show dialog to quit or resume
-					Object[] options = {"Resume", "Quit"};
-					int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
-							JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
-					
-					if(choice == 0)
-					{
-						Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-						Game.gameState = Game.PLAYING;
-					}
-					else if(choice == 1)
-					{
-						System.exit(0);
-					}
-				}
-			}
-		});*/
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		//responses to the buttons are outsourced to Game
 		if (e.getSource() == Game.pauseButton)
 			Game.pauseListener();
 		else if (e.getSource() == Game.fastForwardButton)
@@ -256,6 +246,12 @@ public class GameFrame extends JFrame implements ActionListener
 			Game.saveGame();
 		else if(e.getSource() == Game.loadButton)
 			Game.loadGame();
+		else if(e.getSource() == Game.helpButton)
+			Game.openHelp();
+		else if(e.getSource() == Game.restartButton)
+			Game.restart();
+		else if(e.getSource() == Game.quitButton)
+			Game.quit();
 	}
 	
 }

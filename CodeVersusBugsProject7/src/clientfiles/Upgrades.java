@@ -123,6 +123,7 @@ public abstract class Upgrades
 		upgradesInfo.setBackground(Color.CYAN);
 		upgradesInfo.setLineWrap(true);
 		upgradesInfo.setWrapStyleWord(true);
+		upgradesInfo.setCaretPosition(0);
 		
 		infoScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		infoScroll.setPreferredSize(upgradesInfo.getSize());
@@ -758,11 +759,15 @@ public abstract class Upgrades
 											
 			case 733:						tower.backedUp = true;
 											break;
-			}
+		}
 		// update all uploaded towers to hubs
 		if (tower.isConnected)
 			CommunicationsTower.updateConnectedTowers(tower);
 		
+		//update stats box
+		updateStatistics();
+		
+		//update upgrade buttons
 		tower.addUpgradeOptions(displayedUpgradeID);
 	}
 }

@@ -84,10 +84,14 @@ public class Game extends JFrame implements Runnable
 	static public TechPanel techPanel;
 	static public ShopPanel shopPanel;
 	
+	//control buttons in top left
 	static public JButton pauseButton;
 	static public JButton fastForwardButton;
 	static public JButton saveButton;
 	static public JButton loadButton;
+	static public JButton helpButton;
+	static public JButton restartButton;
+	static public JButton quitButton;
 	
 	public static int widthOfGamePanel;
 	public static int heightOfGamePanel;
@@ -99,6 +103,7 @@ public class Game extends JFrame implements Runnable
 	
 	// track
 	static public JPanel track;
+	
 	public static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	static DisplayMode dm = device.getDisplayMode();
@@ -117,10 +122,18 @@ public class Game extends JFrame implements Runnable
 		
 		gf.moneyDisplay.setDisplay(money);
 	}
+	/**
+	 * Gets the layer's current balance.
+	 * 
+	 * @return money
+	 */
 	public static int getMoney() 
 	{
 		return money;
 	}
+	/**
+	 * Saves the current game.
+	 */
 	public static void saveGame()
 	{
 		//reset miscellaneous static variables
@@ -186,6 +199,9 @@ public class Game extends JFrame implements Runnable
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Loads a saved game.
+	 */
 	public static void loadGame()
 	{
 		try
@@ -269,6 +285,94 @@ public class Game extends JFrame implements Runnable
 				gamePanel.add(Tower.sprites[t]);
 		}
 	}
+	/**
+	 * Opens the help menu.
+	 */
+	public static void openHelp()
+	{
+		Help help = new Help();
+		help.setVisible(true);
+		help.setFocusable(true);
+	}
+	/**
+	 * Restarts the game. First brings up a dialog for confirmation.
+	 */
+	public static void restart()
+	{
+		//propmt user if he/she to confirm
+		int choice = JOptionPane.showConfirmDialog(Game.gf.getContentPane(), "Are you sure you want to restart?", "Restart", 
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		
+		//resume game if user dosn't actually want to restart
+		if(choice == JOptionPane.NO_OPTION)
+		{
+			return;
+		}
+		
+		//reset static Game variables
+		Game.gameState = Game.PAUSED;
+		Game.level = 1;
+		Game.lives = 5000;
+		Game.money = 750;
+		Game.tutorialSlide = 1;
+		Game.endOfRound = true;
+		
+		//reset game
+		Game.gf.setVisible(false);
+		Game.gf = new GameFrame();
+		Game.initializeGame();
+		
+		//reset static collections
+		Tower.allTowers = new Tower[1000];
+		GamePanel.numTowers = 0;
+		Tower.sprites = new JButton[1000];
+		Malware.allMalware = new Malware[10000];
+		Malware.numMalwares = 0;
+		BonusFile.allFiles = new ArrayList<BonusFile>();
+		Projectile.allProjectiles = new ArrayList<Projectile>();
+		
+		//reset miscellaneous static variables
+		Malware.routerOn = false;
+		DiscThrower.damageToSet = 35;
+		DiscThrower.speedToSet = 60;
+		NumberGenerator.damageToSet = 0.0;
+		NumberGenerator.speedToSet = 120;
+		Scanner.damageToSet = 0.25;
+		Scanner.arcAngleToSet = 90;
+		Tower.resetHealth();
+		CommunicationsTower.star = false;
+		CommunicationsTower.mesh = false;
+		CommunicationsTower.uploadingTower = false;
+		CommunicationsTower.numOfPacketsToHub = 0;
+		CommunicationsTower.numOfPacketsToTower = 0;
+		CommunicationsTower.timerResetHub = 150;
+		CommunicationsTower.timerHub = 0;
+		CommunicationsTower.timerResetTower = 150;
+		CommunicationsTower.timerTower = 0;
+		CommunicationsTower.connectingTower = null;
+		CommunicationsTower.towerHub = null;
+		
+		//turn on freeplay if was playing freeplay earlier
+		if(freeplay)
+			gamePanel.enterFreeplay();
+		else
+			gamePanel.enterStoryMode();
+	}
+	/**
+	 * Quits the game. First brings up a dialog for confirmation. Returns without doing anything if the user presses no.
+	 */
+	public static void quit()
+	{
+		//ask user to confirm quitting
+		int choice = JOptionPane.showConfirmDialog(gf, "Are you sure you want to quit?", "Quit Game", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		
+		//force quit game if yes
+		if(choice == JOptionPane.YES_OPTION)
+			System.exit(0);
+	}
+	/**
+	 * Initializes many game variables.
+	 */
 	public static void initializeGame()
 	{
 		try 
@@ -331,7 +435,7 @@ public class Game extends JFrame implements Runnable
 			Game.pauseButton.setIcon(PauseButtonListener.sprite);
 			
 			Game.gameState = Game.PAUSED;
-			
+			/*legacy code
 			//show dialog to quit or resume
 			Object[] options = {"Resume", "Quit", "Restart"};
 			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
@@ -348,58 +452,8 @@ public class Game extends JFrame implements Runnable
 			}
 			else if(choice == 2)
 			{
-				//reset static Game variables
-				Game.gameState = Game.PAUSED;
-				Game.level = 1;
-				Game.lives = 5000;
-				Game.money = 750;
-				Game.tutorialSlide = 1;
-				Game.endOfRound = true;
 				
-				//reset game
-				Game.gf.setVisible(false);
-				System.out.println(gf);
-				System.out.println(gamePanel);
-				System.out.println(shopPanel);
-				Game.gf = new GameFrame();
-				Game.initializeGame();
-				
-				//reset static collections
-				Tower.allTowers = new Tower[1000];
-				GamePanel.numTowers = 0;
-				Tower.sprites = new JButton[1000];
-				Malware.allMalware = new Malware[10000];
-				Malware.numMalwares = 0;
-				BonusFile.allFiles = new ArrayList<BonusFile>();
-				Projectile.allProjectiles = new ArrayList<Projectile>();
-				
-				//reset miscellaneous static variables
-				Malware.routerOn = false;
-				DiscThrower.damageToSet = 25;
-				DiscThrower.speedToSet = 30;
-				NumberGenerator.damageToSet = 0;
-				NumberGenerator.speedToSet = 80;
-				Scanner.damageToSet = 0.35;
-				Scanner.arcAngleToSet = 90;
-				Tower.resetHealth();
-				CommunicationsTower.star = false;
-				CommunicationsTower.mesh = false;
-				CommunicationsTower.uploadingTower = false;
-				CommunicationsTower.numOfPacketsToHub = 0;
-				CommunicationsTower.numOfPacketsToTower = 0;
-				CommunicationsTower.timerResetHub = 150;
-				CommunicationsTower.timerHub = 0;
-				CommunicationsTower.timerResetTower = 150;
-				CommunicationsTower.timerTower = 0;
-				CommunicationsTower.connectingTower = null;
-				CommunicationsTower.towerHub = null;
-				
-				//turn on freeplay if was playing freeplay earlier
-				if(freeplay)
-					gamePanel.enterFreeplay();
-				else
-					gamePanel.enterStoryMode();
-			}
+			}*/
 		}
 		else if(Game.gameState == Game.PAUSED)
 		{
@@ -419,13 +473,16 @@ public class Game extends JFrame implements Runnable
 				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to start without upgrading your hardware?", 
 						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
 				if(choice == 1)
+				{
 					Game.gamePanel.disableTutorial();
+					Game.techPanel.disableTutorial();
+				}
 				else
 					return;
 			}
 			
-			//doesn't move on to next level unless it is end of round, 
-			//changed in Virus when game is paused remotely
+			//doesn't move on to next level unless it is end of round, which is
+			//changed in Malware.java when game is paused remotely
 			if (Game.endOfRound == true)
 			{
 				Game.endOfRound = false;
@@ -442,21 +499,12 @@ public class Game extends JFrame implements Runnable
 				Game.loadButton.setEnabled(false);
 				
 				//special case for tutorial slide 17 and 406
-				if(Game.tutorialSlide == 17 || Game.tutorialSlide == 406)
+				if(Game.tutorialSlide == 17)
 					Game.gamePanel.nextSlide();
 			}
 			
 			Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
 			Game.gameState = Game.PLAYING;
-			//move onto files tutorial
-			if(level == 10 && Game.tutorial && Game.tutorialSlide <= 72)
-				Game.gamePanel.nextSlide();
-			//special case for minion types tutorial
-			if(level == 12 && Game.tutorial && Game.tutorialSlide <= 30)
-				Game.gamePanel.nextSlide();
-			//move onto viruses tutorial
-			if(level == 21 && Game.tutorial && Game.tutorialSlide <= 92)
-				Game.gamePanel.nextSlide();
 		}
 	}
 	

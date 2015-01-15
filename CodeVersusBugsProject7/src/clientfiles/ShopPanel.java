@@ -86,6 +86,16 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyCommunicationsTower.addActionListener(this);
 		buyAVS.addActionListener(this);
 		
+		//set tool tip texts
+		buyDiscThrower.setToolTipText("Buy a Disc Thrower");
+		buyNumberGenerator.setToolTipText("Buy a Number Generator");
+		buyScanner.setToolTipText("Buy a Scanner");
+		buyFireWall.setToolTipText("Buy a Firewall");
+		buyEncrypter.setToolTipText("Buy an Encryptor");
+		buyCommunicationsTower.setToolTipText("Buy a Communications Tower");
+		buyAVS.setToolTipText("Buy a FAST");
+		
+		//add all buttons to panel
 		setLayout(null);
 		add(info);
 		add(buyDiscThrower);

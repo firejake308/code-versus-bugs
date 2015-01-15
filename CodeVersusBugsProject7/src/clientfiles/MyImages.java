@@ -1,20 +1,4 @@
-package clientfiles;
-
-//import java.awt.Toolkit;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-/**MyImages.java
- * Holds static BufferedImage variables for use in the other classes.
- * @author Ahmadul
- * 
- * ----------------------------------------------------------------------
- * 
- * Copyright 2014 Adel Hassan and Patrick Kenney
+/*Copyright 2014 Adel Hassan and Patrick Kenney
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +11,20 @@ import javax.swing.JOptionPane;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */
+package clientfiles;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+/**MyImages.java
+ * Holds static BufferedImage variables for use in the other classes.
+ * 
+ * @author Adel Hassan and Patrick Kenney
  */
 public class MyImages 
 {
@@ -62,6 +60,10 @@ public class MyImages
 	public static BufferedImage connect;
 	public static BufferedImage save;
 	public static BufferedImage load;
+	public static BufferedImage info;
+	public static BufferedImage restart;
+	public static BufferedImage quit;
+	
 	//malware
 	public static BufferedImage minion;
 	public static BufferedImage tankMinion;
@@ -78,6 +80,7 @@ public class MyImages
 	public static BufferedImage rushVirus;
 	public static BufferedImage spy;
 	public static BufferedImage bot;
+	
 	//towers
 	public static BufferedImage dt0;
 	public static BufferedImage dt1;
@@ -197,6 +200,9 @@ public class MyImages
 			connect = ImageIO.read(MyImages.class.getResourceAsStream("resources/connect.png"));
 			save = ImageIO.read(MyImages.class.getResourceAsStream("resources/save.png"));
 			load = ImageIO.read(MyImages.class.getResourceAsStream("resources/load.png"));
+			info = ImageIO.read(MyImages.class.getResourceAsStream("resources/info.png"));
+			restart = ImageIO.read(MyImages.class.getResourceAsStream("resources/restart.png"));
+			quit = ImageIO.read(MyImages.class.getResourceAsStream("resources/quit.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));

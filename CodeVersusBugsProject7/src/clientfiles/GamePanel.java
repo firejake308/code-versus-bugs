@@ -516,36 +516,7 @@ public class GamePanel extends JPanel
         		}
         		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
         		{
-        			Game.pauseButton.setText("");
-        			Game.pauseButton.setIcon(PauseButtonListener.sprite);
-        			
-        			Game.gameState = Game.PAUSED;
-        			Game.pauseButton.setIcon(PauseButtonListener.sprite);
-        			
-        			//show dialog to quit or resume
-        			Object[] options = {"Resume", "Quit"};
-        			int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
-        					JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
-        			
-        			if(choice == 0)
-        			{
-        				//if escaped between rounds, go back to pause
-        				if (Game.endOfRound == true)
-            			{
-        					Game.pauseButton.setIcon(PauseButtonListener.sprite);
-                			Game.gameState = Game.PAUSED;
-            			}
-        				//otherwise, go back to playing
-        				else
-        				{
-        					Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-            				Game.gameState = Game.PLAYING;
-        				}
-        			}
-        			else if(choice == 1)
-        			{
-        				System.exit(0);
-        			}
+        			Game.quit();
         		}
         	}
         	public void keyReleased(KeyEvent e){}
@@ -752,6 +723,7 @@ public class GamePanel extends JPanel
 			case 30:
 				Game.techPanel.disableTutorial();
 				break;
+			/*
 			case 31:
 				tutorial.setVisible(true);
 				tutorial.setIcon(null);
@@ -1197,6 +1169,10 @@ public class GamePanel extends JPanel
 				//go back
 				nextSlide();
 				break;
+				*/
+			default:
+				tutorial.setVisible(false);
+				disableTutorial();
 		}
 		
 		//set size of tutorial to appropriate size if it's not in the bottom

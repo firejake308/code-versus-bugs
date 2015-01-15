@@ -240,14 +240,13 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		moneyMult.setFont(new Font("Monospaced", Font.PLAIN, 15));
 		
 		//set descriptions
-		damage.setToolTipText("Increases the damage on all Disc Throwers and Scanners. Disc Throwers get 5 extra damage, "
-				+ "and Scanners get 0.5 damage per tick.");
+		damage.setToolTipText("Increases the damage on all Disc Throwers, Number Generators and Scanners.");
 		speed.setToolTipText("Increases the attack speed of Disc Throwers and Number Generators.");
 		range.setToolTipText("Increases the range of your towers by 10%.");
 		
 		buffer.setToolTipText("Increases the size of your towers' buffers, making them more resistant to worm attacks."
 				+ " This allows each tower to take 1 more hit.");
-		lives.setToolTipText("Boost your uncorrupted data by 1000 bytes.");
+		lives.setToolTipText("Boost your uncorrupted data by 500 bytes.");
 		router.setToolTipText("Upgrade your modem to a router so that it can connect to the decoy CPU. Malwares that hit the decoy CPU"
 				+ " do not corrupt any important data.");
 		
