@@ -143,8 +143,8 @@ public class GamePanel extends JPanel
 		ctHotspot = new Point(15, 15);
 		communicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctSprite,ctHotspot,"Communications Tower");
 		invalidCommunicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctInvalidSprite,ctHotspot,"Communications Tower");
-		avsSprite = AntiVirusSoftware.icon.getImage();
-		avsInvalidSprite = AntiVirusSoftware.invalidIcon.getImage();
+		avsSprite = FastTower.icon.getImage();
+		avsInvalidSprite = FastTower.invalidIcon.getImage();
 		avsHotspot = new Point(15, 15);
 		avsCursor = Toolkit.getDefaultToolkit().createCustomCursor(avsSprite,avsHotspot,"AVS");
 		invalidAVSCursor = Toolkit.getDefaultToolkit().createCustomCursor(avsInvalidSprite,avsHotspot,"AVS Tower");
@@ -377,9 +377,9 @@ public class GamePanel extends JPanel
                         rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
             			break;	
-            		case ANTIVIRUS_SOFTWARE:
+            		case FAST_TOWER:
             			// create a new number generator in the static array
-	                    Tower.allTowers[numTowers] = new AntiVirusSoftware(e.getX(), e.getY(), numTowers);
+	                    Tower.allTowers[numTowers] = new FastTower(e.getX(), e.getY(), numTowers);
 	                    
 	                    //use currDT as shortcut reference for current disc thrower
 	                    Tower currAVS = Tower.allTowers[numTowers];
@@ -421,7 +421,7 @@ public class GamePanel extends JPanel
             		case COMMUNICATIONS_TOWER:
             			setCursor(communicationsCursor);
             			break;
-            		case ANTIVIRUS_SOFTWARE:
+            		case FAST_TOWER:
             			setCursor(avsCursor);
             			break;
             		case NONE:
@@ -504,7 +504,7 @@ public class GamePanel extends JPanel
         		}
         		if(e.getKeyCode()==KeyEvent.VK_A)
         		{
-        			TowerType towerToPlace = TowerType.ANTIVIRUS_SOFTWARE;
+        			TowerType towerToPlace = TowerType.FAST_TOWER;
         			ShopPanel.validateBuy(towerToPlace);
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
@@ -588,13 +588,13 @@ public class GamePanel extends JPanel
 							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-CommunicationsTower.rangeToSet, getMouseY()-CommunicationsTower.rangeToSet, 
 							    				CommunicationsTower.rangeToSet*2, CommunicationsTower.rangeToSet*2);
 										break;
-    		case ANTIVIRUS_SOFTWARE:	if (!ShopPanel.checkPlacement())
+    		case FAST_TOWER:	if (!ShopPanel.checkPlacement())
 											setCursor(invalidAVSCursor);
 										else
 											setCursor(avsCursor);
 							    		rangeOn = true;  // this stuff was missing but i added it
-							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-AntiVirusSoftware.rangeToSet, getMouseY()-AntiVirusSoftware.rangeToSet, 
-							    				AntiVirusSoftware.rangeToSet*2, AntiVirusSoftware.rangeToSet*2);
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-FastTower.rangeToSet, getMouseY()-FastTower.rangeToSet, 
+							    				FastTower.rangeToSet*2, FastTower.rangeToSet*2);
 										break;
 										
 			default:					setCursor(Cursor.getDefaultCursor());
@@ -1301,7 +1301,7 @@ public class GamePanel extends JPanel
 				if(Malware.allMalware[v] == null)
 					break;
 				else
-					Malware.allMalware[v].drawVirus(g);
+					Malware.allMalware[v].draw(g);
 			}
 			
 			//draw all towers
@@ -1318,7 +1318,7 @@ public class GamePanel extends JPanel
 			ListIterator<Projectile> iterator = Projectile.allProjectiles.listIterator();
 			while(iterator.hasNext())
 			{
-				iterator.next().drawProjectile(g);
+				iterator.next().draw(g);
 			}
 			
 			//draw temporary range indicator

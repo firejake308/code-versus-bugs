@@ -46,7 +46,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon fwImage = new ImageIcon(MyImages.firewallShopImage);
 	private Icon enImage = Encrypter.icon;
 	private Icon ctImage = CommunicationsTower.icon;
-	private Icon avsImage = AntiVirusSoftware.icon;
+	private Icon avsImage = FastTower.icon;
 	
 	public static int timer=0;
 	
@@ -196,10 +196,10 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				if (!warned)
 				{
-            		if (Game.getMoney() < AntiVirusSoftware.cost)
-            			changeInfo("$"+AntiVirusSoftware.cost, true);
+            		if (Game.getMoney() < FastTower.cost)
+            			changeInfo("$"+FastTower.cost, true);
             		else
-            			changeInfo("$"+AntiVirusSoftware.cost, false);
+            			changeInfo("$"+FastTower.cost, false);
             	}
 			}
 		});
@@ -285,10 +285,10 @@ public class ShopPanel extends JPanel implements ActionListener
 			proposedTower = new Rectangle(x-CommunicationsTower.icon.getIconWidth()/2, y-CommunicationsTower.icon.getIconHeight()/2, 
 					CommunicationsTower.icon.getIconWidth(), CommunicationsTower.icon.getIconHeight());
 		}
-		else if(towerToPlace == TowerType.ANTIVIRUS_SOFTWARE)
+		else if(towerToPlace == TowerType.FAST_TOWER)
 		{
-			proposedTower = new Rectangle(x-AntiVirusSoftware.icon.getIconWidth()/2, y-AntiVirusSoftware.icon.getIconHeight()/2, 
-					AntiVirusSoftware.icon.getIconWidth(), AntiVirusSoftware.icon.getIconHeight());
+			proposedTower = new Rectangle(x-FastTower.icon.getIconWidth()/2, y-FastTower.icon.getIconHeight()/2, 
+					FastTower.icon.getIconWidth(), FastTower.icon.getIconHeight());
 		}
 		//next, loop through all path parts and check for intersection with proposed tower
 		for(int pathPart = 0; pathPart < Game.gamePanel.path.length; pathPart++)
@@ -481,10 +481,10 @@ public class ShopPanel extends JPanel implements ActionListener
 		}
 		else if (temp == buyAVS)
 		{
-			towerType = TowerType.ANTIVIRUS_SOFTWARE;
+			towerType = TowerType.FAST_TOWER;
 			
 			//reset if already selected
-			if (towerToPlace == TowerType.ANTIVIRUS_SOFTWARE)
+			if (towerToPlace == TowerType.FAST_TOWER)
 			{
 				towerToPlace = TowerType.NONE;
 				changeInfo("Tower Deselected", false);
@@ -567,11 +567,11 @@ public class ShopPanel extends JPanel implements ActionListener
 			else
 				changeInfo("Not Enough Money!", true);
 		}
-		else if(type == TowerType.ANTIVIRUS_SOFTWARE)
+		else if(type == TowerType.FAST_TOWER)
 		{
 			if(Game.getMoney() >= CommunicationsTower.cost)
 			{
-				towerToPlace = TowerType.ANTIVIRUS_SOFTWARE;
+				towerToPlace = TowerType.FAST_TOWER;
 			}
 			else
 				changeInfo("Not Enough Money!", true);

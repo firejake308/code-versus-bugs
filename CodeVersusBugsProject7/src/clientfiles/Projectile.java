@@ -1,7 +1,9 @@
 package clientfiles;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -79,6 +81,8 @@ public class Projectile implements Serializable
 	private final int WORM = 342;
 	private int owner;
 	
+	private int theta;
+	
 	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, TowerType towerType, int towerID, double damageToSet)
 	{
 		owner = TOWER;
@@ -129,10 +133,11 @@ public class Projectile implements Serializable
 			// affects speed of virus
 			manipulatorForVirus = 0;
 		}
-		else if(Tower.allTowers[idOfOwner] instanceof AntiVirusSoftware)
+		else if(Tower.allTowers[idOfOwner] instanceof FastTower)
 		{
 			sprite = MyImages.shield;
 			speed = 6;
+			theta = 0;
 			
 			// affects speed of virus
 			manipulatorForVirus = 1;
@@ -346,9 +351,26 @@ public class Projectile implements Serializable
 			curr.addToRecycleBin();
 		}
 	}
-	public void drawProjectile(Graphics g)
+	/**
+	 * Draws the projectile on the given Graphics context.
+	 * 
+	 * @param g the Grpahics context on which to draw the projectile
+	 */
+	public void draw(Graphics g)
 	{
-		g.drawImage(sprite, (int)x, (int)y, null);
+		/*
+		//rotate for FASTs only
+		if(Tower.allTowers[idOfOwner].getType() == TowerType.FAST_TOWER)
+		{
+			Graphics2D g2d = (Graphics2D) g;
+			AffineTransform at = new AffineTransform();
+			at.translate(x, y);
+			at.rotate(theta++, x+sprite.getWidth(null)/2, y+sprite.getHeight(null)/2);
+			g2d.drawImage(sprite, at, null);
+		}
+		//otherwise, just draw it
+		else*/
+			g.drawImage(sprite, (int)x, (int)y, null);
 	}
 	
 	public void addToRecycleBin()

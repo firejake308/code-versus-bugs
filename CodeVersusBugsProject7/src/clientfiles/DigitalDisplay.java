@@ -7,8 +7,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.*;
-
-@SuppressWarnings("serial")
+/**
+ * A digital display that conveys information to the user
+ * @author Adel Hassan
+ *
+ */
 public class DigitalDisplay extends JPanel
 {
 	private static final BufferedImage dim = MyImages.dim;

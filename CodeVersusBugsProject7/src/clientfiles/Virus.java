@@ -50,9 +50,9 @@ public class Virus extends Malware
 	}
 	
 	@Override
-	public void moveVirus(double frames)
+	public void move(double frames)
 	{
-		super.moveVirus(frames);
+		super.move(frames);
 		
 		//only difference is that we need to check for collison wth exe files
 		ListIterator<BonusFile> iter = BonusFile.allFiles.listIterator();

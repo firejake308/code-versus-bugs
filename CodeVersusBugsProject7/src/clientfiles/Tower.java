@@ -377,7 +377,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void attack(Malware target, TowerType towerType)
 	{
-		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR || towerType == TowerType.ANTIVIRUS_SOFTWARE)
+		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR || towerType == TowerType.FAST_TOWER)
 		{
 			double xOfTower = getCenterX();
 			double yOfTower = getCenterY();
@@ -638,7 +638,7 @@ public abstract class Tower implements ActionListener, Serializable
 			sprites[id].setBackground(new Color(0,0,0,0));
 		}
 		//draw health bar for num gens and avs's
-		else if(this instanceof NumberGenerator || this instanceof AntiVirusSoftware)
+		else if(this instanceof NumberGenerator || this instanceof FastTower)
 		{
 			AffineTransform op = new AffineTransform();
 			op.scale(Game.xScale, Game.yScale);

@@ -295,8 +295,8 @@ public abstract class Upgrades
 			Encrypter.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.COMMUNICATIONS_TOWER)
 			CommunicationsTower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
-		else if (typeOfTower == TowerType.ANTIVIRUS_SOFTWARE)
-			AntiVirusSoftware.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.FAST_TOWER)
+			FastTower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		
 		//wrap text on upgrade buttons
 		upgradePath1.setText("<html><center>"+upgradePath1.getText()+"</center></html>");
@@ -466,7 +466,7 @@ public abstract class Upgrades
 		switch(typeOfTower)
 		{
 			case NONE:						return;
-			case ANTIVIRUS_SOFTWARE:		upgradeID += 100;
+			case FAST_TOWER:		upgradeID += 100;
 			case COMMUNICATIONS_TOWER:		upgradeID += 100;
 			case ENCRYPTER:					upgradeID += 100;
 			case FIREWALL:					upgradeID += 100;

@@ -29,7 +29,7 @@ public class Trojan extends Malware
 	}
 	
 	@Override
-	public void moveVirus(double frames)
+	public void move(double frames)
 	{
 		//keep going up until hits cpu
 		if(getY() > Game.gamePanel.path[1].getY())

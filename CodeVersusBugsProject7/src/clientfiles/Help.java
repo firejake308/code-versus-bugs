@@ -51,7 +51,7 @@ public class Help extends JFrame
 								+ "Number Generator:\n"
 								+ "Number Generators are also early game and are quite effective; they freeze malware and can be upgraded to deal damage and do splash effects\n\n"
 								+ "Scanner:\n"
-								+ "Scanners ");
+								+ "Scanners are antivirus scanners that constantly rotate. Scanners can quarantine threats like worms, making them benign. They deal area-of-effect damage.\n\n");
 		helpMenu.setEditable(false);
 		helpMenu.setLineWrap(true);
 		helpMenu.setWrapStyleWord(true);

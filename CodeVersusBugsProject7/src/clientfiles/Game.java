@@ -60,7 +60,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 750;
+	private static int money = 7500;
 	public static int lives = 5000;
 	public static int level = 1;
 	
@@ -425,7 +425,9 @@ public class Game extends JFrame implements Runnable
 			return false;
 		}
 	}
-	
+	/**
+	 * Enacts the appropriate reaction once the pause/play button is pressed.
+	 */
 	public static void pauseListener()
 	{
 		//if it's already playing, then pause it
@@ -538,7 +540,7 @@ public class Game extends JFrame implements Runnable
 			if(Malware.allMalware[v]==null)
 				break;
 			else
-				Malware.allMalware[v].moveVirus(malwareSpeed*frames);
+				Malware.allMalware[v].move(malwareSpeed*frames);
 		}
 		
 		//check if viruses have moved into range of a tower

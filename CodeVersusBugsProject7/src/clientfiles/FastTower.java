@@ -21,7 +21,7 @@ import javax.swing.ImageIcon;
  * 
  * @author Adel Hassan and Patrick Kenney
  */
-public class AntiVirusSoftware extends Tower
+public class FastTower extends Tower
 {
 	private static final long serialVersionUID = 1L;
 	public static int cost = 3000;
@@ -31,7 +31,7 @@ public class AntiVirusSoftware extends Tower
 	public static int speedToSet = 20;
 	public static int rangeToSet = (int) ((Game.screenSize.height - 100) * .3);
 	
-	public AntiVirusSoftware(int xToSet, int yToSet, int idToSet)
+	public FastTower(int xToSet, int yToSet, int idToSet)
 	{
 		super(icon, idToSet);
 		
@@ -52,7 +52,7 @@ public class AntiVirusSoftware extends Tower
 		range = rangeToSet;
 		timerReset = speedToSet;
 		
-		type = TowerType.ANTIVIRUS_SOFTWARE;
+		type = TowerType.FAST_TOWER;
 		damage = damageToSet;
 		
 		realValue += cost;

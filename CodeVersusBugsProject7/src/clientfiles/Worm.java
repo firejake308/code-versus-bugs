@@ -173,7 +173,7 @@ public class Worm extends Malware
 	 * @param frames
 	 */
 	@Override
-	public void moveVirus(double frames)
+	public void move(double frames)
 	{
 		// timer for frozen viruses
 		if (state == State.FROZEN && elapsedTime < 5)
@@ -506,7 +506,7 @@ public class Worm extends Malware
 	}
 	
 	@Override
-	public void drawVirus(Graphics g)
+	public void draw(Graphics g)
 	{
 		if(health>0)
 		{
