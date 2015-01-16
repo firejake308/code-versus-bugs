@@ -53,6 +53,7 @@ public class Game extends JFrame implements Runnable
 	public static final int PLAYING = 1;
 	public static final int PAUSED = 2;
 	public static final int OVER = 3;
+	public static final int WON = 4;
 	public static int gameState = Game.START;
 	public static int fps = 60;
 	public static boolean gamePlaying = true;
@@ -60,7 +61,7 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 7500;
+	private static int money = 750;
 	public static int lives = 5000;
 	public static int level = 1;
 	

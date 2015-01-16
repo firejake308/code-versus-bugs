@@ -495,10 +495,13 @@ public class StoryManager implements LevelManager
 				addMalwares();
 				break;
 			case 50:
-				setMalwaresForLevel(100, 600, 500, 150, 150, 100, 600, 500, 125, 25);
+				//setMalwaresForLevel(100, 600, 500, 150, 150, 100, 600, 500, 125, 25);
+				setMalwaresForLevel(5, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 				setFilesForLevel(8);
 				addMalwares();
 				break;
+			case 51:
+				Game.gameState = Game.WON;
 			default:
 				Game.gameState = Game.OVER;
 		}

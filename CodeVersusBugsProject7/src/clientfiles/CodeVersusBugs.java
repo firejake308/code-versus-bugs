@@ -89,6 +89,16 @@ public class CodeVersusBugs
 					SwingUtilities.invokeLater(new PauseButtonListener());
 				else if(Game.gameState == Game.OVER)
 					break;
+				else if(Game.gameState == Game.WON)
+				{
+					Object[] options = {"Restart", "Quit"};
+					int choice = JOptionPane.showOptionDialog(Game.gf, "You Won!", 
+							"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+					if(choice == 0)
+						Game.restart();
+					else if(choice == 1)
+						System.exit(0);
+				}
 				
 				//get fps
 				framesThisSec++;
@@ -125,7 +135,9 @@ public class CodeVersusBugs
 			
 			//end of game
 			Game.gf.setVisible(false);
-			JOptionPane.showMessageDialog(null, "You lost on round " + Game.level);
+			
+			if (Game.gameState == Game.OVER)
+				JOptionPane.showMessageDialog(null, "You lost on round " + Game.level);
 			System.exit(0);
 		}
 		catch(NullPointerException e)

@@ -51,7 +51,16 @@ public class Help extends JFrame
 								+ "Number Generator:\n"
 								+ "Number Generators are also early game and are quite effective; they freeze malware and can be upgraded to deal damage and do splash effects\n\n"
 								+ "Scanner:\n"
-								+ "Scanners are antivirus scanners that constantly rotate. Scanners can quarantine threats like worms, making them benign. They deal area-of-effect damage.\n\n");
+								+ "Scanners are antivirus scanners that constantly rotate. Scanners can quarantine threats like worms, making them benign. They deal area-of-effect damage.\n\n"
+								+ "Firewall:\n"
+								+ "Firewalls can destroy simple malwares like viruses and minions in one hit, but they can only kill about 10 per round.\n\n"
+								+ "Encryptors:\n"
+								+ "Encryptors can encrypt files and can reveal Trojans, but they can only encrypt about 10 per round.\n\n"
+								+ "Communications Tower:\n"
+								+ "Communications towers are support systems that buff nearby systems and can pass upgrades if they are upgraded to an information hub\n\n"
+								+ "FAST\n"
+								+ "Futuristic Advanced Shield Throwers are advanced anti-virus softwares that are extremely powerful");
+		
 		helpMenu.setEditable(false);
 		helpMenu.setLineWrap(true);
 		helpMenu.setWrapStyleWord(true);

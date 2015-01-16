@@ -628,16 +628,16 @@ public class GamePanel extends JPanel
 				tutorial.setText("In this game, you play as a computer virus tracker...");
 				break;
 			case 3:
-				tutorial.setText("who moves around the network, placing disc throwers...");
+				tutorial.setText("who moves around the network, placing tech systems...");
 				break;
 			case 4:
-				tutorial.setText("that throw CDs at viruses to kill them. Along the...");
+				tutorial.setText("that fight viruses to protect the computer. Along the...");
 				break;
 			case 5:
 				tutorial.setText("way, you'll meet more advanced malware and use more...");
 				break;
 			case 6:
-				tutorial.setText("powerful towers, but I'm getting ahead of myself.");
+				tutorial.setText("powerful systems, but I'm getting ahead of myself.");
 				break;
 			case 7:
 				tutorial.setIcon(new ImageIcon(MyImages.redArrow));

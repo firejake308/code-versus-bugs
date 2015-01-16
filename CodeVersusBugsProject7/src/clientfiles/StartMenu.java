@@ -147,18 +147,27 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			creditsText.setVisible(true);
 			creditsText.setFont(new Font("Monospaced", Font.BOLD, 15));
 	        creditsText.setText("             Credits: \n\n"
-					  		  + "          Developers:\n\n"
-					  		  + "          Adel hassan\n"
-					  		  + "        Patrick Kenney\n\n"
-					  		  + "          Directors:\n\n"
-					  		  + "         Adel hassan\n"
-					  		  + "       Patrick Kenney\n\n"
-					  		  + "         Programmers:\n\n"
-					  		  + "         Adel hassan\n"
-					  		  + "       Patrick Kenney\n\n"
-					  		  + "          Visual Design:\n\n"
-					  		  + "         Adel hassan\n"
-					  		  + "       Patrick Kenney\n\n");
+					  		  + "            Developers:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "            Directors:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "            Programmers:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "           Visual Design:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "            Specialists:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "          Creative Design:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "             Writers:\n\n"
+					  		  + "            Adel hassan\n"
+					  		  + "          Patrick Kenney\n\n");
 	
 	        creditsText.setEditable(false);
 	        creditsText.setBounds(40, 50, 320, 325);
