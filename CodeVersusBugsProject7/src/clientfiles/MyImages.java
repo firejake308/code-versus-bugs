@@ -63,6 +63,7 @@ public class MyImages
 	public static BufferedImage info;
 	public static BufferedImage restart;
 	public static BufferedImage quit;
+	public static BufferedImage openTyper;
 	
 	//malware
 	public static BufferedImage minion;
@@ -80,6 +81,7 @@ public class MyImages
 	public static BufferedImage rushVirus;
 	public static BufferedImage spy;
 	public static BufferedImage bot;
+	public static BufferedImage stun;
 	
 	//towers
 	public static BufferedImage dt0;
@@ -203,6 +205,7 @@ public class MyImages
 			info = ImageIO.read(MyImages.class.getResourceAsStream("resources/info.png"));
 			restart = ImageIO.read(MyImages.class.getResourceAsStream("resources/restart.png"));
 			quit = ImageIO.read(MyImages.class.getResourceAsStream("resources/quit.png"));
+			openTyper = ImageIO.read(MyImages.class.getResourceAsStream("resources/openTyper.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
@@ -220,6 +223,7 @@ public class MyImages
 			rushVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus5.png"));
 			spy = ImageIO.read(MyImages.class.getResourceAsStream("resources/spy.png"));
 			bot = ImageIO.read(MyImages.class.getResourceAsStream("resources/bot.png"));
+			stun = ImageIO.read(MyImages.class.getResourceAsStream("resources/stun.png"));
 			
 			//towers
 			dt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower0.png"));

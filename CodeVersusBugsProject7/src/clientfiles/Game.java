@@ -647,11 +647,11 @@ public class Game extends JFrame implements Runnable
 			{
 				Bot bot = (Bot) Malware.allMalware[m];
 				
-				if(bot.timer <= 0)
+				if(bot.timer <= 0 && bot.getY() >= 0)
 				{
 					bot.spawnWave();
 					bot.timer = bot.TIMER_RESET;
-					System.out.println("massive wave of minions spawned");
+					//System.out.println("massive wave of minions spawned");
 				}
 				else if(bot.timer > 0)
 				{

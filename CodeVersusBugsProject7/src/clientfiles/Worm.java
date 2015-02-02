@@ -2,6 +2,7 @@ package clientfiles;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
@@ -29,7 +30,7 @@ import clientfiles.Malware.State;
 public class Worm extends Malware
 {
 	//static variables for images
-	public static Image sprite = new ImageIcon(MyImages.wormHead).getImage();
+	public static BufferedImage sprite = MyImages.wormHead;
 	public static Image sprite2 = new ImageIcon(MyImages.wormBody).getImage();
 	//shortcut variable to width of game panel
 	private static int w = Game.widthOfGamePanel;
@@ -69,6 +70,7 @@ public class Worm extends Malware
 		distance4 = distance - 3*sprite.getHeight(null);
 		
 		//initialize instance variables
+		maxHealth = 1400;
 		health = 1400;
 		reward = 5;
 		range = (int) (Game.widthOfGamePanel * .03);

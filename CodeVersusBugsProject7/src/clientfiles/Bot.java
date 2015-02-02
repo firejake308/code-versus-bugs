@@ -15,6 +15,7 @@ public class Bot extends Malware
 		super(NORMAL, lane, y);
 		
 		//initialize instance variables
+		maxHealth = 2500;
 		health = 2500;
 		reward = 10;
 		speed = (int) (w * 0.030);
