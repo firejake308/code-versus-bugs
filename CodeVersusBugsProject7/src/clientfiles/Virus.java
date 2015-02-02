@@ -22,18 +22,21 @@ public class Virus extends Malware
 		//initialize instance variables
 		if(type == NORMAL)
 		{
+			maxHealth = 150;
 			health = 150;
 			reward = 3;
 			speed = (int) (w * 0.030);
 		}
 		else if(type == RUSH)
 		{
+			maxHealth = 200;
 			health = 200;
 			reward = 3;
 			speed = (int) (w * 0.04);
 		}
 		else if(type == TANK)
 		{
+			maxHealth = 250;
 			health = 250;
 			reward = 3;
 			speed = (int) (w * 0.025);

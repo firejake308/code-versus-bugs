@@ -22,11 +22,12 @@
 package clientfiles;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 public class Minion extends Malware
 {
-	public static Image sprite = MyImages.minion;
-	public static Image tankSprite = MyImages.tankMinion;
-	public static Image rushSprite = MyImages.rushMinion;
+	public static BufferedImage sprite = MyImages.minion;
+	public static BufferedImage tankSprite = MyImages.tankMinion;
+	public static BufferedImage rushSprite = MyImages.rushMinion;
 	private int w = Game.widthOfGamePanel;
 	
 	/**
@@ -46,18 +47,21 @@ public class Minion extends Malware
 		{
 			case NORMAL:
 				//initialize instance variables
+				maxHealth = 60;
 				health = 60;
 				reward = 1;
 				speed = (int) (w * 0.025);
 				break;
 			case TANK:
 				//initialize instance variables
+				maxHealth = 200;
 				health = 200;
 				reward = 2;
 				speed = (int) (w * 0.025 * 0.85);
 				break;
 			case RUSH:
 				//initialize instance variables
+				maxHealth = 150;
 				health = 150;
 				reward = 2;
 				speed = (int) (w * 0.025 * 1.2);

@@ -1,12 +1,13 @@
 package clientfiles;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 public class Trojan extends Malware 
 {
 	//shortcut variable to width of game panel
 	private static int w = Game.widthOfGamePanel;
-	public static Image sprite = MyImages.secureFile;
+	public static BufferedImage sprite = MyImages.secureFile;
 	
 	/**
 	 * Creates a Trojan.

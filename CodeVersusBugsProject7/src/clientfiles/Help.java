@@ -59,7 +59,14 @@ public class Help extends JFrame
 								+ "Communications Tower:\n"
 								+ "Communications towers are support systems that buff nearby systems and can pass upgrades if they are upgraded to an information hub\n\n"
 								+ "FAST\n"
-								+ "Futuristic Advanced Shield Throwers are advanced anti-virus softwares that are extremely powerful");
+								+ "Futuristic Advanced Shield Throwers are advanced anti-virus softwares that are extremely powerful\n\n\n\n"
+								+ "In-Game Content:\n\n"
+								+ "CPU:\n"
+								+ "Malwares will attempt to reach this location in order to damage your computer, causing a loss of bytes until system collapse at 0\n\n"
+								+ "Decoy CPU:\n"
+								+ "Some malwares will get routed to this CPU when you install a router from the hardware store. No bytes are lost upon being reached.\n\n"
+								+ "Modem:\n"
+								+ "Modem is short for MOdulator-DEModulator. All this means is that it downloads data from the Internet and turns it into stuff your computer can understand. In this case, that data is malware.If you add a router (available in the hardware store) some of the malware will be routed to the decoy CPU.");
 		
 		helpMenu.setEditable(false);
 		helpMenu.setLineWrap(true);

@@ -15,6 +15,7 @@ public class Spyware extends Malware
 		super(Malware.NORMAL, lane, y);
 		
 		//initialize instance variables
+		maxHealth = 175;
 		health = 175;
 		reward = 3;
 		speed = (int) (w * 0.045);

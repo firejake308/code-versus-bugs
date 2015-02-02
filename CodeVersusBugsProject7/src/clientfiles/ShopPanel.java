@@ -35,6 +35,9 @@ public class ShopPanel extends JPanel implements ActionListener
 	private JButton buyEncrypter;
 	private JButton buyCommunicationsTower;
 	private JButton buyAVS;
+	private JButton openTyper;
+	
+	private TypingWindow typer;
 	
 	public static JLabel info = new JLabel("");
 	public static boolean warned = false;
@@ -59,6 +62,8 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyEncrypter = new JButton(enImage);
 		buyCommunicationsTower = new JButton(ctImage);
 		buyAVS = new JButton(avsImage);
+		openTyper = new JButton(new ImageIcon(MyImages.openTyper));
+		typer = new TypingWindow();
 		
 		//locations and sizes of components are subject to change
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -71,6 +76,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyEncrypter.setBounds(20, 370, 51, 63);
 		buyCommunicationsTower.setBounds(20, 440, 51, 50);
 		buyAVS.setBounds(20, 500, 51, 50);
+		openTyper.setBounds(20, 570, 50, 50);
 		
 		//makes button background transparent
 		buyCommunicationsTower.setBackground(new Color(0,0,0,0));
@@ -85,6 +91,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyEncrypter.addActionListener(this);
 		buyCommunicationsTower.addActionListener(this);
 		buyAVS.addActionListener(this);
+		openTyper.addActionListener(this);
 		
 		//set tool tip texts
 		buyDiscThrower.setToolTipText("Buy a Disc Thrower");
@@ -94,6 +101,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyEncrypter.setToolTipText("Buy an Encryptor");
 		buyCommunicationsTower.setToolTipText("Buy a Communications Tower");
 		buyAVS.setToolTipText("Buy a FAST");
+		openTyper.setToolTipText("Write some code to make some money on the side");
 		
 		//add all buttons to panel
 		setLayout(null);
@@ -105,6 +113,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		add(buyEncrypter);
 		add(buyCommunicationsTower);
 		add(buyAVS);
+		add(openTyper);
 		
 		buyDiscThrower.addMouseListener(new MouseAdapter()
 		{
@@ -503,6 +512,10 @@ public class ShopPanel extends JPanel implements ActionListener
 			}
 			
 			changeInfo("FAST Selected",false);
+		}
+		else if(temp == openTyper)
+		{
+			typer.setVisible(true);
 		}
 		
 		validateBuy(towerType);

@@ -239,7 +239,8 @@ public class BonusFile
 			//add lives for CPU files
 			if(destination.equals(CPU))
 			{
-				System.out.println("a file made it across");
+				//debug
+				//System.out.println("a file made it across");
 				
 				Game.lives+=reward;
 				Game.gf.life.setDisplay(Game.lives);
@@ -325,7 +326,9 @@ public class BonusFile
 			if(m instanceof Virus && !((Virus) m).canReplicate)
 			{
 				((Virus)m).canReplicate = true;
-				System.out.println("virus can replicate again.");
+				
+				//debug
+				//System.out.println("virus can replicate again.");
 			}
 			else if(m == null)
 				break;
