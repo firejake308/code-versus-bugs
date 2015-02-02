@@ -1,11 +1,12 @@
 package clientfiles;
 
+
 import javax.sound.sampled.*;
+
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.Random;
 
 public class TypingWindow extends JFrame implements KeyListener, ActionListener
@@ -19,10 +20,6 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 	private int charsTyped;
 	private int codeSegment;
 	private int outputMultiplier;
-	
-	//sound stuff
-	private Clip enterKeypress;
-	private AudioInputStream audioStream;
 	
 	private String[] target = {"//Let's begin by saying hello\n"
 			+ "System.out.println(\"Hello world!\");", 
@@ -99,24 +96,6 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 		
 		addKeyListener(this);
 		
-		try {
-			audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("resources/enterKeypress.wav"));
-			AudioFormat format = audioStream.getFormat();
-			DataLine.Info info = new DataLine.Info(Clip.class, format);
-			enterKeypress = (Clip) AudioSystem.getLine(info);
-			
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 		setSize(520, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -141,24 +120,6 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 		{
 			typeZone.insert(""+target[codeSegment].charAt(charsTyped), charsTyped);
 			charsTyped++;
-			
-			new Thread(new Runnable()
-			{
-				public void run()
-				{
-					try{
-					enterKeypress.open(audioStream);
-					enterKeypress.start();
-					Thread.sleep(1000*enterKeypress.getMicrosecondLength());
-					enterKeypress.close();
-					audioStream.close();
-					}
-					catch(Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}).start();
 		}
 		//if finished with string
 		catch (StringIndexOutOfBoundsException exc) 
@@ -187,6 +148,11 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 			Game.addMoney(outputMultiplier);
 			typeZone.setText("\n\n---------------------------\n\n" + typeZone.getText());
 			typeZone.setCaretPosition(0);
+		}
+		//if runs out of code segments
+		catch(ArrayIndexOutOfBoundsException exc)
+		{
+			codeSegment = 0;
 		}
 	}
 	
