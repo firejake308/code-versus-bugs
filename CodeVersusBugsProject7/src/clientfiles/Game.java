@@ -43,6 +43,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 import clientfiles.Malware.State;
@@ -70,6 +71,7 @@ public class Game extends JFrame implements Runnable
 	public static boolean livesTutorialPlayed = false;
 	public static int savedSlide = 1;
 	public static boolean freeplay = false;
+	public static boolean soundOn = true;
 	
 	private static final long serialVersionUID = 1L;
 	public static GameFrame gf;
@@ -743,5 +745,46 @@ public class Game extends JFrame implements Runnable
 		//each time the game is run, process movements and render
 		processMovements(numFramesPassed);
 		renderGameState();
+	}
+	
+	/**
+	 * Plays a sound.
+	 * @param fileName name of a file in clientfiles.resources including suffix
+	 */
+	public static void playSound(String fileName)
+	{
+		if(soundOn)
+			new Thread(new Runnable()
+			{
+				public void run()
+				{
+					try{
+						AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("resources/"+fileName));
+						AudioFormat format = audioStream.getFormat();
+						DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+						SourceDataLine enterKeypress = (SourceDataLine) AudioSystem.getLine(info);
+						
+						enterKeypress.open(format);
+						enterKeypress.start();
+						
+						int BUFFER_SIZE = 4096;
+						 
+						byte[] bytesBuffer = new byte[BUFFER_SIZE];
+						int bytesRead = -1;
+						 
+						while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
+						    enterKeypress.write(bytesBuffer, 0, bytesRead);
+						}
+						
+						enterKeypress.drain();
+						enterKeypress.close();
+						audioStream.close();
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}).start();
 	}
 }

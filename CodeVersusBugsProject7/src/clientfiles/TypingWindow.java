@@ -1,15 +1,16 @@
 package clientfiles;
 
-
 import javax.sound.sampled.*;
-
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.Random;
 
-public class TypingWindow extends JFrame implements KeyListener, ActionListener
+import static java.lang.System.*;
+
+public class TypingWindow extends JFrame implements KeyListener, ActionListener, LineListener
 {
 	public static TypingWindow game;
 	
@@ -20,6 +21,11 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 	private int charsTyped;
 	private int codeSegment;
 	private int outputMultiplier;
+	
+	//sound stuff
+	private SourceDataLine enterKeypress;
+	private AudioInputStream audioStream;
+	private boolean playCompleted;
 	
 	private String[] target = {"//Let's begin by saying hello\n"
 			+ "System.out.println(\"Hello world!\");", 
@@ -118,6 +124,11 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 	{
 		try 
 		{
+			if(Character.isWhitespace(target[codeSegment].charAt(charsTyped)))
+				Game.playSound("spaceKeypress.wav");
+			else
+				Game.playSound("enterKeypress.wav");
+			
 			typeZone.insert(""+target[codeSegment].charAt(charsTyped), charsTyped);
 			charsTyped++;
 		}
@@ -149,15 +160,26 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener
 			typeZone.setText("\n\n---------------------------\n\n" + typeZone.getText());
 			typeZone.setCaretPosition(0);
 		}
-		//if runs out of code segments
-		catch(ArrayIndexOutOfBoundsException exc)
-		{
-			codeSegment = 0;
-		}
 	}
 	
 	public void actionPerformed(ActionEvent e)
 	{
 		
+	}
+
+	@Override
+	public void update(LineEvent event) {
+		LineEvent.Type type = event.getType();
+		
+		if(type == LineEvent.Type.START)
+		{
+			playCompleted = false;
+			out.println("Playback started.");
+		}
+		else if(type == LineEvent.Type.STOP)
+		{
+			playCompleted = true;
+			out.println("Playback finished.");
+		}
 	}
 }

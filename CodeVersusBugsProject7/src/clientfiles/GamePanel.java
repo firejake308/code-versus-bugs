@@ -77,6 +77,11 @@ public class GamePanel extends JPanel
 	private Cursor invalidNumberGeneratorCursor;
 	private Image dtInvalidSprite;
 	private Cursor invalidDiscThrowerCursor;
+	private Image bomberSprite;
+	private Image bomberInvalidSprite;
+	private Point bomberHotspot;
+	private Cursor bomberCursor;
+	private Cursor invalidBomberCursor;
 	private Image scSprite;
 	private Image scInvalidSprite;
 	private Point scHotspot;
@@ -123,6 +128,11 @@ public class GamePanel extends JPanel
 		invalidNumberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngInvalidSprite, ngHotspot, "Number Generator");
 		dtInvalidSprite = DiscThrower.invalidIcon.getImage();
 		invalidDiscThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtInvalidSprite, dtHotspot, "Number Generator");
+		bomberSprite = BombingTower.icon.getImage();
+		bomberInvalidSprite = BombingTower.invalidIcon.getImage();
+		bomberHotspot = new Point(15, 15);
+		bomberCursor = Toolkit.getDefaultToolkit().createCustomCursor(bomberSprite,bomberHotspot,"Bomber");
+		invalidBomberCursor = Toolkit.getDefaultToolkit().createCustomCursor(bomberInvalidSprite,bomberHotspot,"Bomber Tower");
 		scSprite = Scanner.icon.getImage();
 		scInvalidSprite = Scanner.invalidIcon.getImage();
 		scHotspot = new Point(15, 15);
@@ -298,6 +308,34 @@ public class GamePanel extends JPanel
                         }
                         
             			break;
+            		case BOMBINGTOWER:
+	            		// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new BombingTower(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currT as shortcut reference for current bomb tower
+	                    currT = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currT.setCenterX(e.getX());
+	                    currT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currT);
+                        	}
+                        }
+                        
+            			break;
             		case SCANNER:
             			// create a new number generator in the static array
 	                    Tower.allTowers[numTowers] = new Scanner(e.getX(), e.getY(), numTowers);
@@ -409,6 +447,9 @@ public class GamePanel extends JPanel
             		case NUMBER_GENERATOR:
             			setCursor(numberGeneratorCursor);
             			break;
+            		case BOMBINGTOWER:
+            			setCursor(bomberCursor);
+            			break;
             		case SCANNER:
             			setCursor(scannerCursor);
             			break;
@@ -470,6 +511,13 @@ public class GamePanel extends JPanel
         		if(e.getKeyCode()==KeyEvent.VK_N)
         		{
         			TowerType towerToPlace = TowerType.NUMBER_GENERATOR;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_B)
+        		{
+        			TowerType towerToPlace = TowerType.BOMBINGTOWER;
         			ShopPanel.validateBuy(towerToPlace);
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
@@ -562,6 +610,14 @@ public class GamePanel extends JPanel
     									tempRangeIndicator = new Ellipse2D.Double(getMouseX()-NumberGenerator.rangeToSet, getMouseY()-NumberGenerator.rangeToSet, 
     											NumberGenerator.rangeToSet*2, NumberGenerator.rangeToSet*2);
     									break;
+    		case BOMBINGTOWER:			if (!ShopPanel.checkPlacement())
+											setCursor(invalidBomberCursor);
+										else
+							    			setCursor(bomberCursor);
+							    		rangeOn = true;
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-BombingTower.rangeToSet, getMouseY()-BombingTower.rangeToSet, 
+							    					BombingTower.rangeToSet*2, BombingTower.rangeToSet*2);
+										break;
     		case SCANNER:				if (!ShopPanel.checkPlacement())
 											setCursor(invalidScannerCursor);
 										else

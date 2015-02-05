@@ -44,6 +44,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	private JRadioButton storyMode = new JRadioButton("Story Mode", true);
 	private JRadioButton freeplayMode = new JRadioButton("Freeplay", false);
 	private ButtonGroup playMode = new ButtonGroup();
+	private JCheckBox sound = new JCheckBox("Sound", true);
 	private JTextArea instructionsText = new JTextArea();
 	private JScrollPane instructionsScroll = new JScrollPane(instructionsText);
 	private JButton back = new JButton(new ImageIcon(MyImages.backOpen));
@@ -215,6 +216,16 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			storyMode.setVisible(true);
 			c.add(storyMode);
 			
+			//sound check box
+			sound.setBounds(120, 150, 160, 50);
+			sound.setBackground(Color.black);
+			sound.setForeground(new Color(0, 162, 232));
+			sound.setFont(new Font("Monospaced", Font.BOLD, 20));
+			sound.setFocusable(false);
+			sound.addItemListener(this);
+			sound.setVisible(true);
+			c.add(sound);
+			
 			freeplayMode.setBounds(220, 100, 160, 50);
 			freeplayMode.setBackground(Color.black);
 			freeplayMode.setForeground(new Color(0, 162, 232));
@@ -330,6 +341,7 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			tutorial.setVisible(false);
 			storyMode.setVisible(false);
 			freeplayMode.setVisible(false);
+			sound.setVisible(false);
 			
 			//turn on main page components
 			title.setVisible(true);
@@ -381,6 +393,15 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 				Game.techPanel.disableTutorial();
 				tutorial.setSelected(false);
 			}
+		}
+		
+		//sound on/off
+		if(e.getSource() == sound)
+		{
+			if(e.getStateChange() == ItemEvent.SELECTED)
+				Game.soundOn = true;
+			else
+				Game.soundOn = false;
 		}
 	}
 }

@@ -30,6 +30,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	public static TowerType towerToPlace = TowerType.NONE;
 	private JButton buyDiscThrower;
 	private JButton buyNumberGenerator;
+	private JButton buyBomber;
 	private JButton buyScanner;
 	private JButton buyFireWall;
 	private JButton buyEncrypter;
@@ -37,9 +38,8 @@ public class ShopPanel extends JPanel implements ActionListener
 	private JButton buyAVS;
 	private JButton openTyper;
 	
-	private TypingWindow typer;
-	
 	public static JLabel info = new JLabel("");
+	private TypingWindow typer;
 	public static boolean warned = false;
 	public static boolean mouseOnTrack = false;
 	
@@ -50,6 +50,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon enImage = Encrypter.icon;
 	private Icon ctImage = CommunicationsTower.icon;
 	private Icon avsImage = FastTower.icon;
+	private Icon bomberImage = FastTower.icon; //TODO
 	
 	public static int timer=0;
 	
@@ -62,6 +63,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		buyEncrypter = new JButton(enImage);
 		buyCommunicationsTower = new JButton(ctImage);
 		buyAVS = new JButton(avsImage);
+		buyBomber = new JButton(bomberImage);
 		openTyper = new JButton(new ImageIcon(MyImages.openTyper));
 		typer = new TypingWindow();
 		
@@ -71,12 +73,14 @@ public class ShopPanel extends JPanel implements ActionListener
 		info.setBounds(5, 10, 75, 55);
 		buyDiscThrower.setBounds(20, 75, 51, 63);
 		buyNumberGenerator.setBounds(20, 150, 51, 50);
-		buyScanner.setBounds(20, 225, 51, 63);
-		buyFireWall.setBounds(20, 305, 51, 50);
-		buyEncrypter.setBounds(20, 370, 51, 63);
-		buyCommunicationsTower.setBounds(20, 440, 51, 50);
-		buyAVS.setBounds(20, 500, 51, 50);
-		openTyper.setBounds(20, 570, 50, 50);
+		buyBomber.setBounds(20, 225, 51, 50);
+		buyScanner.setBounds(20, 300, 51, 63);
+		buyFireWall.setBounds(20, 380, 51, 50);
+		buyEncrypter.setBounds(20, 445, 51, 63);
+		buyCommunicationsTower.setBounds(20, 515, 51, 50);
+		buyAVS.setBounds(20, 580, 51, 50);
+		openTyper.setBounds(20, 640, 50, 50);
+		
 		
 		//makes button background transparent
 		buyCommunicationsTower.setBackground(new Color(0,0,0,0));
@@ -86,6 +90,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		
 		buyDiscThrower.addActionListener(this);
 		buyNumberGenerator.addActionListener(this);
+		buyBomber.addActionListener(this);
 		buyScanner.addActionListener(this);
 		buyFireWall.addActionListener(this);
 		buyEncrypter.addActionListener(this);
@@ -96,18 +101,20 @@ public class ShopPanel extends JPanel implements ActionListener
 		//set tool tip texts
 		buyDiscThrower.setToolTipText("Buy a Disc Thrower");
 		buyNumberGenerator.setToolTipText("Buy a Number Generator");
+		buyBomber.setToolTipText("Buy a Bomber");//TODO
 		buyScanner.setToolTipText("Buy a Scanner");
 		buyFireWall.setToolTipText("Buy a Firewall");
 		buyEncrypter.setToolTipText("Buy an Encryptor");
 		buyCommunicationsTower.setToolTipText("Buy a Communications Tower");
 		buyAVS.setToolTipText("Buy a FAST");
-		openTyper.setToolTipText("Write some code to make some money on the side");
+		openTyper.setToolTipText("Opens a minigame to kill time and make some money on the side.");
 		
 		//add all buttons to panel
 		setLayout(null);
 		add(info);
 		add(buyDiscThrower);
 		add(buyNumberGenerator);
+		add(buyBomber);
 		add(buyScanner);
 		add(buyFireWall);
 		add(buyEncrypter);
@@ -212,6 +219,20 @@ public class ShopPanel extends JPanel implements ActionListener
             	}
 			}
 		});
+		
+		buyBomber.addMouseListener(new MouseAdapter()
+		{
+			public void mouseEntered(MouseEvent e)
+			{
+				if (!warned)
+				{
+            		if (Game.getMoney() < BombingTower.cost)
+            			changeInfo("$"+BombingTower.cost, true);
+            		else
+            			changeInfo("$"+BombingTower.cost, false);
+            	}
+			}
+		});
 	}
 	public static void changeInfo(String text, boolean warning)
 	{
@@ -283,6 +304,11 @@ public class ShopPanel extends JPanel implements ActionListener
 		{
 			proposedTower = new Rectangle(x-NumberGenerator.icon.getIconWidth()/2, y-NumberGenerator.icon.getIconHeight()/2, 
 					NumberGenerator.icon.getIconWidth(), NumberGenerator.icon.getIconHeight());
+		}
+		else if(towerToPlace == TowerType.BOMBINGTOWER)
+		{
+			proposedTower = new Rectangle(x-BombingTower.icon.getIconWidth()/2, y-BombingTower.icon.getIconHeight()/2, 
+					BombingTower.icon.getIconWidth(), BombingTower.icon.getIconHeight());
 		}
 		else if(towerToPlace == TowerType.SCANNER)
 		{
@@ -370,6 +396,32 @@ public class ShopPanel extends JPanel implements ActionListener
 			{
 				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
 				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Number Generator?", 
+						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+				if(choice == 1)
+					Game.gamePanel.disableTutorial();
+				else if(choice == 0)
+					return;
+			}
+			//specialcase for tutorial slide 105
+			if(Game.tutorial && Game.tutorialSlide == 105)
+				Game.gamePanel.nextSlide();
+			
+			changeInfo("Number Generator Selected",false);
+		}
+		else if(temp == buyBomber)
+		{
+			towerType = TowerType.BOMBINGTOWER;
+			if (towerToPlace == TowerType.BOMBINGTOWER)
+			{
+				towerToPlace = TowerType.NONE;
+				changeInfo("Tower Deselected", false);
+				return;
+			}
+			//warn user before buying if tutorial on
+			if(Game.tutorial && Game.tutorialSlide <= 7)
+			{
+				Object[] options = {"Oops. I'll go back.", "Stop bothering me!"};
+				int choice = JOptionPane.showOptionDialog(Game.gf, "Are you sure you want to buy a Bomber?", //TODO
 						"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
 				if(choice == 1)
 					Game.gamePanel.disableTutorial();
@@ -538,6 +590,16 @@ public class ShopPanel extends JPanel implements ActionListener
 			if(Game.getMoney() >= NumberGenerator.cost)
 			{
 				towerToPlace = TowerType.NUMBER_GENERATOR;
+			}
+			else
+				changeInfo("Not Enough Money!", true);
+		}
+		
+		else if(type == TowerType.BOMBINGTOWER)
+		{
+			if(Game.getMoney() >= BombingTower.cost)
+			{
+				towerToPlace = TowerType.BOMBINGTOWER;
 			}
 			else
 				changeInfo("Not Enough Money!", true);
