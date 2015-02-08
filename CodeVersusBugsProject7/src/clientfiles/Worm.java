@@ -202,10 +202,17 @@ public class Worm extends Malware
 			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 			
 			//special case for worms tutorial
-			if(getDistance() > path[0]/2)
+			if(Game.tutorial && firstWorm && this instanceof Worm)
 			{
-				if(Game.tutorial && Game.tutorialSlide <= 50 && this instanceof Worm)
-					Game.gamePanel.nextSlide();
+				Game.playSound("danger.wav");
+				firstWorm = false;
+				Game.gameState = Game.PAUSED;
+				Game.gamePanel.infoPopup = new InfoPopup((int)x, (int)y);
+				Game.gamePanel.infoPopup.setVisible(true);
+	        	Game.gamePanel.infoPopup.setTitle("Worm");
+	        	Game.gamePanel.infoPopup.setInfo1("Health: "+this.maxHealth);
+	        	Game.gamePanel.infoPopup.setInfo2("Ability: Infects towers to replicate");
+	        	Game.gamePanel.infoPopup.setInfo3("Fact: Worms are advanced viruses that can self-replicate, even tihout files.");
 			}
 		}
 		//move right

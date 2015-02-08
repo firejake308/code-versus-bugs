@@ -62,9 +62,9 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 750;
+	private static int money = 7500;
 	public static int lives = 5000;
-	public static int level = 1;
+	public static int level = 10;
 	
 	public static boolean tutorial = true;
 	public static int tutorialSlide = 1;

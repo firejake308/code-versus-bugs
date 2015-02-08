@@ -26,7 +26,13 @@
 package clientfiles;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -62,6 +68,7 @@ public class CodeVersusBugs
 			Game.startMenu.setIconImage(MyImages.miniMinion);
 			
 			Game.gf = new GameFrame();
+			Game.startMenu.setVisible(true);		
 			
 			//time variables for game loop
 			long lastUpdateTime = System.nanoTime();

@@ -142,6 +142,11 @@ public class Projectile implements Serializable
 			// affects speed of virus
 			manipulatorForVirus = 1;
 		}
+		else if(Tower.allTowers[idOfOwner] instanceof BombingTower)
+		{
+			sprite = MyImages.cd;
+			speed = 4;
+		}
 		
 		a = aToSet;
 		b = bToSet;

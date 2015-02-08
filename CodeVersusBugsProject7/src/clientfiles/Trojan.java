@@ -21,6 +21,7 @@ public class Trojan extends Malware
 		setCenterX((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) + Game.widthOfGamePanel / 3));
 		
 		//initialize instance variables
+		maxHealth = 1000;
 		health = 1000;
 		reward = 5;
 		speed = (int) (w * 0.008);
@@ -35,6 +36,19 @@ public class Trojan extends Malware
 		//keep going up until hits cpu
 		if(getY() > Game.gamePanel.path[1].getY())
 		{
+			//
+			if(getY() < Game.gamePanel.getHeight() && firstTrojan)
+			{
+				Game.playSound("danger.wav");
+				firstTrojan = false;
+				Game.gameState = Game.PAUSED;
+				Game.gamePanel.infoPopup = new InfoPopup((int)x-200, (int)y-200);
+				Game.gamePanel.infoPopup.setVisible(true);
+	        	Game.gamePanel.infoPopup.setTitle("Trojan");
+	        	Game.gamePanel.infoPopup.setInfo1("Health: " + this.maxHealth);
+	        	Game.gamePanel.infoPopup.setInfo2("Ability: Sneaks in to the system through the backdoor.");
+	        	Game.gamePanel.infoPopup.setInfo3("Fact: Trojans may look legitimate, but they're actually malicious.");
+			}
 			setY(getY()-speed*frames/60*manipulator * Game.speedModifier);
 			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
 		}

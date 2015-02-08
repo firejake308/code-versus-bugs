@@ -287,6 +287,8 @@ public abstract class Upgrades
 			DiscThrower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.NUMBER_GENERATOR)
 			NumberGenerator.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
+		else if (typeOfTower == TowerType.BOMBINGTOWER)
+			BombingTower.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.SCANNER)
 			Scanner.allTowers[displayedUpgradeID].addUpgradeOptions(displayedUpgradeID);
 		else if (typeOfTower == TowerType.FIREWALL)
@@ -401,7 +403,7 @@ public abstract class Upgrades
 			//reset image
 			if(Tower.allTowers[displayedUpgradeID] instanceof DiscThrower)
 				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.dt0));
-			else if(Tower.allTowers[displayedUpgradeID] instanceof Scanner)
+			else if(Tower.allTowers[displayedUpgradeID] instanceof Scanner) // TODO
 				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.scanner0));
 			else if(Tower.allTowers[displayedUpgradeID] instanceof Encrypter)
 				Tower.allTowers[displayedUpgradeID].setIcon(new ImageIcon(MyImages.encrypter0));
@@ -466,7 +468,8 @@ public abstract class Upgrades
 		switch(typeOfTower)
 		{
 			case NONE:						return;
-			case FAST_TOWER:		upgradeID += 100;
+			case BOMBINGTOWER:				upgradeID += 100;
+			case FAST_TOWER:				upgradeID += 100;
 			case COMMUNICATIONS_TOWER:		upgradeID += 100;
 			case ENCRYPTER:					upgradeID += 100;
 			case FIREWALL:					upgradeID += 100;
@@ -758,6 +761,43 @@ public abstract class Upgrades
 											break;
 											
 			case 733:						tower.backedUp = true;
+											break;
+											
+											
+											
+											// for Bombing Tower
+			case 811:						Tower.allTowers[displayedUpgradeID].rangeOfSplash += .1;
+											break;
+			case 812:						Tower.allTowers[displayedUpgradeID].rangeOfSplash += .2;
+											break;
+			case 813:						Tower.allTowers[displayedUpgradeID].rangeOfSplash += .2;
+											break;
+											
+			case 821:						Tower.allTowers[displayedUpgradeID].damage += 5;
+											break;
+			case 822:						Tower.allTowers[displayedUpgradeID].damage += 10;
+											break;
+			case 823:						Tower.allTowers[displayedUpgradeID].damage += 15;
+											break;
+											
+			case 831:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .1;
+			
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+			case 832:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .2;
+			
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
+											break;
+											
+			case 833:						Tower.allTowers[displayedUpgradeID].range += Game.heightOfGamePanel * .2;
+			
+											//update range indicator
+											tower.rangeIndicator = new Ellipse2D.Double(tower.getCenterX()-tower.range, 
+												tower.getCenterY()-tower.range, tower.range*2, tower.range*2);
 											break;
 		}
 		// update all uploaded towers to hubs

@@ -109,12 +109,14 @@ public class GamePanel extends JPanel
 	private Cursor invalidAVSCursor;
 	
 	
-	static private final long serialVersionUID = 1;
+	static private final long serialVersionUID = 1234;
 	
 	private JLabel tutorial;
 	private JLayeredPane layeredPane;
 	private Ellipse2D.Double tempRangeIndicator;
 	public static boolean rangeOn;
+	
+	public InfoPopup infoPopup;
 	
 	public GamePanel()
 	{
@@ -216,6 +218,18 @@ public class GamePanel extends JPanel
 		{
             public void mousePressed(MouseEvent e) 
             {
+            	//ok button on info popup
+            	if(infoPopup != null && infoPopup.isVisible())
+				{
+					if(infoPopup.getOKBounds().contains(e.getPoint()))
+					{
+						infoPopup.setVisible(false);
+						Game.gameState = Game.PLAYING;
+						Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+						return;
+					}
+				}
+            	
             	if(!mouseInUpgradePanel)
             	{
             		for (int i = 0; i < Tower.allTowers.length; i++)
@@ -1408,6 +1422,12 @@ public class GamePanel extends JPanel
 			at.translate(((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) - MyImages.decoyCPU.getWidth()/2)/Game.xScale, 
 					((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 84 - Game.yScale*MyImages.decoyCPU.getHeight()/2)/Game.yScale);
 			g2d.drawImage(MyImages.decoyCPU, at, null);
+			
+			//draw info
+			if(infoPopup != null && infoPopup.isVisible())
+			{
+	        	infoPopup.draw(g);
+			}
 		}
 	}
 }

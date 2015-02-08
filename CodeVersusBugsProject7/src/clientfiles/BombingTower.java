@@ -10,25 +10,25 @@ import javax.swing.*;
  *   Fabrication
  * 
  * @author Patrick
- *
+ * 
  */
 
 public class BombingTower extends Tower
 {
 	// TODO
-	public static ImageIcon icon = new ImageIcon(MyImages.random);
-	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidRandom);
+	public static ImageIcon icon = new ImageIcon(MyImages.dt0);
+	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
 	public static int cost = 750;
 	public static int speedToSet = 140;
-	public static int rangeToSet = (int) (Game.widthOfGamePanel * .6);
-	public static double damageToSet = 30.0;
+	public static int rangeToSet =  (int) ((Game.screenSize.width - 100) * .07);
+	public static double damageToSet = 35.0;
 	
 	public BombingTower(int xToSet, int yToSet, int idToSet)
 	{
 		super(icon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {1000, 600, 10000000, 0, 0, 0, 0, 0, 0, 300, 600, 10000000, 0, 0, 0, 0, 0, 0, 400, 600, 10000000, 0, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {750, 1000, 1250, 100000000, 0, 0, 0, 0, 0, 400, 600, 750, 100000000, 0, 0, 0, 0, 0, 400, 600, 800, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		cost = 60;
@@ -63,22 +63,24 @@ public class BombingTower extends Tower
 	{		
 		switch (allTowers[idOfTower].upgradesInPath1)
 		{
-			case 1:					Upgrades.upgradePath1.setText("Network Disruptor");
+			case 1:					Upgrades.upgradePath1.setText("Wider Blast Radius");
 									break;
-			case 2:					Upgrades.upgradePath1.setText("Disruptor Range");
+			case 2:					Upgrades.upgradePath1.setText("Extreme Blast Radius");
 									break;
-			case 3:					Upgrades.upgradePath1.setText("Path Closed");
+			case 3:					Upgrades.upgradePath1.setText("Leegendary Blast Radius");
+									break;
+			case 4:					Upgrades.upgradePath1.setText("Path Closed");
 									break;
 			default:				break;
 		}
 		
 		switch (allTowers[idOfTower].upgradesInPath2)
 		{
-			case 1:					Upgrades.upgradePath2.setText("Lethal Numbers");
+			case 1:					Upgrades.upgradePath2.setText("More Powerful CDs");
 									break;
-			case 2:					Upgrades.upgradePath2.setText("Killer Numbers");
+			case 2:					Upgrades.upgradePath2.setText("Killer CDs");
 									break;
-			case 3:					Upgrades.upgradePath2.setText("Path Closed");
+			case 3:					Upgrades.upgradePath2.setText("Legendary CDs");
 									break;
 			default:				break;
 		}
@@ -89,7 +91,9 @@ public class BombingTower extends Tower
 									break;
 			case 2:					Upgrades.upgradePath3.setText("Extreme Range");
 									break;
-			case 3:					Upgrades.upgradePath3.setText("Path Closed");
+			case 3:					Upgrades.upgradePath3.setText("Legendary Range");
+									break;
+			case 4:					Upgrades.upgradePath3.setText("Path Closed");
 									break;
 			default:				break;
 		}
@@ -101,11 +105,13 @@ public class BombingTower extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Network Disruptor: $1000\nDisables all viruses within range of the disruption");
+				case 1:					Upgrades.upgradesInfo.setText("Wider Blast Radius: $750\nDisables all viruses within range of the disruption");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Disruptor Range: $600\nIncreases range of disruption");
+				case 2:					Upgrades.upgradesInfo.setText("Extreme Blast Radius: $1000\nIncreases range of disruption");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 3:					Upgrades.upgradesInfo.setText("Legendary Blast Radius: $1250\nIncreases range of disruption");
+										break;
+				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}
@@ -114,11 +120,13 @@ public class BombingTower extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText("Lethal Numbers: $300\nNumbers now deal a small amount of damage");
+				case 1:					Upgrades.upgradesInfo.setText("More Powerful CDs: $400\nNumbers now deal a small amount of damage");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Killer Numbers: $600\nNumbers now deal more damage");
+				case 2:					Upgrades.upgradesInfo.setText("Killer CDs: $600\nNumbers now deal more damage");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 3:					Upgrades.upgradesInfo.setText("Legendary CDs: $750\nNumbers now deal more damage");
+										break;
+				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}
@@ -129,9 +137,11 @@ public class BombingTower extends Tower
 			{
 				case 1:					Upgrades.upgradesInfo.setText("Wider Range: $400\nIncreases tower range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText("Extreme Range: $750\nIncreases tower range");
+				case 2:					Upgrades.upgradesInfo.setText("Extreme Range: $600\nIncreases tower range");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
+				case 3:					Upgrades.upgradesInfo.setText("Legendary Range: $800\nIncreases tower range");
+										break;
+				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
 			}
 		}

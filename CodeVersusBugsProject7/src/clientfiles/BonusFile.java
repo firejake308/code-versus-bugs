@@ -34,6 +34,7 @@ public class BonusFile
 			(int) Game.gamePanel.path[1].getY());
 	public static ArrayList<BonusFile> allFiles = new ArrayList<BonusFile>();
 	public static ArrayList<BonusFile> recycleBin = new ArrayList<BonusFile>();
+	private static boolean firstFile = true;
 	
 	private double x;
 	private double y;
@@ -185,6 +186,17 @@ public class BonusFile
 	
 	public void move(double frames)
 	{
+		if(distance > 50 && Game.tutorial && firstFile)
+		{
+			firstFile = false;
+			Game.gameState = Game.PAUSED;
+			Game.gamePanel.infoPopup = new InfoPopup((int)x-200, (int)y-200);
+			Game.gamePanel.infoPopup.setVisible(true);
+	    	Game.gamePanel.infoPopup.setTitle("File");
+	    	Game.gamePanel.infoPopup.setInfo1("Health: None");
+	    	Game.gamePanel.infoPopup.setInfo2("Ability: Gives 10 bytes if it makes it to the CPU safely.");
+	    	Game.gamePanel.infoPopup.setInfo3("Fact: In this game, all data files hold your credit card number.");
+		}
 		//keep going up until hits destination
 		if(distance < TOTAL_DISTANCE)
 		{

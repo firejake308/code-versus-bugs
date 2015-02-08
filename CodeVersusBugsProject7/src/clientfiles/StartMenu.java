@@ -1,9 +1,15 @@
 package clientfiles;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 /**StartMenu.java
  * Creates a frame for the start menu.
  * 
@@ -110,7 +116,8 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 		exit.setBorder(null);
 		c.add(exit);
 		
-		setVisible(true);
+		//disable
+		//setVisible(true);
 	}
 	
 	public void run()
@@ -123,6 +130,11 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 	public void actionPerformed(ActionEvent e)
 	{
 		JButton temp = (JButton) e.getSource();
+		//sound
+		if(temp != back)
+			Game.playSound("select.wav");
+		else
+			Game.playSound("back.wav");
 		
 		if (temp == start)
 		{
@@ -130,6 +142,45 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 			Game.gameState = Game.PAUSED;
 			Game.initializeGame();
 			setVisible(false);
+			
+			//cue the background music
+			new Thread(new Runnable()
+			{
+				public void run()
+				{
+					try{
+						while(Game.gameState != Game.OVER && Game.soundOn)
+						{
+							Random gen = new Random();
+							int track = 1 + gen.nextInt(3);
+							AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("resources/background"+track+".wav"));
+							AudioFormat format = audioStream.getFormat();
+							DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+							SourceDataLine enterKeypress = (SourceDataLine) AudioSystem.getLine(info);
+							
+							enterKeypress.open(format);
+							enterKeypress.start();
+							
+							int BUFFER_SIZE = 4096;
+							 
+							byte[] bytesBuffer = new byte[BUFFER_SIZE];
+							int bytesRead = -1;
+							 
+							while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
+							    enterKeypress.write(bytesBuffer, 0, bytesRead);
+							}
+							
+							enterKeypress.drain();
+							enterKeypress.close();
+							audioStream.close();
+						}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}).start();
 		}
 		
 		else if (temp == credits)
@@ -168,7 +219,10 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					  		  + "          Patrick Kenney\n\n"
 					  		  + "             Writers:\n\n"
 					  		  + "            Adel hassan\n"
-					  		  + "          Patrick Kenney\n\n");
+					  		  + "          Patrick Kenney\n\n"
+					  		  + "             Sound Effects:\n\n"
+					  		  + "Credit to http://www.freesfx.co.uk for all sounds\n"
+					  		  + "");
 	
 	        creditsText.setEditable(false);
 	        creditsText.setBounds(40, 50, 320, 325);

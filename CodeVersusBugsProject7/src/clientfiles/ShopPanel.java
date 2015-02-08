@@ -71,19 +71,19 @@ public class ShopPanel extends JPanel implements ActionListener
 		info.setBorder(BorderFactory.createLineBorder(Color.black));
 		info.setOpaque(true);
 		info.setBounds(5, 10, 75, 55);
-		buyDiscThrower.setBounds(20, 75, 51, 63);
-		buyNumberGenerator.setBounds(20, 150, 51, 50);
-		buyBomber.setBounds(20, 225, 51, 50);
-		buyScanner.setBounds(20, 300, 51, 63);
-		buyFireWall.setBounds(20, 380, 51, 50);
-		buyEncrypter.setBounds(20, 445, 51, 63);
-		buyCommunicationsTower.setBounds(20, 515, 51, 50);
-		buyAVS.setBounds(20, 580, 51, 50);
-		openTyper.setBounds(20, 640, 50, 50);
+		buyDiscThrower.setBounds(20, 70, 51, 63);
+		buyNumberGenerator.setBounds(20, 140, 51, 50);
+		buyBomber.setBounds(20, 210, 51, 50);
+		buyScanner.setBounds(20, 270, 51, 63);
+		buyFireWall.setBounds(20, 345, 51, 50);
+		buyEncrypter.setBounds(20, 400, 51, 63);
+		buyCommunicationsTower.setBounds(20, 470, 51, 50);
+		buyAVS.setBounds(20, 525, 51, 50);
+		openTyper.setBounds(20, 580, 50, 50);
 		
 		
 		//makes button background transparent
-		buyCommunicationsTower.setBackground(new Color(0,0,0,0));
+		//buyCommunicationsTower.setBackground(new Color(0,0,0,0));
 		//scale image of avs
 		Image scaledAVS = MyImages.antiVirusSoftware.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		buyAVS.setIcon(new ImageIcon(scaledAVS));
@@ -658,7 +658,7 @@ public class ShopPanel extends JPanel implements ActionListener
 		Graphics2D g2d = (Graphics2D)g;
 		//draw num gen health bar
 		AffineTransform op = new AffineTransform();
-		op.translate(20, 150 + ngImage.getIconHeight());
+		op.translate(20, 140 + ngImage.getIconHeight());
 		g2d.drawImage(MyImages.healthBar0, op, null);
 		
 		//draw FAST health bar
