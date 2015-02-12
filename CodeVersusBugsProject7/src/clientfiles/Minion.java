@@ -21,18 +21,14 @@
  */
 package clientfiles;
 
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
-
-import javax.swing.ImageIcon;
-
+import java.awt.image.BufferedImage;
 public class Minion extends Malware
 {
-	
-	public static Image sprite = MyImages.minion;
+	public static BufferedImage sprite = MyImages.minion;
+	public static BufferedImage tankSprite = MyImages.tankMinion;
+	public static BufferedImage rushSprite = MyImages.rushMinion;
 	private int w = Game.widthOfGamePanel;
-	public int speed = (int) (w * 0.025);
 	
 	/**
 	 * Creates a virus.
@@ -41,12 +37,35 @@ public class Minion extends Malware
 	 * @param lane
 	 * @param y
 	 */
-	public Minion(int lane, int y)
+	public Minion(int typeToSet, int lane, int y)
 	{
-		super(lane, y);
+		super(typeToSet, lane, y);
 		
-		//initialize instance variables
-		health = 100;
-		reward = 4;
+		//set type
+		type = typeToSet;
+		switch(type)
+		{
+			case NORMAL:
+				//initialize instance variables
+				maxHealth = 60;
+				health = 60;
+				reward = 1;
+				speed = (int) (w * 0.025);
+				break;
+			case TANK:
+				//initialize instance variables
+				maxHealth = 200;
+				health = 200;
+				reward = 2;
+				speed = (int) (w * 0.025 * 0.85);
+				break;
+			case RUSH:
+				//initialize instance variables
+				maxHealth = 150;
+				health = 150;
+				reward = 2;
+				speed = (int) (w * 0.025 * 1.2);
+				break;
+		}
 	}
 }

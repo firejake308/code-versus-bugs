@@ -30,30 +30,25 @@ package clientfiles;
  * limitations under the License.
  */
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public class DiscThrower extends Tower
 {
-	public static int cost = 50;
+	private static final long serialVersionUID = 1L;
+	public static int cost = 500;
 	public static ImageIcon icon = new ImageIcon(MyImages.dt0);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
-	public static int damageToSet = 25;
-	public static int speedToSet = 30;
+	public static int damageToSet = 35;
+	public static int speedToSet = 60;
+	public static int rangeToSet = (int) ((Game.screenSize.width - 100) * .09);
 	
 	public DiscThrower(int xToSet, int yToSet, int idToSet) 
 	{
 		super(icon, idToSet);
 		
 		// to be edited later
-		int [] costsOfUpgradesGoBetween = {50, 200, 250, 1000000, 0, 0, 0, 0, 0, 40, 100, 10000000, 0, 0, 0, 0, 0, 0, 30, 60, 30, 10000000, 0, 0, 0, 0, 0};
+		int [] costsOfUpgradesGoBetween = {300, 600, 500, 1000000, 0, 0, 0, 0, 0, 300, 500, 10000000, 0, 0, 0, 0, 0, 0, 200, 400, 500, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
 		//cost = 50;
@@ -61,12 +56,12 @@ public class DiscThrower extends Tower
 		rangeOfSplash = 0;
 		splashEffect = false;
 		
-		diameterOfTower = 50;
+		diameterOfTower = icon.getIconWidth();
 		
-		x=0;
-		y=0;
+		x=xToSet;
+		y=yToSet;
 		
-		range = (int) Game.widthOfGamePanel * .12;
+		range = rangeToSet;
 		timerReset = speedToSet;
 		
 		type = TowerType.DISC_THROWER;
@@ -78,6 +73,8 @@ public class DiscThrower extends Tower
 		
 		//make user pay for towers
 		Game.makePurchase(cost);
+		
+		System.out.println(range + " " + (int) ((Game.screenSize.width - 100) * .075) + " " + rangeToSet);
 	}
 	
 	public static void increaseDamage(int increase)
@@ -117,7 +114,7 @@ public class DiscThrower extends Tower
 									break;
 			case 2:					Upgrades.upgradePath3.setText("Extreme Range");
 									break;
-			case 3:					Upgrades.upgradePath3.setText("Cure Tower");
+			case 3:					Upgrades.upgradePath3.setText("Backup Tower");
 									break;
 			case 4:					Upgrades.upgradePath3.setText("Path Closed");
 									break;
@@ -131,11 +128,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath1)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Harder Discs:\n   $50\n Discs can attack 2\n viruses before being\n  destroyed");
+				case 1:					Upgrades.upgradesInfo.setText("Harder Discs: $300\nDiscs can attack 2 viruses before being destroyed");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs:\n   $200\n Discs can attack 3\n viruses before being\n  destroyed");
+				case 2:					Upgrades.upgradesInfo.setText(" Impervious Discs: $600\nDiscs can attack 3 viruses before being  destroyed");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing:\n    $250\n Attack speed\n increase");
+				case 3:					Upgrades.upgradesInfo.setText("Quicker Firing: $500\nAttack speed increase");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -146,9 +143,9 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath2)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs:\n    $40\n Discs are more\n powerful");
+				case 1:					Upgrades.upgradesInfo.setText(" More Powerful Discs: $300\n Discs are more powerful");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs:\n    $100\n Discs are even\n more pawerful");
+				case 2:					Upgrades.upgradesInfo.setText(" Stronger Discs: $500\n Discs are even more powerful");
 										break;
 				case 3:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;
@@ -159,11 +156,11 @@ public class DiscThrower extends Tower
 		{
 			switch (upgradesInPath3)
 			{
-				case 1:					Upgrades.upgradesInfo.setText(" Wider Range:\n     $30\n Increases tower\n range");
+				case 1:					Upgrades.upgradesInfo.setText(" Wider Range: $200\n Increases tower range");
 										break;
-				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range:\n     $60\n Greatly increases\n tower range");
+				case 2:					Upgrades.upgradesInfo.setText(" Extreme Range: $400\n Greatly increases tower range");
 										break;
-				case 3:					Upgrades.upgradesInfo.setText(" Cure tower:\n     $30\n Cures tower if it is\n infected by a worm");
+				case 3:					Upgrades.upgradesInfo.setText(" Backup Tower: $500\n Allows the tower to be cured");
 										break;
 				case 4:					Upgrades.upgradesInfo.setText("Path Closed");
 										break;

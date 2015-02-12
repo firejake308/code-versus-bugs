@@ -45,13 +45,13 @@ public class GameFrame extends JFrame implements ActionListener
 {
 	
 	static private final long serialVersionUID = 1;
-	private Color epic = new Color(100,179,132);
+	private Color epic = new Color(34, 157, 68);
 
 	//stuff in info panel
-	public JLabel moneyLabel;
-	public JLabel life;
-	public JLabel fpsCounter;
-	public JLabel levelCounter;
+	public DigitalDisplay moneyDisplay;
+	public DigitalDisplay life;
+	public DigitalDisplay fpsDisplay;
+	public DigitalDisplay levelCounter;
 	
 	//the constructor instantiates the panels and sets the layout
 	public GameFrame()
@@ -60,17 +60,23 @@ public class GameFrame extends JFrame implements ActionListener
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
+		//initialize the 4 JPanels
 		Game.infoPanel = new JPanel(new GridLayout(1,4));
 		Game.gamePanel = new GamePanel();
 		Game.techPanel = new TechPanel();
 		Game.shopPanel = new ShopPanel();
+		
+		//initialize the control buttons
 		Game.pauseButton = new JButton(PauseButtonListener.sprite);
 		Game.fastForwardButton = new JButton(new ImageIcon(MyImages.fastForwardOff));
+		Game.saveButton = new JButton(new ImageIcon(MyImages.save));
+		Game.loadButton = new JButton(new ImageIcon(MyImages.load));
+		Game.helpButton = new JButton(new ImageIcon(MyImages.info));
+		Game.restartButton = new JButton(new ImageIcon(MyImages.restart));
+		Game.quitButton = new JButton(new ImageIcon(MyImages.quit));
 		
 		//set layout for game
 		Container mainWindow = getContentPane();
-		//GridBagLayout layout = new GridBagLayout();
-		//GridBagConstraints constraints = new GridBagConstraints();
 		mainWindow.setLayout(null);
 		mainWindow.setBackground(epic);
 		
@@ -80,31 +86,50 @@ public class GameFrame extends JFrame implements ActionListener
 		//add listener for pause button
 		Game.pauseButton.addActionListener(this);
 		
-		mainWindow.add(Game.infoPanel);
-		
+		//6 small buttons
 		Game.fastForwardButton.setBounds(105, 5, 30, 30);
 		Game.fastForwardButton.addActionListener(this);
 		mainWindow.add(Game.fastForwardButton);
 		
-		Game.infoPanel.setBounds(145,5,screenSize.width-145,50);
+		Game.saveButton.setBounds(105, 40, 30, 30);
+		Game.saveButton.addActionListener(this);
+		mainWindow.add(Game.saveButton);
+		
+		Game.loadButton.setBounds(105, 75, 30, 30);
+		Game.loadButton.addActionListener(this);
+		mainWindow.add(Game.loadButton);
+		
+		Game.helpButton.setBounds(140, 5, 30, 30);
+		Game.helpButton.addActionListener(this);
+		mainWindow.add(Game.helpButton);
+		
+		Game.restartButton.setBounds(140, 40, 30, 30);
+		Game.restartButton.addActionListener(this);
+		mainWindow.add(Game.restartButton);
+		
+		Game.quitButton.setBounds(140, 75, 30, 30);
+		Game.quitButton.addActionListener(this);
+		mainWindow.add(Game.quitButton);
 		
 		//initialize money label and fps counter
-		moneyLabel = new JLabel("$" + Game.money + " money");
-		fpsCounter = new JLabel(Game.fps+" fps");
-		life = new JLabel("Lives: " + Game.lives);
-		levelCounter = new JLabel("Level: " + Game.level);
+		moneyDisplay = new DigitalDisplay(5, "money");
+		fpsDisplay = new DigitalDisplay(5, "fps");
+		life = new DigitalDisplay(5, "bytes");
+		levelCounter = new DigitalDisplay(5, "level");
 		
 		//fix up font size
-		moneyLabel.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
-		fpsCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
-		life.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
-		levelCounter.setFont(new Font("Monospaced", Font.PLAIN, screenSize.width / (4*11)));
+		moneyDisplay.setDisplay(Game.getMoney());
+		life.setDisplay(Game.lives);
+		levelCounter.setDisplay(Game.level);
 		
-		//add fpsCounter to info panel
+		//add info displays to info panel
 		Game.infoPanel.add(life);
-		Game.infoPanel.add(moneyLabel);
-		Game.infoPanel.add(fpsCounter);
+		Game.infoPanel.add(moneyDisplay);
+		Game.infoPanel.add(fpsDisplay);
 		Game.infoPanel.add(levelCounter);
+		
+		mainWindow.add(Game.infoPanel);
+		Game.infoPanel.setBounds(170,5,screenSize.width-170,100);
 		
 		mainWindow.add(Game.shopPanel);
 		Game.shopPanel.setBounds(5,110,100,screenSize.height-110);
@@ -124,377 +149,109 @@ public class GameFrame extends JFrame implements ActionListener
 		Game.gamePanel.setLayout(null);
 		Game.gamePanel.setBackground(epic);
 		Game.infoPanel.setBackground(epic);
-		//Game.shopPanel.setBackground(Color.CYAN);
 		
 		Game.widthOfGamePanel = Game.gamePanel.getWidth();
 		Game.heightOfGamePanel = Game.gamePanel.getHeight();
-		Game.scaleOfSprites = (Game.widthOfGamePanel / 50) / 26.44;	
+		Game.xScale = (Game.widthOfGamePanel / 1256.0);
+		Game.yScale = (Game.heightOfGamePanel / 658.0);
+		System.out.println(Game.yScale);
 		
-		int lowest = JLayeredPane.FRAME_CONTENT_LAYER;
+		//tower range initialization
+		DiscThrower.rangeToSet = (int) (Game.widthOfGamePanel * .09);
+		NumberGenerator.rangeToSet = (int) (Game.widthOfGamePanel * .1);
+		Scanner.rangeToSet = (int) (Game.widthOfGamePanel * .075);
+		CommunicationsTower.rangeToSet = (int) (Game.widthOfGamePanel * .075);
 		
-		// for top left entrance
-		Game.track = new JPanel();
-		Game.track.setBounds(Game.widthOfGamePanel / 14, 0, Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 4);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
+		//make path parts
+		Game.gamePanel.path = new Rectangle[18];
 		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// for 2nd to left entrance
-		Game.track = new JPanel();
-		Game.track.setBounds(Game.widthOfGamePanel / 4, 0, Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 4);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// for 3rd to left entrance
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4), 0, Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 4);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		// for 4th to left entrance
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .65), 0, Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .4));
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// for last to left entrance
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .85), 0, Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .4));
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// for connector (top left entrances)
-		Game.track = new JPanel();
-		Game.track.setBounds(Game.widthOfGamePanel / 14, Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42), (int) (Game.widthOfGamePanel * .35), Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// for connector, top right entrances
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .65), (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 5, Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// for track that connects from top 3 connector on left
-		Game.track = new JPanel();
-		Game.track.setBounds(Game.widthOfGamePanel / 5, Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .4));
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// goes right from the one above on left side(lowest)
-		Game.track = new JPanel();
-		Game.track.setBounds(Game.widthOfGamePanel / 5, (Game.heightOfGamePanel / 4) + (int) (Game.heightOfGamePanel * .4) - (2 * Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 5, Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// goes up from the one above, only track of this type, on left
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4), (int) (Game.heightOfGamePanel * .4), Game.widthOfGamePanel / 42,
-				(Game.heightOfGamePanel / 4) + (int) (Game.heightOfGamePanel * .4) - (2 * Game.widthOfGamePanel / 42) - (int) (Game.heightOfGamePanel * .4) + Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// goes right from one above on left side, middle height
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4), (int) (Game.heightOfGamePanel * .4), Game.widthOfGamePanel / 5, Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// long downward track that combines both sides
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42), (int) (Game.heightOfGamePanel * .4), Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 2);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// goes down from connector of top right entrances
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .8), (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .3));
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// goes left from 1 above, meets other side
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42), (int) (Game.heightOfGamePanel * .4) + (int) (Game.heightOfGamePanel * .3) - (Game.widthOfGamePanel / 42),
-				(int) (Game.widthOfGamePanel * .8) - ((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + (Game.widthOfGamePanel / 42)) + (2 * Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// goes left from point of connection of sides, 2nd to last track
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-				(int) (Game.widthOfGamePanel * .3) + Game.widthOfGamePanel / 42, Game.widthOfGamePanel / 42);
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		// last segment of track
-		Game.track = new JPanel();
-		Game.track.setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), (int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
-				Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .15));
-		Game.track.setBackground(Color.YELLOW);
-		Game.gamePanel.addToLayeredPane(Game.track, lowest);
-		
-		Game.track.addMouseListener(new MouseAdapter()
-		{
-			public void mouseEntered(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = true;
-				Game.gamePanel.setCursorIcon();
-			}
-			
-			public void mouseExited(MouseEvent e)
-			{
-				ShopPanel.mouseOnTrack = false;
-				Game.gamePanel.setCursorIcon();
-			}
-		});
-		
-		/*addKeyListener(new KeyAdapter()
-		{
-			//pause the game whenerver escape is pressed
-			public void keyTyped(KeyEvent e)
-			{
-				if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-				{
-					Game.pauseButton.setText("");
-					Game.pauseButton.setIcon(PauseButtonListener.sprite);
-					
-					Game.gameState = Game.PAUSED;
-					
-					//show dialog to quit or resume
-					Object[] options = {"Resume", "Quit"};
-					int choice = JOptionPane.showOptionDialog(Game.gf.getContentPane(), "Game Paused", "Pause", JOptionPane.DEFAULT_OPTION, 
-							JOptionPane.PLAIN_MESSAGE, PauseButtonListener.sprite, options, options[0]);
-					
-					if(choice == 0)
-					{
-						Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
-						Game.gameState = Game.PLAYING;
-					}
-					else if(choice == 1)
-					{
-						System.exit(0);
-					}
-				}
-			}
-		});*/
+		//new parts added in modem update
+		Game.gamePanel.path[0] = new Rectangle();
+		Game.gamePanel.path[0].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42),
+				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+				Game.widthOfGamePanel/3,
+				Game.widthOfGamePanel/42);
+		//new parts added in modem update
+		Game.gamePanel.path[1] = new Rectangle();
+		Game.gamePanel.path[1].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
+				Game.heightOfGamePanel/6,
+				Game.widthOfGamePanel/42,
+				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - Game.heightOfGamePanel / 6);
+		//new parts added in modem update
+		Game.gamePanel.path[2] = new Rectangle();
+		Game.gamePanel.path[2].setBounds((int) ((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) + Game.widthOfGamePanel / 3),
+				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+				Game.widthOfGamePanel / 42,
+				(int)(Game.heightOfGamePanel * .15));
+		//top left entrance
+		Game.gamePanel.path[3] = new Rectangle();
+		Game.gamePanel.path[3].setBounds(Game.widthOfGamePanel / 14, 0, Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 4);
+		//2nd entrance from left
+		Game.gamePanel.path[4] = new Rectangle();
+		Game.gamePanel.path[4].setBounds(Game.widthOfGamePanel / 4, 0, Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 4);
+		//3rd entrance from left
+		Game.gamePanel.path[5] = new Rectangle();
+		Game.gamePanel.path[5].setBounds((int) (Game.widthOfGamePanel * .4), 0, Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 4);
+		//4th entrance from left
+		Game.gamePanel.path[6] = new Rectangle();
+		Game.gamePanel.path[6].setBounds((int) (Game.widthOfGamePanel * .65), 0, Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .4));
+		//rightmost entrance
+		Game.gamePanel.path[7] = new Rectangle();
+		Game.gamePanel.path[7].setBounds((int) (Game.widthOfGamePanel * .85), 0, Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .4));
+		//connector for 3 left entrances
+		Game.gamePanel.path[8] = new Rectangle();
+		Game.gamePanel.path[8].setBounds(Game.widthOfGamePanel / 14, Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42), (int) (Game.widthOfGamePanel * .35), Game.widthOfGamePanel / 42);
+		//connector for 3 right entrances
+		Game.gamePanel.path[9] = new Rectangle();
+		Game.gamePanel.path[9].setBounds((int) (Game.widthOfGamePanel * .65), (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 5, Game.widthOfGamePanel / 42);
+		//goes down from left connector
+		Game.gamePanel.path[10] = new Rectangle();
+		Game.gamePanel.path[10].setBounds(Game.widthOfGamePanel / 5, Game.heightOfGamePanel / 4 - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .4));
+		//goes right from Game.gamePanel.path[10]
+		Game.gamePanel.path[11] = new Rectangle();
+		Game.gamePanel.path[11].setBounds(Game.widthOfGamePanel / 5, (Game.heightOfGamePanel / 4) + (int) (Game.heightOfGamePanel * .4) - (2 * Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 5, Game.widthOfGamePanel / 42);
+		//goes up from Game.gamePanel.path[11]
+		Game.gamePanel.path[12] = new Rectangle();
+		Game.gamePanel.path[12].setBounds((int) (Game.widthOfGamePanel * .4), (int) (Game.heightOfGamePanel * .4), Game.widthOfGamePanel / 42, (Game.heightOfGamePanel / 4)- (Game.widthOfGamePanel / 42));
+		//goes right from Game.gamePanel.path[12] to make top of u-turn
+		Game.gamePanel.path[13] = new Rectangle();
+		Game.gamePanel.path[13].setBounds((int) (Game.widthOfGamePanel * .4), (int) (Game.heightOfGamePanel * .4), Game.widthOfGamePanel / 5, Game.widthOfGamePanel / 42);
+		//long downward track that combines both sides
+		Game.gamePanel.path[14] = new Rectangle();
+		Game.gamePanel.path[14].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42), (int) (Game.heightOfGamePanel * .4), Game.widthOfGamePanel / 42, Game.heightOfGamePanel / 2);
+		//goes down from connector of top right entrances
+		Game.gamePanel.path[15] = new Rectangle();
+		Game.gamePanel.path[15].setBounds((int) (Game.widthOfGamePanel * .8), (int) (Game.heightOfGamePanel * .4) - (Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42, (int) (Game.heightOfGamePanel * .3));
+		//goes left from Game.gamePanel.path[15] to join with down connector
+		Game.gamePanel.path[16] = new Rectangle();
+		Game.gamePanel.path[16].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42), (int) (Game.heightOfGamePanel * .4) + (int) (Game.heightOfGamePanel * .3) - (Game.widthOfGamePanel / 42),
+				(int) (Game.widthOfGamePanel * .8) - ((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5)) + (2 * Game.widthOfGamePanel / 42), Game.widthOfGamePanel / 42);
+		//goes left from point of connection of sides, last track on dead-end path
+		Game.gamePanel.path[17] = new Rectangle();
+		Game.gamePanel.path[17].setBounds((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3), 
+				(int) (Game.heightOfGamePanel * .4 + Game.heightOfGamePanel / 2) - (Game.widthOfGamePanel / 42),
+				Game.widthOfGamePanel /3, 
+				Game.widthOfGamePanel / 42);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		//responses to the buttons are outsourced to Game
 		if (e.getSource() == Game.pauseButton)
 			Game.pauseListener();
-		if (e.getSource() == Game.fastForwardButton)
+		else if (e.getSource() == Game.fastForwardButton)
 			Game.fastForwardListener();
+		else if(e.getSource() == Game.saveButton)
+			Game.saveGame();
+		else if(e.getSource() == Game.loadButton)
+			Game.loadGame();
+		else if(e.getSource() == Game.helpButton)
+			Game.openHelp();
+		else if(e.getSource() == Game.restartButton)
+			Game.restart();
+		else if(e.getSource() == Game.quitButton)
+			Game.quit();
 	}
 	
 }

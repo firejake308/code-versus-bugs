@@ -46,6 +46,8 @@ package clientfiles;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.geom.Ellipse2D.Double;
+import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -55,32 +57,110 @@ public class GamePanel extends JPanel
 {
 	private static int mouseX;
 	private static int mouseY;
-	private static int mapX=0;
-	private static int mapY=0;
-	public static int numTowers=0;
+	public static int numTowers = 0;
 	public LevelManager lvlManager;
 	
-	public boolean mouseInUpgradePanel = false;
+	public static boolean mouseInUpgradePanel = false;
+	/**
+	 * An array of all of the rectangles that make up the path.
+	 */
+	public Rectangle[] path;
 	
 	//cursors
-	private Image dtSprite = DiscThrower.icon.getImage();
-	private Point dtHotspot = new Point(15, 15);
-	private Cursor discThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtSprite,dtHotspot,"Disc Thrower");
-	private Image ngSprite = NumberGenerator.icon.getImage();
-	private Point ngHotspot = new Point(15, 15);
-	private Cursor numberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngSprite, ngHotspot, "Number Generator");
-	private Image ngInvalidSprite = NumberGenerator.invalidIcon.getImage();
-	private Cursor invalidNumberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngInvalidSprite, ngHotspot, "Number Generator");
-	private Image dtInvalidSprite = DiscThrower.invalidIcon.getImage();
-	private Cursor invalidDiscThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtInvalidSprite, dtHotspot, "Number Generator");
+	private Image dtSprite;
+	private Point dtHotspot;
+	private Cursor discThrowerCursor;
+	private Image ngSprite;
+	private Point ngHotspot;
+	private Cursor numberGeneratorCursor;
+	private Image ngInvalidSprite;
+	private Cursor invalidNumberGeneratorCursor;
+	private Image dtInvalidSprite;
+	private Cursor invalidDiscThrowerCursor;
+	private Image bomberSprite;
+	private Image bomberInvalidSprite;
+	private Point bomberHotspot;
+	private Cursor bomberCursor;
+	private Cursor invalidBomberCursor;
+	private Image scSprite;
+	private Image scInvalidSprite;
+	private Point scHotspot;
+	private Cursor scannerCursor;
+	private Cursor invalidScannerCursor;
+	private Image fwSprite;
+	private Image fwInvalidSprite;
+	private Point fwHotspot;
+	private Cursor firewallCursor;
+	private Cursor invalidFirewallCursor;
+	private Image enSprite;
+	private Image enInvalidSprite;
+	private Point enHotspot;
+	private Cursor encrypterCursor;
+	private Cursor invalidEncrypterCursor;
+	private Image ctSprite;
+	private Image ctInvalidSprite;
+	private Point ctHotspot;
+	private Cursor communicationsCursor;
+	private Cursor invalidCommunicationsCursor;
+	private Image avsSprite;
+	private Image avsInvalidSprite;
+	private Point avsHotspot;
+	private Cursor avsCursor;
+	private Cursor invalidAVSCursor;
 	
-	static private final long serialVersionUID = 1;
+	
+	static private final long serialVersionUID = 1234;
 	
 	private JLabel tutorial;
 	private JLayeredPane layeredPane;
+	private Ellipse2D.Double tempRangeIndicator;
+	public static boolean rangeOn;
+	
+	public InfoPopup infoPopup;
 	
 	public GamePanel()
 	{
+		dtSprite = DiscThrower.icon.getImage();
+		dtHotspot = new Point(15, 15);
+		discThrowerCursor= Toolkit.getDefaultToolkit().createCustomCursor(dtSprite,dtHotspot,"Disc Thrower");
+		ngSprite = NumberGenerator.icon.getImage();
+		ngHotspot = new Point(15, 15);
+		numberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngSprite, ngHotspot, "Number Generator");
+		ngInvalidSprite = NumberGenerator.invalidIcon.getImage();
+		invalidNumberGeneratorCursor = Toolkit.getDefaultToolkit().createCustomCursor(ngInvalidSprite, ngHotspot, "Number Generator");
+		dtInvalidSprite = DiscThrower.invalidIcon.getImage();
+		invalidDiscThrowerCursor = Toolkit.getDefaultToolkit().createCustomCursor(dtInvalidSprite, dtHotspot, "Number Generator");
+		bomberSprite = BombingTower.icon.getImage();
+		bomberInvalidSprite = BombingTower.invalidIcon.getImage();
+		bomberHotspot = new Point(15, 15);
+		bomberCursor = Toolkit.getDefaultToolkit().createCustomCursor(bomberSprite,bomberHotspot,"Bomber");
+		invalidBomberCursor = Toolkit.getDefaultToolkit().createCustomCursor(bomberInvalidSprite,bomberHotspot,"Bomber Tower");
+		scSprite = Scanner.icon.getImage();
+		scInvalidSprite = Scanner.invalidIcon.getImage();
+		scHotspot = new Point(15, 15);
+		scannerCursor= Toolkit.getDefaultToolkit().createCustomCursor(scSprite,scHotspot,"Scanner");
+		invalidScannerCursor = Toolkit.getDefaultToolkit().createCustomCursor(scInvalidSprite, scHotspot, "Scanner");
+		fwSprite = FireWall.normalIcon.getImage();
+		fwInvalidSprite = FireWall.invalidIcon.getImage();
+		fwHotspot = new Point(15, 15);
+		firewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwSprite,fwHotspot,"Firewall");
+		invalidFirewallCursor = Toolkit.getDefaultToolkit().createCustomCursor(fwInvalidSprite, fwHotspot, "Firewall");
+		enSprite = Encrypter.icon.getImage();
+		enInvalidSprite = Encrypter.invalidIcon.getImage();
+		enHotspot = new Point(15, 15);
+		encrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enSprite,enHotspot,"Encrypter");
+		invalidEncrypterCursor = Toolkit.getDefaultToolkit().createCustomCursor(enInvalidSprite,enHotspot,"Encrypter");
+		ctSprite = CommunicationsTower.icon.getImage();
+		ctInvalidSprite = CommunicationsTower.invalidIcon.getImage();
+		ctHotspot = new Point(15, 15);
+		communicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctSprite,ctHotspot,"Communications Tower");
+		invalidCommunicationsCursor = Toolkit.getDefaultToolkit().createCustomCursor(ctInvalidSprite,ctHotspot,"Communications Tower");
+		avsSprite = FastTower.icon.getImage();
+		avsInvalidSprite = FastTower.invalidIcon.getImage();
+		avsHotspot = new Point(15, 15);
+		avsCursor = Toolkit.getDefaultToolkit().createCustomCursor(avsSprite,avsHotspot,"AVS");
+		invalidAVSCursor = Toolkit.getDefaultToolkit().createCustomCursor(avsInvalidSprite,avsHotspot,"AVS Tower");
+		
 		this.setFocusable(true);
 		lvlManager = new StoryManager();
 		
@@ -112,29 +192,16 @@ public class GamePanel extends JPanel
 			}
 			public void mousePressed(MouseEvent e)
 			{
-				//if a special action from the user is required to move on to the
-				//next slide, don't do anything
 				switch(Game.tutorialSlide)
 				{
-					case 7:
-					case 8:
-					case 9:
-					case 13:
-					case 17:
-					case 28:
+					case 33:
 						return;
 				}
-				
-				//if it's any other level, move on to the next slide
+				//move on to the next slide
 				nextSlide();
 				
 				/*Notes:
-				 * Slide 7 requires the user to buy a disc thrower
-				 * Slide 8 requires placing a tower
-				 * Slide 9 requires the user to click on the tower
-				 * Slide 13 requires upgrading a tower's range
-				 * Slide 17 requires starting the first round
-				 * Slide 28 is invisible, and will only move on when the tech panel appears
+				 * Slide 33 will move on when the green minions appear
 				 */
 			}
 		});
@@ -143,13 +210,26 @@ public class GamePanel extends JPanel
 		layeredPane = new JLayeredPane();
 		layeredPane.setSize(Game.screenSize.width -115, Game.screenSize.height -115);
 		layeredPane.add(drawingPanel, JLayeredPane.DEFAULT_LAYER);
-		layeredPane.add(tutorial, JLayeredPane.DRAG_LAYER);
+		if(Game.tutorial)
+			layeredPane.add(tutorial, JLayeredPane.DRAG_LAYER);
 		add(layeredPane);
 		
 		addMouseListener(new MouseAdapter()
 		{
             public void mousePressed(MouseEvent e) 
             {
+            	//ok button on info popup
+            	if(infoPopup != null && infoPopup.isVisible())
+				{
+					if(infoPopup.getOKBounds().contains(e.getPoint()))
+					{
+						infoPopup.setVisible(false);
+						Game.gameState = Game.PLAYING;
+						Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+						return;
+					}
+				}
+            	
             	if(!mouseInUpgradePanel)
             	{
             		for (int i = 0; i < Tower.allTowers.length; i++)
@@ -190,35 +270,184 @@ public class GamePanel extends JPanel
 	                    DiscThrower currDT = (DiscThrower) Tower.allTowers[numTowers];
 	                    numTowers++; //now there's 1 more tower
 	                    
-	                    currDT.setCenterX(e.getX()-mapX);
-	                    currDT.setCenterY(e.getY()-mapY);
+	                    currDT.setCenterX(e.getX());
+	                    currDT.setCenterY(e.getY());
             			
             			//reset cursor to default and tower to place to none
                         setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
                         
                         //special case for tutorial slide 8
                         if(Game.tutorialSlide == 8)
                         	nextSlide();
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currDT);
+                        	}
+                        }
+                        
                         break;
             		case NUMBER_GENERATOR:
 	            		// create a new number generator in the static array
 	                    Tower.allTowers[numTowers] = new NumberGenerator(e.getX(), e.getY(), numTowers);
 	                    
-	                    //use currDT as shortcut reference for current disc thrower
+	                    //use currT as shortcut reference for current num gen
 	                    Tower currT = Tower.allTowers[numTowers];
 	                    numTowers++; //now there's 1 more tower
 	                    
-	                    currT.setCenterX(e.getX()-mapX);
-	                    currT.setCenterY(e.getY()-mapY);
+	                    currT.setCenterX(e.getX());
+	                    currT.setCenterY(e.getY());
 	                        
             			//reset cursor to default and tower to place to none
                         setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currT);
+                        	}
+                        }
+                        
+            			break;
+            		case BOMBINGTOWER:
+	            		// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new BombingTower(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currT as shortcut reference for current bomb tower
+	                    currT = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currT.setCenterX(e.getX());
+	                    currT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currT);
+                        	}
+                        }
+                        
+            			break;
+            		case SCANNER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new Scanner(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currST = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currST.setCenterX(e.getX());
+	                    currST.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+                        
+                        // test if the tower can receive buffs
+                        for (int t = 0; t < numTowers; t++)
+                        {
+                        	if (Tower.allTowers[t] == null)
+                        		return;
+                        	if (Tower.allTowers[t] instanceof CommunicationsTower)
+                        	{
+                        		((CommunicationsTower)Tower.allTowers[t]).upgradeTower(currST);
+                        	}
+                        }
+                        
+            			break;
+            		case FIREWALL:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new FireWall(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currFT = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currFT.setCenterX(e.getX());
+	                    currFT.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
                         ShopPanel.towerToPlace = TowerType.NONE;
             			break;
+            		case ENCRYPTER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new Encrypter(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currEN = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currEN.setCenterX(e.getX());
+	                    currEN.setCenterY(e.getY());
+	                        
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;
+            		case COMMUNICATIONS_TOWER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new CommunicationsTower(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currCT = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currCT.setCenterX(e.getX());
+	                    currCT.setCenterY(e.getY());
+	                      
+	                    // upgrade new towers
+	            		((CommunicationsTower)currCT).upgradeTowers();
+	                    
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;	
+            		case FAST_TOWER:
+            			// create a new number generator in the static array
+	                    Tower.allTowers[numTowers] = new FastTower(e.getX(), e.getY(), numTowers);
+	                    
+	                    //use currDT as shortcut reference for current disc thrower
+	                    Tower currAVS = Tower.allTowers[numTowers];
+	                    numTowers++; //now there's 1 more tower
+	                    
+	                    currAVS.setCenterX(e.getX());
+	                    currAVS.setCenterY(e.getY());
+	                    
+            			//reset cursor to default and tower to place to none
+                        setCursor(Cursor.getDefaultCursor());
+                        rangeOn = false;
+                        ShopPanel.towerToPlace = TowerType.NONE;
+            			break;	
             		case NONE:
             		default:
-            			                        	
+            			rangeOn = false;                   	
             	}
             }
             //when the mouse enters the game panel, change the cursor to towerToPlace
@@ -228,18 +457,33 @@ public class GamePanel extends JPanel
             	{
             		case DISC_THROWER:
             			setCursor(discThrowerCursor);
-                    	//System.out.println("cursor set to dt");
                     	break;
             		case NUMBER_GENERATOR:
             			setCursor(numberGeneratorCursor);
-            			//System.out.println("cursor set to ng");
+            			break;
+            		case BOMBINGTOWER:
+            			setCursor(bomberCursor);
+            			break;
+            		case SCANNER:
+            			setCursor(scannerCursor);
+            			break;
+            		case FIREWALL:
+            			setCursor(firewallCursor);
+            			break;
+            		case ENCRYPTER:
+            			setCursor(encrypterCursor);
+            			break;
+            		case COMMUNICATIONS_TOWER:
+            			setCursor(communicationsCursor);
+            			break;
+            		case FAST_TOWER:
+            			setCursor(avsCursor);
             			break;
             		case NONE:
             		default:
             			setCursor(Cursor.getDefaultCursor());
-            			//System.out.println("cursor set to normal");
+            			rangeOn = false;
             			break;
-            			
             	}
             }
         });
@@ -251,6 +495,18 @@ public class GamePanel extends JPanel
                 //if the mouse is moved, reset mouseX & mouseY variables
             	setMouseXY(e.getX(),e.getY());
             	setCursorIcon();
+            	
+            	//turn mouseOnTrack on or off
+            	for(int trackPart = 0; trackPart < path.length; trackPart++)
+            	{
+            		if(path[trackPart].contains(e.getPoint()))
+            		{
+            			ShopPanel.mouseOnTrack = true;
+            			return;
+            		}
+            	}
+            	//if no track part contains mouse position
+            	ShopPanel.mouseOnTrack = false;
             }
         });
         
@@ -258,17 +514,6 @@ public class GamePanel extends JPanel
         {
         	public void keyPressed(KeyEvent e)
         	{
-        		/*map movement
-        		if(e.getKeyCode()==KeyEvent.VK_LEFT && mapX<0)
-        			mapX+=5;
-        		if(e.getKeyCode()==KeyEvent.VK_RIGHT && mapX>-454)
-        			mapX-=5;
-        		if(e.getKeyCode()==KeyEvent.VK_UP && mapY<0)
-        			mapY+=5;
-        		if(e.getKeyCode()==KeyEvent.VK_DOWN && mapY>-159)
-        			mapY-=5;
-        		*/
-        		
         		// for hot keys
         		if(e.getKeyCode()==KeyEvent.VK_D)
         		{
@@ -284,30 +529,66 @@ public class GamePanel extends JPanel
         			//for faster feedback to user, reset cursor to new towerToPlace
         			setCursorIcon();
         		}
-        		if(e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_SPACE)
+        		if(e.getKeyCode()==KeyEvent.VK_B)
+        		{
+        			TowerType towerToPlace = TowerType.BOMBINGTOWER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_S)
+        		{
+        			TowerType towerToPlace = TowerType.SCANNER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_C)
+        		{
+        			TowerType towerToPlace = TowerType.COMMUNICATIONS_TOWER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_F)
+        		{
+        			TowerType towerToPlace = TowerType.FIREWALL;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_E)
+        		{
+        			TowerType towerToPlace = TowerType.ENCRYPTER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		if(e.getKeyCode()==KeyEvent.VK_A)
+        		{
+        			TowerType towerToPlace = TowerType.FAST_TOWER;
+        			ShopPanel.validateBuy(towerToPlace);
+        			//for faster feedback to user, reset cursor to new towerToPlace
+        			setCursorIcon();
+        		}
+        		
+        		if(e.getKeyCode()==KeyEvent.VK_SPACE)
         		{
         			Game.pauseListener();
+        		}
+        		else if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        		{
+        			Game.quit();
         		}
         	}
         	public void keyReleased(KeyEvent e){}
         	public void keyTyped(KeyEvent e){}
         });
-        
 	}
 	public void setMouseXY(int x, int y)
 	{
 		mouseX=x;
 		mouseY=y;
-	}
-	
-	public static int getMapX()
-	{
-		return mapX;
-	}
-	
-	public static int getMapY()
-	{
-		return mapY;
 	}
 	public static int getMouseX()
 	{
@@ -317,23 +598,73 @@ public class GamePanel extends JPanel
 	{
 		return mouseY;
 	}
-	/**updates the cursor based on the current towerToPlace
+	/**
+	 * Updates the cursor based on the current towerToPlace
 	 * 
 	 */
 	public void setCursorIcon()
 	{
+		//set correct cursor and draw range
 		switch (ShopPanel.towerToPlace)
     	{
     		case DISC_THROWER:			if (!ShopPanel.checkPlacement())
     										setCursor(invalidDiscThrowerCursor);
-					            		else
-											setCursor(discThrowerCursor);
+    									else
+					            			setCursor(discThrowerCursor);
+					            		rangeOn = true;
+					            		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-DiscThrower.rangeToSet, getMouseY()-DiscThrower.rangeToSet, 
+					            					DiscThrower.rangeToSet*2, DiscThrower.rangeToSet*2);
     									break;
     									
     		case NUMBER_GENERATOR:		if (!ShopPanel.checkPlacement())
 											setCursor(invalidNumberGeneratorCursor);
     									else
     										setCursor(numberGeneratorCursor);
+    									rangeOn = true;
+    									tempRangeIndicator = new Ellipse2D.Double(getMouseX()-NumberGenerator.rangeToSet, getMouseY()-NumberGenerator.rangeToSet, 
+    											NumberGenerator.rangeToSet*2, NumberGenerator.rangeToSet*2);
+    									break;
+    		case BOMBINGTOWER:			if (!ShopPanel.checkPlacement())
+											setCursor(invalidBomberCursor);
+										else
+							    			setCursor(bomberCursor);
+							    		rangeOn = true;
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-BombingTower.rangeToSet, getMouseY()-BombingTower.rangeToSet, 
+							    					BombingTower.rangeToSet*2, BombingTower.rangeToSet*2);
+										break;
+    		case SCANNER:				if (!ShopPanel.checkPlacement())
+											setCursor(invalidScannerCursor);
+										else
+											setCursor(scannerCursor);
+										rangeOn = true;
+					            		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-Scanner.rangeToSet, getMouseY()-Scanner.rangeToSet, 
+					            					Scanner.rangeToSet*2, Scanner.rangeToSet*2);
+					            		break;
+    		case FIREWALL:				if (!ShopPanel.checkPlacement())
+											setCursor(invalidFirewallCursor);
+										else
+											setCursor(firewallCursor);
+							    		break;
+    		case ENCRYPTER:				if (!ShopPanel.checkPlacement())
+    										setCursor(invalidEncrypterCursor);
+										else
+											setCursor(encrypterCursor);
+    									break;
+    		case COMMUNICATIONS_TOWER:	if (!ShopPanel.checkPlacement())
+											setCursor(invalidCommunicationsCursor);
+										else
+											setCursor(communicationsCursor);
+							    		rangeOn = true;  // this stuff was missing but i added it
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-CommunicationsTower.rangeToSet, getMouseY()-CommunicationsTower.rangeToSet, 
+							    				CommunicationsTower.rangeToSet*2, CommunicationsTower.rangeToSet*2);
+										break;
+    		case FAST_TOWER:	if (!ShopPanel.checkPlacement())
+											setCursor(invalidAVSCursor);
+										else
+											setCursor(avsCursor);
+							    		rangeOn = true;  // this stuff was missing but i added it
+							    		tempRangeIndicator = new Ellipse2D.Double(getMouseX()-FastTower.rangeToSet, getMouseY()-FastTower.rangeToSet, 
+							    				FastTower.rangeToSet*2, FastTower.rangeToSet*2);
 										break;
 										
 			default:					setCursor(Cursor.getDefaultCursor());
@@ -349,6 +680,9 @@ public class GamePanel extends JPanel
 	{
 		layeredPane.remove(c);
 	}
+	/**
+	 * Moves to next slide of tutorial.
+	 */
 	public void nextSlide()
 	{
 		//shortcuts used in bounds calculation of tutorial
@@ -364,16 +698,16 @@ public class GamePanel extends JPanel
 				tutorial.setText("In this game, you play as a computer virus tracker...");
 				break;
 			case 3:
-				tutorial.setText("who moves around the network, placing disc throwers...");
+				tutorial.setText("who moves around the network, placing tech systems...");
 				break;
 			case 4:
-				tutorial.setText("that throw CDs at viruses to kill them. Along the...");
+				tutorial.setText("that fight viruses to protect the computer. Along the...");
 				break;
 			case 5:
 				tutorial.setText("way, you'll meet more advanced malware and use more...");
 				break;
 			case 6:
-				tutorial.setText("powerful towers, but I'm getting ahead of myself.");
+				tutorial.setText("powerful systems, but I'm getting ahead of myself.");
 				break;
 			case 7:
 				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
@@ -383,7 +717,8 @@ public class GamePanel extends JPanel
 				tutorial.setBounds(0, 70, 4*w/5, h/10);
 				break;
 			case 8:
-				tutorial.setText("Now place it over here.");
+				tutorial.setText("Now place it on the map.");
+				tutorial.setIcon(null);
 				tutorial.setBounds(17*w/32, 13*h/20, 7*w/16, h/10);
 				break;
 			case 9:
@@ -448,14 +783,472 @@ public class GamePanel extends JPanel
 				tutorial.setText("I'll check back on you at the...");
 				break;
 			case 27:
-				tutorial.setText("end of this round. Good luck!...");
+				tutorial.setText("periodically. Good luck!...");
 				break;
 			case 28:
 				tutorial.setVisible(false);
 				break;
 			case 29:
+				//handled in tech panel
 				break;
+			case 30:
+				Game.techPanel.disableTutorial();
+				break;
+			/*
+			case 31:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9*h/10, w/7, h/10);
+				tutorial.setText("Ooh, the hackers have gotten crafty...");
+				break;
+			case 32:
+				tutorial.setText("This round, they're going to start sending...");
+				break;
+			case 33:
+				tutorial.setText("specialized minions. Here they come!");
+				break;
+			case 34:
+				tutorial.setText("These green ones...");
+				tutorial.setBounds((int)(w / 14), h / 4, 15 * w / 42, h / 10);
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				tutorial.setVerticalTextPosition(SwingConstants.BOTTOM);
+				tutorial.setHorizontalAlignment(SwingConstants.LEFT);
+				break;
+			case 35:
+				tutorial.setText("are rush minions...");
+				break;
+			case 36:
+				tutorial.setText("They're fast, but...");
+				break;
+			case 37:
+				tutorial.setText("rather \"squishy\".");
+				break;
+			case 38:
+				tutorial.setText("These red ones are...");
+				break;
+			case 39:
+				tutorial.setText("tank minions - they're...");
+				tutorial.setBounds((int)(w / 14), h / 4, 7 * w / 16, h / 10);
+				break;
+			case 40:
+				tutorial.setText("slow, but they have...");
+				break;
+			case 41:
+				tutorial.setText("more health to compensate.");
+				break;
+			case 42:
+				tutorial.setText("Since these new malwares...");
+				break;
+			case 43:
+				tutorial.setText("are harder to kill, ....");
+				break;
+			case 44:
+				tutorial.setText("they drop more money, ...");
+				break;
+			case 45:
+				tutorial.setText("which you can see up here.");
+				tutorial.setBounds(3 * w / 8, 0,  7 * w / 16, h / 10);
+				break;
+			case 46:
+				tutorial.setText("You can also watch the amount of data...");
+				tutorial.setBounds(0, 0, 2 * w / 3, h / 10);
+				break;
+			case 47:
+				tutorial.setText("left in the CPU here. Don't let it reach 0!");
+				break;
+			case 48:
+				tutorial.setText("Ok, you should be good for now. ...");
+				tutorial.setIcon(null);
+				break;
+			case 49:
+				tutorial.setText("See you in round 21!");
+				tutorial.setSize(w/3, h/10);
+				break;
+			case 50:
+				tutorial.setVisible(false);
+				break;
+			//worms
+			case 51:
+				tutorial.setVisible(true);
+				tutorial.setBounds((int)(w / 14), h / 4, 16 * w / 42, h / 10);
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				tutorial.setVerticalTextPosition(SwingConstants.BOTTOM);
+				tutorial.setHorizontalAlignment(SwingConstants.LEFT);
+				tutorial.setText("The worms are here! ...");
+				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
+				break;
+			case 52:
+				tutorial.setText("Worms are advanced ...");
+				break;
+			case 53:
+				tutorial.setSize(10 * w / 21, h / 10);
+				tutorial.setText("forms of malware that...");
+				break;
+			case 54:
+				tutorial.setSize(21 * w / 42, h / 10);
+				tutorial.setText("will attack your towers to...");
+				break;
+			case 55:
+				tutorial.setText("insert a copy of themselves...");
+				break;
+			case 56:
+				tutorial.setText("into the tower's system, causing...");
+				break;
+			case 57:
+				tutorial.setText("the tower to make a new worm. ...");
+				break;
+			case 58:
+				tutorial.setText("The infected tower will also ...");
+				break;
+			case 59:
+				tutorial.setText("have its targeting system replaced ...");
+				break;
+			case 60:
+				tutorial.setText("with one that only fires about 2% ...");
+				break;
+			case 61:
+				tutorial.setText("of the time. It takes a worm 5 hits...");
+				break;
+			case 62:
+				tutorial.setText("to overflow you towers' buffers, which...");
+				break;
+			case 63:
+				tutorial.setText("are safe places to hold data. After that,...");
+				break;
+			case 64:
+				tutorial.setText("the worms' commands are executed by...");
+				break;
+			case 65:
+				tutorial.setText("the tower. You can buy upgrades to backup...");
+				break;
+			case 66:
+				tutorial.setText("your towers, after which you can restore them...");
+				break;
+			case 67:
+				tutorial.setText("for $50. Alterantively, ...");
+				break;
+			case 68:
+				tutorial.setText("you could just scrap your tower for...");
+				break;
+			case 69:
+				tutorial.setText("60% of its value. Anyway, good luck...");
+				break;
+			case 70:
+				tutorial.setText("with the worms! They have 6 times the health...");
+				break;
+			case 71:
+				tutorial.setText("of minions, so you'll need it!");
+				break;
+			case 72:
+				tutorial.setVisible(false);
+				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				break;
+			//files tutorial
+			case 73:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("This level, you get your first taste of files. ...");
+				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
+				break;
+			case 74:
+				tutorial.setText("The 1st thing you need to know is that files are slow.");
+				break;
+			case 75:
+				tutorial.setIcon(new ImageIcon(MyImages.arrowDown));
+				tutorial.setHorizontalTextPosition(SwingConstants.LEFT);
+				tutorial.setText("However, since they start out here, they have less...");
+				break;
+			case 76:
+				tutorial.setIcon(null);
+				tutorial.setText("distance to cover. A file that makes it safely to the...");
+				break;
+			case 77:
+				tutorial.setText("CPU will add a few bytes of data. You can also use...");
+				break;
+			case 78:
+				tutorial.setText("files for your own purposes. Try saving up for a...");
+				break;
+			case 79:
+				tutorial.setLocation(0, 440);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setText("communications tower.");
+				break;
+			case 80:
+				tutorial.setBounds(0,9*h/10, w, h/10);
+				tutorial.setText("Once you upgrade it to an info hub (3rd path), ...");
+				break;
+			case 81:
+				tutorial.setText("you can connect your towers to it, for $500 each. ...");
+				break;
+			case 82:
+				tutorial.setText("Connected towers share upgrades. Good luck!");
+				break;
+			case 83:
+				tutorial.setVisible(false);
+				break;
+			//viruses tutorial
+			case 93:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("From here on out, files are pretty much going to...");
+				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
+				break;
+			case 94:
+				tutorial.setText("be omnipresent. This is an easy way for you to...");
+				break;
+			case 95:
+				tutorial.setText("rack up data, but on the flip side, malwares like...");
+				break;
+			case 96:
+				tutorial.setText("viruses will try to use the files for their own...");
+				break;
+			case 97:
+				tutorial.setText("purposes. Viruses come in from the top, like...");
+				break;
+			case 98:
+				tutorial.setText("minions and worms. However, viruses can replicate...");
+				break;
+			case 99:
+				tutorial.setText("by attaching themselves to executable files. ...");
+				break;
+			case 100:
+				tutorial.setText("The best defense against these is to stop them ...");	
+				break;
+			case 101:
+				tutorial.setText("early on, with scanners and disc throwers. ...");
+				break;
+			case 102:
+				tutorial.setText("However, they are rather fast, so it might ...");
+				break;
+			case 103:
+				tutorial.setText("be helpful to place a random number generator.");
+				break;
+			case 104:
+				tutorial.setText("These towers freeze malware teporarily.");
+			case 105:
+				tutorial.setText("You can buy one if you want.");
+				tutorial.setLocation(0, 150);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				break;
+			case 106:
+				tutorial.setText("Okay, I hope you can handle 15 viruses. Good luck!");
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				break;
+			case 107:
+				tutorial.setVisible(false);
+				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				Game.tutorialSlide = 30;
+				break;
+			//spywares tutorial
+			case 108:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setText("These shady characters on the screen are ...");
+				break;
+			case 109:
+				tutorial.setText("called spyware. They hunt the network for ...");
+				break;
+			case 110:
+				tutorial.setText("unprotected data, stealing any that they find. ...");
+				break;
+			case 111:
+				tutorial.setText("You can protect your data by encrypting it.");
+				break;
+			case 112:
+				tutorial.setText("Paying $750 for an encrypter is definitely worth...");
+				break;
+			case 113:
+				tutorial.setText("the money, since each file that is stolen...");
+				break;
+			case 114:
+				tutorial.setText("by spyware contains confidential info...");
+				break;
+			case 115:
+				tutorial.setText("that the hackers will use to spend 10% of...");
+				break;
+			case 116:
+				tutorial.setText("all the money you currently have.");
+				break;
+			case 117:
+				tutorial.setText("If you can, buy an encrypter now.");
+				tutorial.setLocation(0, 370);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				break;
+			case 118:
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setIcon(null);
+				tutorial.setText("Now go! Obliterate the spyware and ruin the ...");
+				break;
+			case 119:
+				tutorial.setText("hackers' dreams!");
+				break;
+			case 120:
+				tutorial.setVisible(false);
+				break;
+			//bots tutorial
+			case 121:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9*h/10, w, h/10);
+				tutorial.setText("Ah,the hackers have unleashed the most powerful...");
+				break;
+			case 122:
+				tutorial.setText("malware of all: the Web Bot. Bots perform...");
+				break;
+			case 123:
+				tutorial.setText("actions that are normally done by humans. These...");
+				break;
+			case 124:
+				tutorial.setText("particular bots create their own minions in...");
+				break;
+			case 125:
+				tutorial.setText("an attempt to perform a denial of service...");
+				break;
+			case 126:
+				tutorial.setText("attack. In a DoS attack, hackers overflow the...");
+				break;
+			case 127:
+				tutorial.setText("servers with bots. This technique could be used...");
+				break;
+			case 128:
+				tutorial.setText("to shut down PlayStation Network or even to...");
+				break;
+			case 129:
+				tutorial.setText("overwhelm your disc throwers with sheer numbers.");
+				break;
+			case 130:
+				tutorial.setText("Beware, you had better be well prepared , for...");
+				break;
+			case 131:
+				tutorial.setText("the bots are no weak enemy!");
+				break;
+			case 132:
+				tutorial.setVisible(false);
+				break;
+			//save load tutorial to run level 2
+			case 400:
+				tutorial.setVisible(true);
+				tutorial.setIcon(null);
+				tutorial.setBounds(0, 9*h/10, w, h/10);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("Now that you've upgraded your hardware, ...");
+				break;
+			case 401:
+				tutorial.setText("you can place more towers, upgrade your current...");
+				break;
+			case 402:
+				tutorial.setText("ones, save the game, or load a new game. ...");
+				break;
+			case 403:
+				tutorial.setText("The save and load buttons are in the top left ...");
+				break;
+			case 404:
+				tutorial.setText("corner, underneath the fast-forward button and to...");
+				break;
+			case 405:
+				tutorial.setText("the right of the play button. When you're ready, ...");
+				break;
+			case 406:
+				tutorial.setText("press play to begin the next round.");
+				break;
+			case 407:
+				tutorial.setVisible(false);
+				Game.tutorialSlide = Game.savedSlide - 1;
+				nextSlide();
+				break;
+			//only runs when a life is lost
+			case 500:
+				tutorial.setVisible(true);
+				tutorial.setIcon(new ImageIcon(MyImages.arrowUp));
+				tutorial.setHorizontalTextPosition(SwingConstants.LEFT);
+				tutorial.setHorizontalAlignment(SwingConstants.RIGHT);
+				tutorial.setBounds(3 * w / 7, 3 * h / 14, w / 2, h / 10);
+				tutorial.setText("Oh, rats! it appears that...");
+				Game.gameState = Game.PAUSED;
+				Game.pauseButton.setIcon(PauseButtonListener.sprite);
+				break;
+			case 501:
+				tutorial.setText("the malwares reached your...");
+				break;
+			case 502:
+				tutorial.setBounds(0, 9*h/10, w, h/10);
+				tutorial.setIcon(null);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("CPU. Now, your Bytes Remaining in...");
+				break;
+			case 503:
+				tutorial.setText("your CPU will decrease...");
+				break;
+			case 504:
+				tutorial.setText("according to the remaining...");
+				break;
+			case 505:
+				tutorial.setText("health of the malware. ...");
+				break;
+			case 506:
+				tutorial.setText("For example, a full health...");
+				break;
+			case 507:
+				tutorial.setText("minion will corrupt 100 bytes.");
+				break;
+			case 508:
+				tutorial.setText("You can stop a few...");
+				break;
+			case 509:
+				tutorial.setText("slip-aways with a firewall.");
+				break;
+			case 510:
+				Game.addMoney(200);
+				tutorial.setLocation(0, 305);
+				tutorial.setIcon(new ImageIcon(MyImages.redArrow));
+				tutorial.setHorizontalTextPosition(SwingConstants.RIGHT);
+				tutorial.setHorizontalAlignment(SwingConstants.LEADING);
+				tutorial.setText("Go ahead and buy one now.");
+				break;
+			case 511:
+				tutorial.setBounds(0, 9 * h / 10, w, h / 10);
+				tutorial.setIcon(null);
+				tutorial.setHorizontalAlignment(SwingConstants.CENTER);
+				tutorial.setText("Normally, firewalls cost $200, but I'll pay for it this time.");
+				break;
+			case 512:
+				tutorial.setText("Now, each firewall can only stop 10 malwares per...");
+				break;
+			case 513:
+				tutorial.setText("round, so place it on the track strategically!");
+				break;
+			case 514:
+				Game.livesTutorialPlayed = true;
+				Game.tutorialSlide = Game.savedSlide - 1;
+				Game.gameState = Game.PLAYING;
+				Game.pauseButton.setIcon(PauseButtonListener.pausedSprite);
+				System.out.println(Game.tutorialSlide);
+				//go back
+				nextSlide();
+				break;
+				*/
+			default:
+				tutorial.setVisible(false);
+				disableTutorial();
 		}
+		
+		//set size of tutorial to appropriate size if it's not in the bottom
+		if(!tutorial.getLocation().equals(new Point(0, 9 * h / 10)) && !tutorial.getLocation().equals(new Point(0, 8 * h / 10)))
+			tutorial.setSize(tutorial.getPreferredSize().width + 5, tutorial.getPreferredSize().height + 5);
 	}
 	/**
 	 * Turns off the tutorial.
@@ -465,7 +1258,41 @@ public class GamePanel extends JPanel
 		Game.tutorial = false;
 		tutorial.setVisible(false);
 	}
-	
+	/**
+	 * Turns on the tutorial.
+	 */
+	public void enableTutorial()
+	{
+		Game.tutorial = true;
+		tutorial.setVisible(true);
+	}
+	/**
+	 * Moves the tutorial up to make room for the upgrades panel, if the tutorial is in the way.
+	 */
+	public void moveTutorial()
+	{
+		Rectangle tutorialArea = new Rectangle(tutorial.getBounds());
+		Rectangle upgradesArea = new Rectangle(0, 9 * getHeight() / 10, getWidth(), getHeight() / 10);
+		
+		if(tutorialArea.intersects(upgradesArea))
+			tutorial.setLocation(0, 8 * getHeight() / 10);
+	}
+	/**
+	 * Enables free play mode with a RandomManager
+	 */
+	public void enterFreeplay()
+	{
+		lvlManager = new RandomManager();
+		Game.freeplay = true;
+	}
+	/**
+	 * Enables story mode with a StoryManager
+	 */
+	public void enterStoryMode()
+	{
+		lvlManager = new StoryManager();
+		Game.freeplay = false;
+	}
 	private class DrawingPanel extends JPanel
 	{
 		public DrawingPanel()
@@ -477,13 +1304,75 @@ public class GamePanel extends JPanel
 		{
 			super.paintComponent(g);
 			
+			//draw path
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setColor(Color.YELLOW);
+			for(int trackPart = 0; trackPart < path.length; trackPart++)
+			{
+				g2d.fill(path[trackPart]);
+			}
+			
+			//draw connections. begin by looking for a comm tower
+			for(int t = 0; t < GamePanel.numTowers; t++)
+			{
+				if(Tower.allTowers[t] instanceof CommunicationsTower)
+				{
+					//if the comm tower is a star layout, draw lines from all connected towers to the hub
+					if(CommunicationsTower.star)
+					{	
+						for(int t2 = 0; t2 < numTowers; t2++)
+						{	
+							if(Tower.allTowers[t2].isConnected)
+							{
+								g2d.setStroke(new BasicStroke(5));
+								g2d.drawLine(Tower.allTowers[t].getCenterX(), Tower.allTowers[t].getCenterY(), 
+										Tower.allTowers[t2].getCenterX(), Tower.allTowers[t2].getCenterY());
+							}
+						}
+					}
+					//draw mesh
+					else
+					{
+						//loop through all towers
+						for (int t1=0; t1<numTowers; t1++)
+						{
+							//if tower is connected
+							if(Tower.allTowers[t1].isConnected)
+							{
+								TowerType type = Tower.allTowers[t1].getType();
+								//loop through all other towers
+								for(int t2 = 0; t2 < numTowers; t2++)
+								{
+									//check if 2nd tower is connected and of same type
+									if(Tower.allTowers[t2].isConnected && Tower.allTowers[t2].getType() == type)
+									{
+										//draw line connecting towers
+										g2d.setColor(Color.yellow);
+										g2d.setStroke(new BasicStroke(5));
+										g2d.drawLine(Tower.allTowers[t1].getCenterX(), Tower.allTowers[t1].getCenterY(), 
+												Tower.allTowers[t2].getCenterX(), Tower.allTowers[t2].getCenterY());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			//draw all files
+			ListIterator<BonusFile> iter = BonusFile.allFiles.listIterator();
+			while(iter.hasNext())
+			{
+				iter.next().draw(g);
+			}
+			
 			//draw all viruses
-			for(int v=0; v<lvlManager.getMalwaresThisLevel(); v++)
+			for(int v=0; v<Malware.numMalwares; v++)
 			{
 				if(Malware.allMalware[v] == null)
 					break;
 				else
-					Malware.allMalware[v].drawVirus(g);
+					Malware.allMalware[v].draw(g);
 			}
 			
 			//draw all towers
@@ -491,7 +1380,7 @@ public class GamePanel extends JPanel
 			{
 				Tower curr = Tower.allTowers[i];
 				if(curr != null)
-					curr.drawTower(g);
+					curr.draw(g);
 				else
 					break;
 			}
@@ -500,7 +1389,45 @@ public class GamePanel extends JPanel
 			ListIterator<Projectile> iterator = Projectile.allProjectiles.listIterator();
 			while(iterator.hasNext())
 			{
-				iterator.next().drawProjectile(g);
+				iterator.next().draw(g);
+			}
+			
+			//draw temporary range indicator
+			if(rangeOn)
+			{
+				g2d.setColor(new Color(0, 0, 0, 50));
+				g2d.fill(tempRangeIndicator);
+				//System.out.println("drew range circle at "+tempRangeIndicator.getBounds());
+			}
+			
+			//draw map images
+			//modem
+			AffineTransform at = new AffineTransform();
+			at.scale(Game.xScale, Game.yScale);
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 84) - Game.xScale*MyImages.modem.getWidth()/2)/Game.xScale, 
+					 ((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 42 - Game.yScale*MyImages.modem.getHeight()/2)/Game.yScale);
+			if(!Malware.routerOn)
+				g2d.drawImage(MyImages.modem, at, null);
+			else
+				g2d.drawImage(MyImages.router, at, null);
+			//cpu
+			at = new AffineTransform();
+			at.scale(Game.xScale, Game.yScale);
+			at.translate(((Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) + Game.widthOfGamePanel / 3 - (Game.widthOfGamePanel / 84) - MyImages.cpu.getWidth()/2)/Game.xScale, 
+					(Game.heightOfGamePanel/6 - MyImages.cpu.getHeight()/2)/Game.yScale);
+			g2d.drawImage(MyImages.cpu, at, null);
+			
+			//decoy cpu
+			at = new AffineTransform();
+			at.scale(Game.xScale, Game.yScale);
+			at.translate(((int) (Game.widthOfGamePanel * .4) + (Game.widthOfGamePanel / 5) - (Game.widthOfGamePanel / 42) - (int) (Game.widthOfGamePanel * .3) - MyImages.decoyCPU.getWidth()/2)/Game.xScale, 
+					((Game.heightOfGamePanel * .4) + Game.heightOfGamePanel / 2- Game.widthOfGamePanel / 84 - Game.yScale*MyImages.decoyCPU.getHeight()/2)/Game.yScale);
+			g2d.drawImage(MyImages.decoyCPU, at, null);
+			
+			//draw info
+			if(infoPopup != null && infoPopup.isVisible())
+			{
+	        	infoPopup.draw(g);
 			}
 		}
 	}

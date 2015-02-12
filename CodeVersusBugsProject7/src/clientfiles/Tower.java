@@ -1,25 +1,19 @@
 package clientfiles;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImageOp;
+import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.Random;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import clientfiles.Malware.State;
 
@@ -60,14 +54,15 @@ import clientfiles.Malware.State;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public abstract class Tower implements ActionListener
+public abstract class Tower implements ActionListener, Serializable
 {	
+	private static final long serialVersionUID = 1L;
 	public static Tower[] allTowers = new Tower[100];
 	protected static JButton[] sprites = new JButton[100];
 	protected  int[] costsOfUpgrades = new int[27];
 	public ImageIcon icon;
 	private static Random generator = new Random();
-	public static boolean backedUp = false;
+	public boolean backedUp = false;
 	
 	protected int id;
 	protected int x;
@@ -77,21 +72,28 @@ public abstract class Tower implements ActionListener
 	protected double rangeOfSplash;
 	public int timer = 0;  
 	public int timerReset;   //upgrade-able
-	//private int attackSpeed; // work on this later
 	protected TowerType type;
 	protected double damage;
 	protected int level = 1;
-	protected int health = 50;
-	public boolean infected = false;
+	protected int health;
+	protected int maxHealth;
+	private boolean infected = false;
+	public boolean isConnected = false;
+	private boolean spawnedWorm = false;
+	private static int healthToSet = 50;
 	
 	protected Ellipse2D rangeIndicator;
+	protected Arc2D scan;
+	protected BufferedImage healthBar;
 	public boolean rangeOn = true;
 	protected double angleOfArrow;
+	protected double scanDegree;
 	
 	//upgrades
 	protected int projectileDurability;
-	protected boolean splashEffect; //TODO add animation
+	protected boolean splashEffect;
 	protected boolean lethalRandoms = false;
+	protected boolean buffed;
 	
 	protected int cost = 0;
 	protected int realValue = 0;
@@ -107,18 +109,6 @@ public abstract class Tower implements ActionListener
 	protected double hits;
 	protected double accuracy;
 	
-	/** Upgrades Ideas:
-	 * Individual vs Universal  				<---let's start with individual 
-	 * Attack       		<---i think we should do attack 1st
-	 * bottom panel vs shop panel				<---???you choose here
-	 * panel(must be individual) vs tree(must be universal)	<---we don't actually have to have different visuals, tree == paused like state?
-	 * 											here, let's just start
-	 * 											ok so lets get the pause menu
-	 * stats						<---start w/ stats. access the tree?
-	 * ok, so stats on tree and individual upgrades on panel
-	 * abilities/special upgrades vs stats
-	 */
-	
 	public Tower(ImageIcon icon, int idToSet)
 	{
 		kills = 0;
@@ -126,6 +116,9 @@ public abstract class Tower implements ActionListener
 		hits = 0;
 		
 		accuracy = 1;
+		maxHealth = healthToSet;
+		health = maxHealth;
+		buffed = false;
 		
 		id = idToSet;
 		
@@ -134,7 +127,7 @@ public abstract class Tower implements ActionListener
 		this.icon = icon;
 		
 		sprites[id] = new JButton(icon);
-		sprites[id].setBounds(getX(), getY(), (int)(50*Game.scaleOfSprites), (int)(50*Game.scaleOfSprites));
+		sprites[id].setBounds(getX(), getY(), (int) (Game.xScale*icon.getIconWidth()), (int) (Game.yScale*icon.getIconHeight()));
 		sprites[id].addActionListener(this);
 		
 		rangeIndicator = new Ellipse2D.Double(getCenterX()-range, getCenterY()-range, range*2, range*2);
@@ -161,10 +154,14 @@ public abstract class Tower implements ActionListener
 	public void setX(int xToSet)
 	{
 		x=xToSet;
+		if(this instanceof Scanner)
+			scan = new Arc2D.Double(x, y, range, range, 0, ((Scanner)this).getArcAngle(), Arc2D.PIE);
 	}
 	public void setY(int yToSet)
 	{
 		y=yToSet;
+		if(this instanceof Scanner)
+			scan = new Arc2D.Double(x, y, range, range, 0, ((Scanner)this).getArcAngle(), Arc2D.PIE);
 	}
 	
 	public void setIcon(ImageIcon i)
@@ -179,7 +176,7 @@ public abstract class Tower implements ActionListener
 	 */
 	public int getCenterX()
 	{
-		return (int) (x + Game.scaleOfSprites * sprites[id].getWidth() / 2);
+		return (int) (x + Game.xScale * icon.getIconWidth() / 2);
 	}
 	/**returns the y of the center of the tower
 	 * 
@@ -187,7 +184,7 @@ public abstract class Tower implements ActionListener
 	 */
 	public int getCenterY()
 	{
-		return y + (int) (Game.scaleOfSprites * sprites[id].getHeight() / 2);
+		return y + (int) (Game.yScale * icon.getIconHeight() / 2);
 	}
 	/**sets the x-coordinate of the center of the tower
 	 * 
@@ -195,7 +192,7 @@ public abstract class Tower implements ActionListener
 	 */
 	public void setCenterX(int xToSet)
 	{
-		x=xToSet-25;
+		x = xToSet - (int) (Game.xScale * icon.getIconWidth() / 2);
 	}
 	/**sets the y-coordinate of the center of the tower
 	 * 
@@ -203,37 +200,79 @@ public abstract class Tower implements ActionListener
 	 */
 	public void setCenterY(int yToSet)
 	{
-		y=yToSet-25;
+		y = yToSet - (int) (Game.yScale * icon.getIconHeight() / 2);
 	}
-	/**Returns the location of the tower on the game panel. Use this for drawing.
+	/**
+	 * Returns the location of the tower on the game panel. Use this for drawing.
 	 * 
+	 * @deprecated
 	 * @return
 	 */
 	public int getScreenX()
 	{
-		return x + GamePanel.getMapX();
+		return x;
 	}
-	/**Returns the location of the tower on the game panel. Use this for drawing.
+	/**
+	 * Returns the location of the tower on the game panel. Use this for drawing.
 	 * 
+	 * @deprecated
 	 * @return
 	 */
 	public int getScreenY()
 	{
-		return y + GamePanel.getMapY();
+		return y;
 	}
 	public TowerType getType()
 	{
 		return type;
 	}
-	
+	public static void increaseHealth(int increase)
+	{
+		healthToSet += increase;
+	}
+	public static void resetHealth()
+	{
+		healthToSet = 0;
+	}
+	public static int getHealthToSet() {
+		return healthToSet;
+	}
+	public static void setHealthToSet(int healthToSet) {
+		Tower.healthToSet = healthToSet;
+	}
 	public void dealDamage(int damage)
 	{
 		health -= damage;
-		
 		//change image for disc throwers
 		if(this instanceof DiscThrower)
 		{
-			if(health <= 0)
+			if(health < 0)
+			{
+				//or, just infect it
+				infected = true;
+				health = 100;
+				setIcon(new ImageIcon(MyImages.dt5));
+			}
+			else if(health <= maxHealth/5)
+			{
+				setIcon(new ImageIcon(MyImages.dt4));
+			}
+			else if(health <= 2*maxHealth/5)
+			{
+				setIcon(new ImageIcon(MyImages.dt3));
+			}
+			else if(health <= 3*maxHealth/5)
+			{
+				setIcon(new ImageIcon(MyImages.dt2));
+			}
+			else if(health <= 4*maxHealth/5)
+			{
+				setIcon(new ImageIcon(MyImages.dt1));
+			}
+		}
+		else if(this instanceof Scanner)
+		{
+			if(health < 0)
 			{
 				//kill a worm-ed tower
 				//Upgrades.displayedUpgradeID = id;
@@ -242,36 +281,88 @@ public abstract class Tower implements ActionListener
 				//or, just infect it
 				infected = true;
 				health = 100;
-				setIcon(new ImageIcon(MyImages.dt5));
+				setIcon(new ImageIcon(MyImages.scanner5));
 			}
-			else if(health <= 10)
+			else if(health <= maxHealth / 5)
 			{
-				setIcon(new ImageIcon(MyImages.dt4));
+				setIcon(new ImageIcon(MyImages.scanner4));
 			}
-			else if(health <= 20)
+			else if(health <= 2 * maxHealth / 5)
 			{
-				setIcon(new ImageIcon(MyImages.dt3));
+				setIcon(new ImageIcon(MyImages.scanner3));
 			}
-			else if(health <=30)
+			else if(health <= 3 * maxHealth / 5)
 			{
-				setIcon(new ImageIcon(MyImages.dt2));
+				setIcon(new ImageIcon(MyImages.scanner2));
 			}
-			else if(health <= 40)
+			else if(health <= 4 * maxHealth / 5)
 			{
-				setIcon(new ImageIcon(MyImages.dt1));
+				System.out.println("DAMAGED");
+				setIcon(new ImageIcon(MyImages.scanner1));
 			}
 		}
-		
-		//for ng's, just infect 'em for now
-		else if(health <= 0)
+		else if(this instanceof Encrypter)
 		{
-			//kill a worm-ed tower
-			//Upgrades.displayedUpgradeID = id;
-			//Upgrades.deleteTower();
-			
-			//or, just infect it
+			if(health < 0)
+			{
+				//or, just infect it
+				infected = true;
+				health = 100;
+				setIcon(new ImageIcon(MyImages.encrypter5));
+			}
+			else if(health <= maxHealth / 5)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter4));
+			}
+			else if(health <= 2 * maxHealth / 5)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter3));
+			}
+			else if(health <= 3 * maxHealth / 5)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter2));
+			}
+			else if(health <= 4 * maxHealth / 5)
+			{
+				setIcon(new ImageIcon(MyImages.encrypter1));
+			}
+		}
+		else if(this instanceof NumberGenerator)
+		{
+			if(health < 0)
+			{
+				infected = true;
+				health = 100;
+				healthBar = MyImages.healthBar5;
+			}
+			else if(health <= maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar4;
+			}
+			else if(health <= 2 * maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar3;
+			}
+			else if(health <= 3 * maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar2;
+			}
+			else if(health <= 4 * maxHealth / 5)
+			{
+				healthBar = MyImages.healthBar1;
+			}
+		}
+		//for non-imaged towers, just infect
+		else if(health < 0)
+		{
 			infected = true;
 			health = 100;
+			System.out.println(getClass().getName()+" doesn't have an image.");
+			
+			if(health < 0)
+			{
+				healthBar = MyImages.healthBar0;
+			}
 		}
 	}
 	public boolean isInfected()
@@ -279,11 +370,14 @@ public abstract class Tower implements ActionListener
 		return infected;
 	}
 	/**
-	 * creates a projectile to attack opponents
+	 * Creates a projectile to attack opponents
+	 * 
+	 * @param target the malware to direct the cd at
+	 * @param toerType the type of the attacking tower
 	 */
 	public void attack(Malware target, TowerType towerType)
 	{
-		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR)
+		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR || towerType == TowerType.FAST_TOWER || towerType == TowerType.BOMBINGTOWER)
 		{
 			double xOfTower = getCenterX();
 			double yOfTower = getCenterY();
@@ -358,6 +452,8 @@ public abstract class Tower implements ActionListener
 		double virusesDistance = 0;
 		boolean specialEffects = false;
 		boolean targetFound = false;
+		boolean validTower = true;
+		boolean commTowerSelected = false;
 		Malware virusToAttack = null;
 		
 		if (target.type == TowerType.NUMBER_GENERATOR)
@@ -365,7 +461,7 @@ public abstract class Tower implements ActionListener
 		
 		if (specialEffects)
 		{
-			while (i < Game.gamePanel.lvlManager.getMalwaresThisLevel())
+			while (i < Malware.numMalwares)
 			{
 				//necessary to prevent null pointer exceptions
 				if(Malware.allMalware[i] == null)
@@ -376,7 +472,7 @@ public abstract class Tower implements ActionListener
 				
 				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
 				
-				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.FROZEN && distanceFromTower <= range && yOfVirus >= 0)
+				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.FROZEN && Malware.allMalware[i].state != State.INVISIBLE && distanceFromTower <= range && yOfVirus >= 0)
 				{
 					virusToAttack = Malware.allMalware[i];
 					virusesDistance = virusToAttack.getRelativeDistance();
@@ -391,7 +487,7 @@ public abstract class Tower implements ActionListener
 		
 		if (!targetFound)
 		{
-			while (i < Game.gamePanel.lvlManager.getMalwaresThisLevel())
+			while (i < Malware.numMalwares)
 			{
 				//necessary to prevent null pointer exceptions
 				if(Malware.allMalware[i] == null)
@@ -401,9 +497,8 @@ public abstract class Tower implements ActionListener
 				yOfVirus = Malware.allMalware[i].getCenterY();
 				
 				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
-				//System.out.println(distanceFromTower + " " + Virus.allViruses[i]);
 				
-				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && distanceFromTower <= range && yOfVirus >= 0)
+				if (Malware.allMalware[i].state != State.INVISIBLE  && Malware.allMalware[i].getRelativeDistance() >= virusesDistance && distanceFromTower <= range && yOfVirus >= 0)
 				{
 					virusToAttack = Malware.allMalware[i];
 					virusesDistance = virusToAttack.getRelativeDistance();
@@ -414,7 +509,81 @@ public abstract class Tower implements ActionListener
 			}
 		}
 		
+		i = 0;
 		
+		if (target.type == TowerType.COMMUNICATIONS_TOWER || target.type == TowerType.FIREWALL || target.type == TowerType.ENCRYPTER)
+			validTower = false;
+		
+		// check range of comm towers
+		if (specialEffects)
+		{
+			for (int t = 0; t < GamePanel.numTowers; t++)
+			{
+				if (Tower.allTowers[t] == null)
+					break;
+				if (Tower.allTowers[t].type == TowerType.COMMUNICATIONS_TOWER)
+					commTowerSelected = true;
+				
+				while (i < Malware.numMalwares && commTowerSelected && validTower)
+				{
+					//necessary to prevent null pointer exceptions
+					if(Malware.allMalware[i] == null)
+						break;
+					
+					xOfVirus = Malware.allMalware[i].getCenterX();
+					yOfVirus = Malware.allMalware[i].getCenterY();
+					xOfTower = Tower.allTowers[t].getCenterX();
+					yOfTower = Tower.allTowers[t].getCenterY();
+					
+					distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
+					
+					if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.FROZEN 
+							&& Malware.allMalware[i].state != State.INVISIBLE && distanceFromTower <= Tower.allTowers[t].range && yOfVirus >= 0 
+							&& ((CommunicationsTower)Tower.allTowers[t]).shareRange)
+					{
+						virusToAttack = Malware.allMalware[i];
+						virusesDistance = virusToAttack.getRelativeDistance();
+						targetFound = true;
+					}
+					
+					i++;
+				}
+			}
+		}
+		
+		i = 0;
+		
+		// check range of comm towers
+		for (int t = 0; t < GamePanel.numTowers; t++)
+		{
+			if (Tower.allTowers[t] == null)
+				break;
+			if (Tower.allTowers[t].type == TowerType.COMMUNICATIONS_TOWER)
+				commTowerSelected = true;
+			
+			while (i < Malware.numMalwares && commTowerSelected && validTower)
+			{
+				//necessary to prevent null pointer exceptions
+				if(Malware.allMalware[i] == null)
+					break;
+				
+				xOfVirus = Malware.allMalware[i].getCenterX();
+				yOfVirus = Malware.allMalware[i].getCenterY();
+				xOfTower = Tower.allTowers[t].getCenterX();
+				yOfTower = Tower.allTowers[t].getCenterY();
+				
+				distanceFromTower = Math.sqrt(Math.pow(xOfVirus - xOfTower, 2) + Math.pow(yOfVirus - yOfTower, 2));
+				
+				if (Malware.allMalware[i].getRelativeDistance() >= virusesDistance && Malware.allMalware[i].state != State.INVISIBLE && distanceFromTower <= Tower.allTowers[t].range && yOfVirus >= 0 && ((CommunicationsTower)Tower.allTowers[t]).shareRange)
+				{
+					virusToAttack = Malware.allMalware[i];
+					virusesDistance = virusToAttack.getRelativeDistance();
+					targetFound = true;
+				}
+				
+				i++;
+			}
+		}
 		
 		if (targetFound)
 		{
@@ -426,7 +595,7 @@ public abstract class Tower implements ActionListener
 		}
 	}
 	
-	public void drawTower(Graphics g)
+	public void draw(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -439,22 +608,53 @@ public abstract class Tower implements ActionListener
 		
 		//reset image
 		AffineTransform at = new AffineTransform();
-		at.scale(Game.scaleOfSprites, Game.scaleOfSprites);
-		at.translate(getX()/Game.scaleOfSprites, getY()/Game.scaleOfSprites);
+		at.scale(Game.xScale, Game.yScale);
+		at.translate(getX()/Game.xScale, getY()/Game.yScale);
 		g2d.drawImage(icon.getImage(), at, null);
 		sprites[id].setIcon(icon);
-		
-		sprites[id].setBounds(getScreenX(), getScreenY(), sprites[id].getWidth(), sprites[id].getHeight());
+		sprites[id].setBounds(getX(), getY(), (int) (Game.xScale*icon.getIconWidth()), (int) (Game.yScale*icon.getIconHeight()));
 		
 		//rotate arrow for disc throwers
 		if(this instanceof DiscThrower)
 		{
 			AffineTransform op = new AffineTransform();
-			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
-					getCenterY()-MyImages.redArrow.getHeight()/2);
-			op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
-			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+			op.scale(Game.xScale, Game.yScale);
+			op.translate((getCenterX()-MyImages.redArrow.getWidth()/2)/Game.xScale,
+						 (y + (int) (Game.yScale * (icon.getIconHeight()-10) / 2)-MyImages.redArrow.getHeight()/2)/Game.yScale);
+			op.rotate(angleOfArrow, MyImages.redArrow.getWidth()/2*Game.xScale, MyImages.redArrow.getHeight()/2*Game.yScale);
+			//op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
 			g2d.drawImage(MyImages.redArrow, op, null);
+		}
+		if(this instanceof BombingTower)
+		{
+			AffineTransform op = new AffineTransform();
+			op.scale(Game.xScale, Game.yScale);
+			op.translate((getCenterX()-MyImages.redArrow.getWidth()/2)/Game.xScale,
+						 (y + (int) (Game.yScale * (icon.getIconHeight()-10) / 2)-MyImages.redArrow.getHeight()/2)/Game.yScale);
+			op.rotate(angleOfArrow, MyImages.redArrow.getWidth()/2*Game.xScale, MyImages.redArrow.getHeight()/2*Game.yScale);
+			//op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+			g2d.drawImage(MyImages.cannon, op, null);
+		}
+		//rotate scanner for scanners
+		else if(this instanceof Scanner)
+		{
+			scan.setAngleStart(scanDegree);
+			scan.setFrame(getCenterX()-range, getCenterY()-range, range*2, range*2);
+			g2d.setColor(new Color(131, 252, 201, 150));
+			g2d.fill(scan);
+		}
+		//set background transparent for communications tower
+		else if(this instanceof CommunicationsTower)
+		{
+			sprites[id].setBackground(new Color(0,0,0,0));
+		}
+		//draw health bar for num gens and avs's
+		else if(this instanceof NumberGenerator || this instanceof FastTower)
+		{
+			AffineTransform op = new AffineTransform();
+			op.scale(Game.xScale, Game.yScale);
+			op.translate(getX()/Game.xScale, (getY() + sprites[id].getHeight())/Game.yScale);
+			g2d.drawImage(healthBar, op, null);
 		}
 	}
 	
@@ -482,6 +682,12 @@ public abstract class Tower implements ActionListener
 			{
 				if (Upgrades.displayedUpgradeID != i)
 				{
+					if (Upgrades.upgradesActive)
+					{
+						//hide upgrade panel and range indicator
+						Tower.allTowers[Upgrades.displayedUpgradeID].rangeOn = false;
+						Upgrades.removeUpgradePanel();
+					}
 					//show panel and range indicator
 					Upgrades.showUpgradePanel(i);
 					rangeOn = true;
@@ -500,5 +706,19 @@ public abstract class Tower implements ActionListener
 				}
 			}
 		}
+	}
+	
+	public boolean hasSpawnedWorm()
+	{
+		return spawnedWorm;
+	}
+	
+	public void setSpawnedWorm()
+	{
+		spawnedWorm = true;
+	}
+	public void setInfected(boolean b) 
+	{
+		infected = b;
 	}
 }

@@ -1,7 +1,6 @@
 /**TowerType.java
  * This is an enumeration that serves to list all the tower types. Use this enum in switch/case statements that 
  * need to differentiate between towers of different types.
- * TODO replace this with instanceof
  * 
  * ----------------------------------------------------------------------
  * 
@@ -23,5 +22,5 @@ package clientfiles;
 
 public enum TowerType 
 {
-	DISC_THROWER, SCANNER, NUMBER_GENERATOR, NONE
+	DISC_THROWER, SCANNER, NUMBER_GENERATOR, FIREWALL, COMMUNICATIONS_TOWER, ENCRYPTER, FAST_TOWER, BOMBINGTOWER, NONE
 }

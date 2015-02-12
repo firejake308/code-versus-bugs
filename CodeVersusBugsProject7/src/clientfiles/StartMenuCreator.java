@@ -21,12 +21,6 @@ package clientfiles;
  */
 public class StartMenuCreator implements Runnable 
 {
-
-	public StartMenuCreator() 
-	{
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public void run() 
 	{

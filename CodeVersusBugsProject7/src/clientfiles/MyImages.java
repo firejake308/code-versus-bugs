@@ -1,20 +1,4 @@
-package clientfiles;
-
-//import java.awt.Toolkit;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-/**MyImages.java
- * Holds static BufferedImage variables for use in the other classes.
- * @author Ahmadul
- * 
- * ----------------------------------------------------------------------
- * 
- * Copyright 2014 Adel Hassan and Patrick Kenney
+/*Copyright 2014 Adel Hassan and Patrick Kenney
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,19 +12,78 @@ import javax.swing.JOptionPane;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package clientfiles;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+/**MyImages.java
+ * Holds static BufferedImage variables for use in the other classes.
+ * 
+ * @author Adel Hassan and Patrick Kenney
+ */
 public class MyImages 
 {
 	//frames and buttons
 	public static BufferedImage miniMinion;
+	public static BufferedImage miniMinion2;
+	public static BufferedImage miniMinion3;
 	public static BufferedImage play;
 	public static BufferedImage pause;
 	public static BufferedImage fastForwardOff;
 	public static BufferedImage fastForwardOn;
 	public static BufferedImage redArrow;
+	public static BufferedImage arrowUp;
+	public static BufferedImage arrowDown;
+	public static BufferedImage dim;
+	public static BufferedImage glow;
+	public static BufferedImage startOpen;
+	public static BufferedImage startClosed;
+	public static BufferedImage creditsOpen;
+	public static BufferedImage creditsClosed;
+	public static BufferedImage optionsOpen;
+	public static BufferedImage optionsClosed;
+	public static BufferedImage directionsOpen;
+	public static BufferedImage directionsClosed;
+	public static BufferedImage exitOpen;
+	public static BufferedImage exitClosed;
+	public static BufferedImage backOpen;
+	public static BufferedImage backClosed;
+	public static BufferedImage buttonOpen;
+	public static BufferedImage buttonClosed;
+	public static BufferedImage delete;
+	public static BufferedImage cure;
+	public static BufferedImage connect;
+	public static BufferedImage save;
+	public static BufferedImage load;
+	public static BufferedImage info;
+	public static BufferedImage restart;
+	public static BufferedImage quit;
+	public static BufferedImage openTyper;
+	
 	//malware
 	public static BufferedImage minion;
+	public static BufferedImage tankMinion;
+	public static BufferedImage rushMinion;
 	public static BufferedImage wormHead;
 	public static BufferedImage wormBody;
+	public static BufferedImage trojan;
+	public static BufferedImage dataFile;
+	public static BufferedImage exeFile;
+	public static BufferedImage secureFile;
+	public static BufferedImage packetFile;
+	public static BufferedImage virus;
+	public static BufferedImage tankVirus;
+	public static BufferedImage rushVirus;
+	public static BufferedImage spy;
+	public static BufferedImage bot;
+	public static BufferedImage stun;
+	public static BufferedImage malwareIcon;
+	
 	//towers
 	public static BufferedImage dt0;
 	public static BufferedImage dt1;
@@ -48,6 +91,12 @@ public class MyImages
 	public static BufferedImage dt3;
 	public static BufferedImage dt4;
 	public static BufferedImage dt5;
+	public static BufferedImage bt0;
+	public static BufferedImage bt1;
+	public static BufferedImage bt2;
+	public static BufferedImage bt3;
+	public static BufferedImage bt4;
+	public static BufferedImage bt5;
 	public static BufferedImage invalidDT;
 	public static BufferedImage random;
 	public static BufferedImage randomlethal;
@@ -62,8 +111,38 @@ public class MyImages
 	public static BufferedImage random8;
 	public static BufferedImage random9;
 	public static BufferedImage invalidRandom;
+	public static BufferedImage scanner0;
+	public static BufferedImage scanner1;
+	public static BufferedImage scanner2;
+	public static BufferedImage scanner3;
+	public static BufferedImage scanner4;
+	public static BufferedImage scanner5;
+	public static BufferedImage encrypter0;
+	public static BufferedImage encrypter1;
+	public static BufferedImage encrypter2;
+	public static BufferedImage encrypter3;
+	public static BufferedImage encrypter4;
+	public static BufferedImage encrypter5;
+	public static BufferedImage invalidEncrypter;
+	public static BufferedImage invalidScanner;
+	public static BufferedImage firewall;
+	public static BufferedImage firewallShopImage;
+	public static BufferedImage firewallBroken;
+	public static BufferedImage commTower;
+	public static BufferedImage invalidCommTower;
+	public static BufferedImage antiVirusSoftware;
+	public static BufferedImage invalidAntiVirusSoftware;
+	public static BufferedImage healthBar0;
+	public static BufferedImage healthBar1;
+	public static BufferedImage healthBar2;
+	public static BufferedImage healthBar3;
+	public static BufferedImage healthBar4;
+	public static BufferedImage healthBar5;
+	public static BufferedImage cannon;
+	
 	//projectiles
 	public static BufferedImage cd;
+	public static BufferedImage bombCD;
 	public static BufferedImage r0;
 	public static BufferedImage r1;
 	public static BufferedImage r2;
@@ -84,12 +163,15 @@ public class MyImages
 	public static BufferedImage r7lethal;
 	public static BufferedImage r8lethal;
 	public static BufferedImage r9lethal;
+	public static BufferedImage shield;
+
 	//map
 	public static BufferedImage cpu;
+	public static BufferedImage decoyCPU;
 	public static BufferedImage modem;
 	public static BufferedImage router;
 	
-	/**
+	/*
 	 * I believe I need the method due to the need for a try-catch
 	 * 
 	 */
@@ -99,16 +181,59 @@ public class MyImages
 		{
 			//frames and buttons
 			miniMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon.png"));
+			miniMinion2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon2.png"));
+			miniMinion3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/cvb_icon3.png"));
 			pause = ImageIO.read(MyImages.class.getResourceAsStream("resources/pausePauseButton.png"));
 			play 			= ImageIO.read(MyImages.class.getResourceAsStream("resources/playPauseButton.png"));
 			fastForwardOff 	= ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOff.png"));
 			fastForwardOn 	= ImageIO.read(MyImages.class.getResourceAsStream("resources/FastForwardOn.png"));
 			redArrow = ImageIO.read(MyImages.class.getResourceAsStream("resources/redArrow.png"));
+			arrowUp = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowUp.png"));
+			arrowDown = ImageIO.read(MyImages.class.getResourceAsStream("resources/arrowDown.png"));
+			dim = ImageIO.read(MyImages.class.getResourceAsStream("resources/dim.png"));
+			glow = ImageIO.read(MyImages.class.getResourceAsStream("resources/glow.png"));
+			startOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/startBtnOpen.png"));
+			startClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/startBtnClosed.png"));
+			creditsOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/creditsBtnOpen.png"));
+			creditsClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/creditsBtnClosed.png"));
+			optionsOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/optionsBtnOpen.png"));
+			optionsClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/optionsBtnClosed.png"));
+			directionsOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/directionsBtnOpen.png"));
+			directionsClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/directionsBtnClosed.png"));
+			exitOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/exitBtnOpen.png"));
+			exitClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/exitBtnClosed.png"));
+			backOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/backBtnOpen.png"));
+			backClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/backBtnClosed.png"));
+			buttonOpen = ImageIO.read(MyImages.class.getResourceAsStream("resources/btnOpen.png"));
+			buttonClosed = ImageIO.read(MyImages.class.getResourceAsStream("resources/btnClosed.png"));
+			delete = ImageIO.read(MyImages.class.getResourceAsStream("resources/delete.png"));
+			cure = ImageIO.read(MyImages.class.getResourceAsStream("resources/cure.png"));
+			connect = ImageIO.read(MyImages.class.getResourceAsStream("resources/connect.png"));
+			save = ImageIO.read(MyImages.class.getResourceAsStream("resources/save.png"));
+			load = ImageIO.read(MyImages.class.getResourceAsStream("resources/load.png"));
+			info = ImageIO.read(MyImages.class.getResourceAsStream("resources/info.png"));
+			restart = ImageIO.read(MyImages.class.getResourceAsStream("resources/restart.png"));
+			quit = ImageIO.read(MyImages.class.getResourceAsStream("resources/quit.png"));
+			openTyper = ImageIO.read(MyImages.class.getResourceAsStream("resources/openTyper.png"));
 			
 			//malware
 			minion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus2.png"));
+			tankMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusRed.png"));
+			rushMinion = ImageIO.read(MyImages.class.getResourceAsStream("resources/virusGreen.png"));
 			wormHead = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormHead.png"));
 			wormBody = ImageIO.read(MyImages.class.getResourceAsStream("resources/wormBody.png"));
+			trojan = ImageIO.read(MyImages.class.getResourceAsStream("resources/trojan1.png"));
+			dataFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/datafile.png"));
+			exeFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/exefile.png"));
+			secureFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/securefile.png"));
+			packetFile = ImageIO.read(MyImages.class.getResourceAsStream("resources/packetfile.png"));
+			virus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus3.png"));
+			tankVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus4.png"));
+			rushVirus = ImageIO.read(MyImages.class.getResourceAsStream("resources/virus5.png"));
+			spy = ImageIO.read(MyImages.class.getResourceAsStream("resources/spy.png"));
+			bot = ImageIO.read(MyImages.class.getResourceAsStream("resources/bot.png"));
+			stun = ImageIO.read(MyImages.class.getResourceAsStream("resources/stun.png"));
+			malwareIcon = ImageIO.read(MyImages.class.getResourceAsStream("resources/malwareIcon2.png"));
 			
 			//towers
 			dt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower0.png"));
@@ -117,6 +242,12 @@ public class MyImages
 			dt3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower3.png"));
 			dt4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower4.png"));
 			dt5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower5.png"));
+			bt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower0.png"));
+			bt1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower1.png"));
+			bt2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower2.png"));
+			bt3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower3.png"));
+			bt4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower4.png"));
+			bt5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower5.png"));
 			invalidDT = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidDiscThrower1.png"));
 			random = ImageIO.read(MyImages.class.getResourceAsStream("resources/random.png"));
 			randomlethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/randomlethal.png"));
@@ -131,9 +262,38 @@ public class MyImages
 			random8 = ImageIO.read(MyImages.class.getResourceAsStream("resources/random8.png"));
 			random9 = ImageIO.read(MyImages.class.getResourceAsStream("resources/random9.png"));
 			invalidRandom = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidRandom.png"));
+			scanner0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner0.png"));
+			scanner1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner1.png"));
+			scanner2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner2.png"));
+			scanner3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner3.png"));
+			scanner4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner4.png"));
+			scanner5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/scanner5.png"));
+			encrypter0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter0.png"));
+			encrypter1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter1.png"));
+			encrypter2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter2.png"));
+			encrypter3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter3.png"));
+			encrypter4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter4.png"));
+			encrypter5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/encrypter5.png"));
+			invalidEncrypter = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidEncrypter.png"));
+			invalidScanner = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidScanner.png"));
+			firewall = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall1.png"));
+			firewallShopImage = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewall2.png"));
+			firewallBroken = ImageIO.read(MyImages.class.getResourceAsStream("resources/firewallBroken.png"));
+			commTower = ImageIO.read(MyImages.class.getResourceAsStream("resources/commTower.png"));
+			invalidCommTower = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidCommTower.png"));
+			antiVirusSoftware = ImageIO.read(MyImages.class.getResourceAsStream("resources/avs.png"));
+			invalidAntiVirusSoftware = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidAVS.png"));
+			healthBar0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar0.png"));
+			healthBar1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar1.png"));
+			healthBar2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar2.png"));
+			healthBar3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar3.png"));
+			healthBar4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar4.png"));
+			healthBar5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar5.png"));
+			cannon = ImageIO.read(MyImages.class.getResourceAsStream("resources/cannon.png"));
 			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));
+			bombCD = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombCD.png"));
 			r0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r0.png"));
 			r1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r1.png"));
 			r2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r2.png"));
@@ -154,9 +314,11 @@ public class MyImages
 			r7lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r7lethal.png"));
 			r8lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r8lethal.png"));
 			r9lethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/r9lethal.png"));
+			shield = ImageIO.read(MyImages.class.getResourceAsStream("resources/shield.png"));
 			
 			//map
 			cpu = ImageIO.read(MyImages.class.getResourceAsStream("resources/cpu.png"));
+			decoyCPU = ImageIO.read(MyImages.class.getResourceAsStream("resources/decoyCPU.png"));
 			modem = ImageIO.read(MyImages.class.getResourceAsStream("resources/modem1.png"));
 			router = ImageIO.read(MyImages.class.getResourceAsStream("resources/router1.png"));
 		}

@@ -1,8 +1,13 @@
 package clientfiles;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -38,7 +43,7 @@ import javax.swing.ImageIcon;
  * limitations under the License.
  */
 
-public class Projectile
+public class Projectile implements Serializable
 {
 	public static ArrayList<Projectile> allProjectiles = new ArrayList<Projectile>();
 	public static ArrayList<Projectile> recycleBin = new ArrayList<Projectile>();
@@ -48,7 +53,7 @@ public class Projectile
 	private double x;
 	private double y;
 	
-	private int idOfTower;
+	private int idOfOwner;
 	
 	private int quadrant;
 	private int uses;
@@ -76,13 +81,15 @@ public class Projectile
 	private final int WORM = 342;
 	private int owner;
 	
+	private int theta;
+	
 	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, TowerType towerType, int towerID, double damageToSet)
 	{
 		owner = TOWER;
 		
-		idOfTower = towerID;
+		idOfOwner = towerID;
 		
-		if (/*towerType==TowerType.DISC_THROWER*/Tower.allTowers[idOfTower] instanceof DiscThrower)
+		if (Tower.allTowers[idOfOwner] instanceof DiscThrower)
 		{
 			sprite = MyImages.cd;
 			speed = 5;
@@ -90,9 +97,9 @@ public class Projectile
 			// affects speed of virus
 			manipulatorForVirus = 1;
 		}
-		else if(/*towerType == TowerType.NUMBER_GENERATOR*/Tower.allTowers[idOfTower] instanceof NumberGenerator)
+		else if(Tower.allTowers[idOfOwner] instanceof NumberGenerator)
 		{
-			if (Tower.allTowers[idOfTower].lethalRandoms)
+			if (Tower.allTowers[idOfOwner].lethalRandoms)
 			{
 				ImageIcon[] randoms = {
 						new ImageIcon(MyImages.r0lethal), new ImageIcon(MyImages.r1lethal),
@@ -117,14 +124,31 @@ public class Projectile
 			
 			speed=3;
 			
-			splashRange = Tower.allTowers[idOfTower].rangeOfSplash;
+			splashRange = Tower.allTowers[idOfOwner].rangeOfSplash;
 			
-			//change icon of the number generator
+			//change normalIcon of the number generator
 			int r1 = NumberGenerator.rand.nextInt(NumberGenerator.icons.length);
-			Tower.sprites[idOfTower].setIcon(NumberGenerator.icons[r1]);
+			Tower.sprites[idOfOwner].setIcon(NumberGenerator.icons[r1]);
 			
 			// affects speed of virus
 			manipulatorForVirus = 0;
+		}
+		else if(Tower.allTowers[idOfOwner] instanceof FastTower)
+		{
+			sprite = MyImages.shield;
+			speed = 6;
+			theta = 0;
+			
+			// affects speed of virus
+			manipulatorForVirus = 1;
+		}
+		else if(Tower.allTowers[idOfOwner] instanceof BombingTower)
+		{
+			sprite = MyImages.bombCD;
+			speed = 4;
+			manipulatorForVirus = 1;
+			splashRange = Tower.allTowers[idOfOwner].rangeOfSplash;
+			splashEffect = true;
 		}
 		
 		a = aToSet;
@@ -133,20 +157,21 @@ public class Projectile
 		x = xToSet - sprite.getWidth(null)/2;
 		y = yToSet - sprite.getHeight(null)/2;
 		damage = damageToSet;
-		uses = Tower.allTowers[idOfTower].projectileDurability;
-		splashEffect = Tower.allTowers[idOfTower].splashEffect;
+		uses = Tower.allTowers[idOfOwner].projectileDurability;
+		splashEffect = Tower.allTowers[idOfOwner].splashEffect;
 	}
-	/**ONLY FOR USE WITH WORMS TO ATTACK TOWERS
+	/**
+	 * ONLY FOR USE WITH WORMS TO ATTACK TOWERS
 	 * 
 	 * @param aToSet
 	 * @param bToSet
 	 * @param quadrantToSet
 	 * @param xToSet
 	 * @param yToSet
-	 * @param location
+	 * @param wormID
 	 * @param damageToSet
 	 */
-	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, int location, double damageToSet)
+	public Projectile(double aToSet, double bToSet, int quadrantToSet, double xToSet, double yToSet, int wormID, double damageToSet)
 	{
 		owner = WORM;
 		
@@ -166,6 +191,7 @@ public class Projectile
 		quadrant = quadrantToSet;
 		x = xToSet - sprite.getWidth(null)/2;
 		y = yToSet - sprite.getHeight(null)/2;
+		idOfOwner = wormID;
 		damage = damageToSet;
 		
 		uses = 1;
@@ -192,15 +218,7 @@ public class Projectile
 	{
 		return y + sprite.getHeight(null)/2;
 	}
-	/**
-	 * @deprecated
-	 */
-	public static void initializeProjectiles()
-	{
-		/*for (int i = 0; i < allProjectiles.length; i++)
-			allProjectiles[i] = null;*/
-	}
-	// I removed parameter p since this is an object method
+	
 	public void moveProjectile(double elapsedTime)
 	{
 		double oldX = getX();
@@ -264,7 +282,7 @@ public class Projectile
 				{
 					uses--;
 					
-					Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
+					Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfOwner);
 				}
 				
 				else if(distFromMalware <= Malware.allMalware[v].sprite.getHeight(null) / 2 && !virusHit)
@@ -284,12 +302,7 @@ public class Projectile
 						virusesHit[numOfVirusesHit] = Malware.allMalware[v];
 						numOfVirusesHit++;
 						
-						Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfTower);
-						
-						/*if (uses <= 0)
-						{
-							deleteProjectile();
-						}*/
+						Malware.allMalware[v].dealDamage((int)damage, manipulatorForVirus, idOfOwner);
 						break;
 					}
 				}
@@ -305,11 +318,13 @@ public class Projectile
 					break;
 				
 				//if it hits the tower, deal damage to it and decrement uses
-				double distFromTower = Math.sqrt(Math.pow(current.getX() - getCenterX(), 2) + Math.pow(current.getY()- getCenterY(), 2));
+				double distFromTower = Math.sqrt(Math.pow(current.getCenterX() - getCenterX(), 2) + Math.pow(current.getCenterY()- getCenterY(), 2));
 				
 				if(distFromTower < Tower.sprites[t].getWidth())
 				{
 					current.dealDamage((int)damage);
+					if(current.isInfected())
+						Malware.allMalware[Malware.numMalwares] = new Worm(rand.nextInt(5)+1, 0);
 					recycleBin.add(this);
 					numToRecycle++;
 				}
@@ -318,13 +333,11 @@ public class Projectile
 		//delete used projectiles
 		if (uses <= 0)
 		{
-			/*recycleBin[numToRecycle] = this;
-			numToRecycle++;*/
 			addToRecycleBin();
 		}
 		
 		//also delete projectile if it goes off the screen
-		else if(x<-50 || x>1500 || y<-50 || y>800)
+		else if(x<-50 || x>Game.widthOfGamePanel + 50 || y<-50 || y>Game.heightOfGamePanel + 50)
 		{
 			addToRecycleBin();
 		}
@@ -334,10 +347,38 @@ public class Projectile
 			System.out.println("A projectile in the top left corner was deleted");
 		}
 	}
-	
-	public void drawProjectile(Graphics g)
+	/**
+	 * Clears all projectiles from the screen.
+	 */
+	public static void clearProjectiles()
 	{
-		g.drawImage(sprite, (int)x + GamePanel.getMapX(), (int)y + GamePanel.getMapY(), null);
+		Iterator<Projectile> iter = allProjectiles.iterator();
+		while(iter.hasNext())
+		{
+			Projectile curr = iter.next();
+			curr.addToRecycleBin();
+		}
+	}
+	/**
+	 * Draws the projectile on the given Graphics context.
+	 * 
+	 * @param g the Grpahics context on which to draw the projectile
+	 */
+	public void draw(Graphics g)
+	{
+		/*
+		//rotate for FASTs only
+		if(Tower.allTowers[idOfOwner].getType() == TowerType.FAST_TOWER)
+		{
+			Graphics2D g2d = (Graphics2D) g;
+			AffineTransform at = new AffineTransform();
+			at.translate(x, y);
+			at.rotate(theta++, x+sprite.getWidth(null)/2, y+sprite.getHeight(null)/2);
+			g2d.drawImage(sprite, at, null);
+		}
+		//otherwise, just draw it
+		else*/
+			g.drawImage(sprite, (int)x, (int)y, null);
 	}
 	
 	public void addToRecycleBin()

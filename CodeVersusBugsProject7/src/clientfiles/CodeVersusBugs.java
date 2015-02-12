@@ -26,9 +26,18 @@
 package clientfiles;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.*;
 
 public class CodeVersusBugs
 {
@@ -38,6 +47,8 @@ public class CodeVersusBugs
 	{
 		try
 		{
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			
 			MyImages.initializeImages();
 			game = new Game();
 			
@@ -57,6 +68,7 @@ public class CodeVersusBugs
 			Game.startMenu.setIconImage(MyImages.miniMinion);
 			
 			Game.gf = new GameFrame();
+			Game.startMenu.setVisible(true);		
 			
 			//time variables for game loop
 			long lastUpdateTime = System.nanoTime();
@@ -84,6 +96,16 @@ public class CodeVersusBugs
 					SwingUtilities.invokeLater(new PauseButtonListener());
 				else if(Game.gameState == Game.OVER)
 					break;
+				else if(Game.gameState == Game.WON)
+				{
+					Object[] options = {"Restart", "Quit"};
+					int choice = JOptionPane.showOptionDialog(Game.gf, "You Won!", 
+							"WARNING", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, 0);
+					if(choice == 0)
+						Game.restart();
+					else if(choice == 1)
+						System.exit(0);
+				}
 				
 				//get fps
 				framesThisSec++;
@@ -94,7 +116,8 @@ public class CodeVersusBugs
 					framesThisSec=0;
 					lastFrameTime=0;
 					
-					Game.gf.fpsCounter.setText(Game.fps+" fps");
+					//System.out.println(Game.fps);
+					Game.gf.fpsDisplay.setDisplay(Game.fps);
 					Game.infoPanel.repaint();
 				}
 				
@@ -119,17 +142,25 @@ public class CodeVersusBugs
 			
 			//end of game
 			Game.gf.setVisible(false);
-			JOptionPane.showMessageDialog(null, "You lost on round " + Game.level);
+			
+			if (Game.gameState == Game.OVER)
+				JOptionPane.showMessageDialog(null, "You lost on round " + Game.level);
 			System.exit(0);
 		}
 		catch(NullPointerException e)
 		{
 			JOptionPane.showMessageDialog(null,"something was null");
-			JOptionPane.showMessageDialog(null, e);
+			//JOptionPane.showMessageDialog(null, e);
+			e.printStackTrace();
+		}
+		catch(UnsupportedLookAndFeelException e)
+		{
+			JOptionPane.showMessageDialog(null,"nimbus didn't work");
 		}
 		catch(Exception e)
 		{
 			JOptionPane.showMessageDialog(null,"something went wrong");
+			e.printStackTrace();
 		}
 	}
 }

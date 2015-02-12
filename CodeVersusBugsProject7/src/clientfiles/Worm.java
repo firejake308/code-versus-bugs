@@ -2,6 +2,7 @@ package clientfiles;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
@@ -29,7 +30,7 @@ import clientfiles.Malware.State;
 public class Worm extends Malware
 {
 	//static variables for images
-	public static Image sprite = new ImageIcon(MyImages.wormHead).getImage();
+	public static BufferedImage sprite = MyImages.wormHead;
 	public static Image sprite2 = new ImageIcon(MyImages.wormBody).getImage();
 	//shortcut variable to width of game panel
 	private static int w = Game.widthOfGamePanel;
@@ -46,15 +47,16 @@ public class Worm extends Malware
 	private double distance4;
 	private int range;
 	private int damage;
+	private int lane;
 	public int timer=0;
 	public final int TIMER_RESET = 60;
-	
-	public int speed = (int) (w * 0.020);
 	
 	public Worm(int lane, int y) 
 	{
 		//create a worm in specified lane at specified y value
-		super(lane, y);
+		super(0, lane, y);
+		
+		offensive = true;
 		
 		//set secondary positions
 		x2 = x;
@@ -68,10 +70,13 @@ public class Worm extends Malware
 		distance4 = distance - 3*sprite.getHeight(null);
 		
 		//initialize instance variables
-		health = 200;
-		reward = 10;
-		range = 120;
+		maxHealth = 1400;
+		health = 1400;
+		reward = 5;
+		range = (int) (Game.widthOfGamePanel * .03);
 		damage = 10;
+		speed = (int) (w * 0.020);
+		this.lane = lane;
 	}
 	
 	private double getX2() 
@@ -170,7 +175,7 @@ public class Worm extends Malware
 	 * @param frames
 	 */
 	@Override
-	public void moveVirus(double frames)
+	public void move(double frames)
 	{
 		// timer for frozen viruses
 		if (state == State.FROZEN && elapsedTime < 5)
@@ -195,6 +200,20 @@ public class Worm extends Malware
 		{
 			setY(getY()+directions[0]*speed*frames/60*manipulator * Game.speedModifier);
 			setDistance(getDistance()+speed*frames/60*manipulator * Game.speedModifier);
+			
+			//special case for worms tutorial
+			if(Game.tutorial && firstWorm && this instanceof Worm)
+			{
+				Game.playSound("danger.wav");
+				firstWorm = false;
+				Game.gameState = Game.PAUSED;
+				Game.gamePanel.infoPopup = new InfoPopup((int)x, (int)y);
+				Game.gamePanel.infoPopup.setVisible(true);
+	        	Game.gamePanel.infoPopup.setTitle("Worm");
+	        	Game.gamePanel.infoPopup.setInfo1("Health: "+this.maxHealth);
+	        	Game.gamePanel.infoPopup.setInfo2("Ability: Infects towers to replicate");
+	        	Game.gamePanel.infoPopup.setInfo3("Fact: Worms are advanced viruses that can self-replicate, even tihout files.");
+			}
 		}
 		//move right
 		else if(getDistance()<path[1])
@@ -421,8 +440,8 @@ public class Worm extends Malware
 		{
 			System.out.println("a virus made it across");
 			
-			Game.lives--;
-			Game.gf.life.setText("Lives: " + Game.lives);
+			Game.lives-=health;
+			Game.gf.life.setDisplay(Game.lives);
 			
 			if (Game.lives <= 0)
 			{
@@ -467,6 +486,7 @@ public class Worm extends Malware
 		Tower towerToAttack = null;
 		
 		i = 0;
+		boolean attackingFireWall = false;
 		
 		while (i < Tower.allTowers.length)
 		{
@@ -474,13 +494,16 @@ public class Worm extends Malware
 			if(Tower.allTowers[i] == null)
 				break;
 			
+			if (Tower.allTowers[i] instanceof FireWall)
+				attackingFireWall = true;
+			
 			//compare tower and worm x to get distance between them
 			xOfTower = Tower.allTowers[i].getCenterX();
 			yOfTower = Tower.allTowers[i].getCenterY();
 			distanceFromWorm = Math.sqrt(Math.pow(xOfWorm - xOfTower, 2) + Math.pow(yOfWorm - yOfTower, 2));
 			
 			//if tower is close enough and not infected, stop moving and attack it
-			if(distanceFromWorm < range && !Tower.allTowers[i].isInfected())
+			if(distanceFromWorm < range && !Tower.allTowers[i].isInfected() && !attackingFireWall)
 			{
 				towerToAttack = Tower.allTowers[i];
 				worm.state = State.ATTACKING;
@@ -492,25 +515,24 @@ public class Worm extends Malware
 	}
 	
 	@Override
-	public void drawVirus(Graphics g)
+	public void draw(Graphics g)
 	{
 		if(health>0)
 		{
-			g.drawImage(sprite, (int)getX()+GamePanel.getMapX(), (int)getY()+GamePanel.getMapY(), null);
-		}
-		if(health>50)
-		{
-			g.drawImage(sprite2, (int)getX2()+GamePanel.getMapX(), (int)getY2()+GamePanel.getMapY(), null);
-		}
-		if(health>100)
-		{
-			g.drawImage(sprite2, (int)getX3()+GamePanel.getMapX(), (int)getY3()+GamePanel.getMapY(), null);
+			g.drawImage(sprite, (int)getX(), (int)getY(), null);
 		}
 		if(health>150)
 		{
-			g.drawImage(sprite2, (int)getX4()+GamePanel.getMapX(), (int)getY4()+GamePanel.getMapY(), null);
+			g.drawImage(sprite2, (int)getX2(), (int)getY2(), null);
+		}
+		if(health>300)
+		{
+			g.drawImage(sprite2, (int)getX3(), (int)getY3(), null);
+		}
+		if(health>450)
+		{
+			g.drawImage(sprite2, (int)getX4(), (int)getY4(), null);
 
 		}
 	}
-	
 }
