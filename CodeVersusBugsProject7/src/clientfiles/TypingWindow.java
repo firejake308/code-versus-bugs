@@ -10,7 +10,7 @@ import java.util.Random;
 
 import static java.lang.System.*;
 
-public class TypingWindow extends JFrame implements KeyListener, ActionListener, LineListener
+public class TypingWindow extends JFrame implements KeyListener
 {
 	public static TypingWindow game;
 	
@@ -21,11 +21,6 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener,
 	private int charsTyped;
 	private int codeSegment;
 	private int outputMultiplier;
-	
-	//sound stuff
-	private SourceDataLine enterKeypress;
-	private AudioInputStream audioStream;
-	private boolean playCompleted;
 	
 	private String[] target = {"//Let's begin by saying hello\n"
 			+ "System.out.println(\"Hello world!\");", 
@@ -59,7 +54,43 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener,
 			+ "//doesn't get processed as actual code.\n\n"
 			+ "/*If you want, you can also do block\n"
 			+ "comments that span multiple lines\n"
-			+ "like this.*/"};
+			+ "like this.*/",
+			
+			"//How does this apply to our game? Watch:\n"
+			+ "double health = 100;\n"
+			+ "double damage = 25;\n"
+			+ "health = health - damage;\n"
+			+ "System.out.println(health);",
+			
+			"//But what if we're not sure if we want to\n"
+			+ "//do something? Well, there's another\n"
+			+ "//variable type called a boolean\n\n"
+			+ "boolean unsure = false;\n"
+			+ "boolean definitely = true;\n"
+			+ "System.out.println(unsure);\n"
+			+ "System.out.println(definitely);",
+			
+			"/*As you can see, booleans can either be\n"
+			+ "true or false. With the help of if\n"
+			+ "loops, booleans can control program flow.*/\n\n"
+			+ "boolean happy = false;\n"
+			+ "if(happy == true){\n"
+			+ "\tSystem.out.println(\"I'm happy\");\n"
+			+ "}\n"
+			+ "else{\n"
+			+ "\tSystem.out.println(\"I'm sad.\");\n"
+			+ "}",
+			
+			"//Some expressions evaluate to booleans.\n"
+			+ "boolean math = 4 > 5;\n"
+			+ "System.out.println(math);",
+			
+			"if(4 < 5)\n"
+			+ "   System.out.println(4 is less than 5);\n"
+			+ "else\n"
+			+ "   System.out.println(4 isn't less than 5);"
+			
+	};
 	
 	public TypingWindow() 
 	{
@@ -109,18 +140,16 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener,
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+	public void keyTyped(KeyEvent arg0) {
 		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent event) 
+	public void keyReleased(KeyEvent event) 
 	{
 		try 
 		{
@@ -151,6 +180,21 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener,
 				case 4:
 					console.append("13\n7\n30\n3");
 					break;
+				case 6:
+					console.append("75");
+					break;
+				case 7:
+					console.append("false\ntrue");
+					break;
+				case 8:
+					console.append("I'm happy.");
+					break;
+				case 9:
+					console.append("false");
+					break;
+				case 10:
+					console.append("4 is less than 5");
+					break;
 			}
 			
 			//move on to next target String
@@ -160,26 +204,11 @@ public class TypingWindow extends JFrame implements KeyListener, ActionListener,
 			typeZone.setText("\n\n---------------------------\n\n" + typeZone.getText());
 			typeZone.setCaretPosition(0);
 		}
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		
-	}
-
-	@Override
-	public void update(LineEvent event) {
-		LineEvent.Type type = event.getType();
-		
-		if(type == LineEvent.Type.START)
+		catch(ArrayIndexOutOfBoundsException e)
 		{
-			playCompleted = false;
-			out.println("Playback started.");
-		}
-		else if(type == LineEvent.Type.STOP)
-		{
-			playCompleted = true;
-			out.println("Playback finished.");
+			typeZone.setText("");
+			codeSegment = 0;
+			charsTyped = 0;
 		}
 	}
 }

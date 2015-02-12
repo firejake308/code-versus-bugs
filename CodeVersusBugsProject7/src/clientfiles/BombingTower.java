@@ -16,7 +16,7 @@ import javax.swing.*;
 public class BombingTower extends Tower
 {
 	// TODO
-	public static ImageIcon icon = new ImageIcon(MyImages.dt0);
+	public static ImageIcon icon = new ImageIcon(MyImages.bt0);
 	public static ImageIcon invalidIcon = new ImageIcon(MyImages.invalidDT);
 	public static int cost = 750;
 	public static int speedToSet = 140;
@@ -31,10 +31,10 @@ public class BombingTower extends Tower
 		int [] costsOfUpgradesGoBetween = {750, 1000, 1250, 100000000, 0, 0, 0, 0, 0, 400, 600, 750, 100000000, 0, 0, 0, 0, 0, 400, 600, 800, 10000000, 0, 0, 0, 0, 0};
 		costsOfUpgrades = costsOfUpgradesGoBetween;
 		
-		cost = 60;
+		cost = 750;
 		projectileDurability = 1;
-		rangeOfSplash = .5; 
-		splashEffect = false;
+		rangeOfSplash = 1;
+		splashEffect = true;
 		
 		diameterOfTower = 50;
 		
@@ -49,6 +49,7 @@ public class BombingTower extends Tower
 		realValue += cost;
 		
 		healthBar = MyImages.healthBar0;
+		angleOfArrow = 0;
 		
 		//make user pay for towers
 		Game.makePurchase(cost);

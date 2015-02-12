@@ -151,9 +151,9 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					try{
 						while(Game.gameState != Game.OVER && Game.soundOn)
 						{
-							Random gen = new Random();
-							int track = 1 + gen.nextInt(3);
-							AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("resources/background"+track+".wav"));
+							//Random gen = new Random();
+							//int track = 1 + gen.nextInt(3);
+							AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("resources/background3.wav"));
 							AudioFormat format = audioStream.getFormat();
 							DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 							SourceDataLine enterKeypress = (SourceDataLine) AudioSystem.getLine(info);
@@ -337,7 +337,9 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					+ " Versus Bugs. You may turn off the tutorial by going to Options from the start menu and"
 					+ " deselecting the checkbox labeled \"Tutorial.\" The checkbox is selected by default. If you"
 					+ " do wish to keep the in-game tutorial, several transluscent blue boxes will appear to"
-					+ " inform and guide you. You may click the box to move on to the next tutorial slide.\n\n"
+					+ " inform and guide you. You may click the box to move on to the next tutorial slide."
+					+ " Also, at certain times, a black box may pop up to inform you about a new game feature."
+					+ " Once you have read the information, you may click OK to resume play.\n\n"
 					+ "FREEPLAY MODE\n\n"
 					+ "There is an option to play in either story mode or freeplay mode. The default is story mode,"
 					+ " since this is recommended for beginners. Story mode features carefully structured levels and"
@@ -353,7 +355,13 @@ public class StartMenu extends JFrame implements Runnable, ActionListener, ItemL
 					+ "THE HELP MENU\n\n"
 					+ "Pressing the button with the i in a circle will bring up a help menu. The help menu contains detailed"
 					+ " information about gameplay, malware types, and tower types. Pulling up the help menu is a great way"
-					+ " to learn more about malwares during a slow round since doing so doesn't pause the game."
+					+ " to learn more about malwares during a slow round since doing so doesn't pause the game.\n\n"
+					+ "THE TYPER\n\n"
+					+ "If you click the button in the lower left corner of the screen (under the towers) a window will pop"
+					+ " up. While the window is visible, pressing random keys will make text from a program segment show up in the black area of"
+					+ " the window. Once the program segment has been finished, the output will display in the white box"
+					+ " underneath the black area and $5 will be added to your money. This typer is a minigame to occupy"
+					+ " the long space between rounds, and it may also teach you the basics of programming."
 					);
 			instructionsText.setEditable(false);
 		    instructionsText.setBounds(40, 50, 320, 325);

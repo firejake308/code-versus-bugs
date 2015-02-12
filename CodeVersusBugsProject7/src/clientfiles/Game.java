@@ -62,9 +62,9 @@ public class Game extends JFrame implements Runnable
 	public static double numFramesPassed = 0;
 	
 	//common debugging parameters
-	private static int money = 7500;
+	private static int money = 750;
 	public static int lives = 5000;
-	public static int level = 10;
+	public static int level = 1;
 	
 	public static boolean tutorial = true;
 	public static int tutorialSlide = 1;
@@ -208,7 +208,7 @@ public class Game extends JFrame implements Runnable
 	public static void loadGame()
 	{
 		try
-		{
+		{	
 			//read integers and booleans
 			FileInputStream fileInput = new FileInputStream("staticInts.txt");
 			int router = fileInput.read();
@@ -258,7 +258,7 @@ public class Game extends JFrame implements Runnable
 			
 			//read objects
 			ObjectInputStream objInput = new ObjectInputStream(new FileInputStream("objs.txt"));
-			NumberGenerator.damageToSet = objInput.read();
+			NumberGenerator.damageToSet = objInput.readDouble();
 			Tower.allTowers = (Tower[]) objInput.readObject();
 			Tower.sprites = (JButton[]) objInput.readObject();
 			techPanel.setPointValues((int[])objInput.readObject());
@@ -268,6 +268,7 @@ public class Game extends JFrame implements Runnable
 			
 			//turn off fast-forward for smoother transition
 			fastForward = false;
+			
 		}
 		catch(Exception e)
 		{
@@ -406,7 +407,8 @@ public class Game extends JFrame implements Runnable
 		{
 			//just an idea
 		}
-		
+		if(Game.freeplay)
+			Game.addMoney(250);
 		System.out.println("Game inititalized.");
 	}
 	/**

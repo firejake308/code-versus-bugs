@@ -82,6 +82,7 @@ public class MyImages
 	public static BufferedImage spy;
 	public static BufferedImage bot;
 	public static BufferedImage stun;
+	public static BufferedImage malwareIcon;
 	
 	//towers
 	public static BufferedImage dt0;
@@ -90,6 +91,12 @@ public class MyImages
 	public static BufferedImage dt3;
 	public static BufferedImage dt4;
 	public static BufferedImage dt5;
+	public static BufferedImage bt0;
+	public static BufferedImage bt1;
+	public static BufferedImage bt2;
+	public static BufferedImage bt3;
+	public static BufferedImage bt4;
+	public static BufferedImage bt5;
 	public static BufferedImage invalidDT;
 	public static BufferedImage random;
 	public static BufferedImage randomlethal;
@@ -131,9 +138,11 @@ public class MyImages
 	public static BufferedImage healthBar3;
 	public static BufferedImage healthBar4;
 	public static BufferedImage healthBar5;
+	public static BufferedImage cannon;
 	
 	//projectiles
 	public static BufferedImage cd;
+	public static BufferedImage bombCD;
 	public static BufferedImage r0;
 	public static BufferedImage r1;
 	public static BufferedImage r2;
@@ -224,6 +233,7 @@ public class MyImages
 			spy = ImageIO.read(MyImages.class.getResourceAsStream("resources/spy.png"));
 			bot = ImageIO.read(MyImages.class.getResourceAsStream("resources/bot.png"));
 			stun = ImageIO.read(MyImages.class.getResourceAsStream("resources/stun.png"));
+			malwareIcon = ImageIO.read(MyImages.class.getResourceAsStream("resources/malwareIcon2.png"));
 			
 			//towers
 			dt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower0.png"));
@@ -232,6 +242,12 @@ public class MyImages
 			dt3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower3.png"));
 			dt4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower4.png"));
 			dt5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/discThrower5.png"));
+			bt0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower0.png"));
+			bt1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower1.png"));
+			bt2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower2.png"));
+			bt3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower3.png"));
+			bt4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower4.png"));
+			bt5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombTower5.png"));
 			invalidDT = ImageIO.read(MyImages.class.getResourceAsStream("resources/invalidDiscThrower1.png"));
 			random = ImageIO.read(MyImages.class.getResourceAsStream("resources/random.png"));
 			randomlethal = ImageIO.read(MyImages.class.getResourceAsStream("resources/randomlethal.png"));
@@ -273,9 +289,11 @@ public class MyImages
 			healthBar3 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar3.png"));
 			healthBar4 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar4.png"));
 			healthBar5 = ImageIO.read(MyImages.class.getResourceAsStream("resources/healthBar5.png"));
+			cannon = ImageIO.read(MyImages.class.getResourceAsStream("resources/cannon.png"));
 			
 			//projectiles
 			cd = ImageIO.read(MyImages.class.getResourceAsStream("resources/cd.png"));
+			bombCD = ImageIO.read(MyImages.class.getResourceAsStream("resources/bombCD.png"));
 			r0 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r0.png"));
 			r1 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r1.png"));
 			r2 = ImageIO.read(MyImages.class.getResourceAsStream("resources/r2.png"));

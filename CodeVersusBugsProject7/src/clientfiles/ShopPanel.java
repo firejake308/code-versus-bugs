@@ -50,7 +50,7 @@ public class ShopPanel extends JPanel implements ActionListener
 	private Icon enImage = Encrypter.icon;
 	private Icon ctImage = CommunicationsTower.icon;
 	private Icon avsImage = FastTower.icon;
-	private Icon bomberImage = FastTower.icon; //TODO
+	private Icon bomberImage = BombingTower.icon; //TODO
 	
 	public static int timer=0;
 	
@@ -73,13 +73,13 @@ public class ShopPanel extends JPanel implements ActionListener
 		info.setBounds(5, 10, 75, 55);
 		buyDiscThrower.setBounds(20, 70, 51, 63);
 		buyNumberGenerator.setBounds(20, 140, 51, 50);
-		buyBomber.setBounds(20, 210, 51, 50);
-		buyScanner.setBounds(20, 270, 51, 63);
-		buyFireWall.setBounds(20, 345, 51, 50);
-		buyEncrypter.setBounds(20, 400, 51, 63);
-		buyCommunicationsTower.setBounds(20, 470, 51, 50);
-		buyAVS.setBounds(20, 525, 51, 50);
-		openTyper.setBounds(20, 580, 50, 50);
+		buyBomber.setBounds(20, 210, 51, 61);
+		buyScanner.setBounds(20, 280, 51, 63);
+		buyFireWall.setBounds(20, 355, 51, 50);
+		buyEncrypter.setBounds(20, 410, 51, 63);
+		buyCommunicationsTower.setBounds(20, 480, 51, 50);
+		buyAVS.setBounds(20, 535, 51, 50);
+		openTyper.setBounds(20, 590, 50, 50);
 		
 		
 		//makes button background transparent

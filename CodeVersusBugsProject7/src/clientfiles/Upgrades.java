@@ -268,7 +268,7 @@ public abstract class Upgrades
 		upgrade.remove(cureTower);
 		upgrade.remove(connect);
 		//only add cure tower for kill-able towers
-		if(typeOfTower != TowerType.FIREWALL && typeOfTower != TowerType.COMMUNICATIONS_TOWER)
+		if(typeOfTower != TowerType.FIREWALL && typeOfTower != TowerType.COMMUNICATIONS_TOWER && typeOfTower != TowerType.FAST_TOWER)
 		{
 			upgrade.add(cureTower);
 			
@@ -351,12 +351,10 @@ public abstract class Upgrades
 	public static void deleteTower()
 	{
 		int towerToBeDeletedID = displayedUpgradeID;
-		
+		Game.gamePanel.removeFromLayeredPane(Tower.sprites[towerToBeDeletedID]);	
 		System.out.println(displayedUpgradeID);
 		
 		GamePanel.numTowers--;
-		
-		Game.gamePanel.removeFromLayeredPane(Tower.sprites[towerToBeDeletedID]);
 		
 		// reimburse 60% of cost
 		Game.addMoney((int) (Tower.allTowers[towerToBeDeletedID].realValue * 0.6));

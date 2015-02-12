@@ -186,10 +186,11 @@ public class BonusFile
 	
 	public void move(double frames)
 	{
-		if(distance > 50 && Game.tutorial && firstFile)
+		if(y < Game.heightOfGamePanel-50 && Game.tutorial && firstFile)
 		{
 			firstFile = false;
 			Game.gameState = Game.PAUSED;
+			System.out.println("x, y: "+x+", "+y);
 			Game.gamePanel.infoPopup = new InfoPopup((int)x-200, (int)y-200);
 			Game.gamePanel.infoPopup.setVisible(true);
 	    	Game.gamePanel.infoPopup.setTitle("File");

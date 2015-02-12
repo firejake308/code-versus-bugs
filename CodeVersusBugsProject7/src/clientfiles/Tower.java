@@ -377,7 +377,7 @@ public abstract class Tower implements ActionListener, Serializable
 	 */
 	public void attack(Malware target, TowerType towerType)
 	{
-		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR || towerType == TowerType.FAST_TOWER)
+		if (towerType == TowerType.DISC_THROWER || towerType == TowerType.NUMBER_GENERATOR || towerType == TowerType.FAST_TOWER || towerType == TowerType.BOMBINGTOWER)
 		{
 			double xOfTower = getCenterX();
 			double yOfTower = getCenterY();
@@ -595,7 +595,7 @@ public abstract class Tower implements ActionListener, Serializable
 		}
 	}
 	
-	public void drawTower(Graphics g)
+	public void draw(Graphics g)
 	{
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -618,11 +618,22 @@ public abstract class Tower implements ActionListener, Serializable
 		if(this instanceof DiscThrower)
 		{
 			AffineTransform op = new AffineTransform();
-			op.translate(getCenterX()-MyImages.redArrow.getWidth()/2,
-						 getCenterY()-MyImages.redArrow.getHeight()/2);
-			op.rotate(angleOfArrow, getCenterX() - getX(), getCenterY() - getY());
-			op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+			op.scale(Game.xScale, Game.yScale);
+			op.translate((getCenterX()-MyImages.redArrow.getWidth()/2)/Game.xScale,
+						 (y + (int) (Game.yScale * (icon.getIconHeight()-10) / 2)-MyImages.redArrow.getHeight()/2)/Game.yScale);
+			op.rotate(angleOfArrow, MyImages.redArrow.getWidth()/2*Game.xScale, MyImages.redArrow.getHeight()/2*Game.yScale);
+			//op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
 			g2d.drawImage(MyImages.redArrow, op, null);
+		}
+		if(this instanceof BombingTower)
+		{
+			AffineTransform op = new AffineTransform();
+			op.scale(Game.xScale, Game.yScale);
+			op.translate((getCenterX()-MyImages.redArrow.getWidth()/2)/Game.xScale,
+						 (y + (int) (Game.yScale * (icon.getIconHeight()-10) / 2)-MyImages.redArrow.getHeight()/2)/Game.yScale);
+			op.rotate(angleOfArrow, MyImages.redArrow.getWidth()/2*Game.xScale, MyImages.redArrow.getHeight()/2*Game.yScale);
+			//op.translate(Math.cos(angleOfArrow), Math.sin(angleOfArrow));
+			g2d.drawImage(MyImages.cannon, op, null);
 		}
 		//rotate scanner for scanners
 		else if(this instanceof Scanner)

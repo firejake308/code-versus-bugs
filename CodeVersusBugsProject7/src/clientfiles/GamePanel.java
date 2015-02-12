@@ -717,7 +717,8 @@ public class GamePanel extends JPanel
 				tutorial.setBounds(0, 70, 4*w/5, h/10);
 				break;
 			case 8:
-				tutorial.setText("Now place it over here.");
+				tutorial.setText("Now place it on the map.");
+				tutorial.setIcon(null);
 				tutorial.setBounds(17*w/32, 13*h/20, 7*w/16, h/10);
 				break;
 			case 9:
@@ -782,7 +783,7 @@ public class GamePanel extends JPanel
 				tutorial.setText("I'll check back on you at the...");
 				break;
 			case 27:
-				tutorial.setText("end of this round. Good luck!...");
+				tutorial.setText("periodically. Good luck!...");
 				break;
 			case 28:
 				tutorial.setVisible(false);
@@ -1379,7 +1380,7 @@ public class GamePanel extends JPanel
 			{
 				Tower curr = Tower.allTowers[i];
 				if(curr != null)
-					curr.drawTower(g);
+					curr.draw(g);
 				else
 					break;
 			}

@@ -144,8 +144,11 @@ public class Projectile implements Serializable
 		}
 		else if(Tower.allTowers[idOfOwner] instanceof BombingTower)
 		{
-			sprite = MyImages.cd;
+			sprite = MyImages.bombCD;
 			speed = 4;
+			manipulatorForVirus = 1;
+			splashRange = Tower.allTowers[idOfOwner].rangeOfSplash;
+			splashEffect = true;
 		}
 		
 		a = aToSet;

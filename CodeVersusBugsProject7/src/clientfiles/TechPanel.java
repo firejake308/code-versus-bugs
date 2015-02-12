@@ -528,8 +528,6 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 		moneyMult.setText("<html><div style = \"text-align:center\">Money Multiplier<br>"+moneyMultPoints+"/1"+"</html>");
 		
 		//disable all buttons after a point is spent
-		if(pointsToSpend == 0)
-		{
 			damage.setEnabled(false);
 			speed.setEnabled(false);
 			range.setEnabled(false);
@@ -541,7 +539,6 @@ public class TechPanel extends JPanel implements ActionListener, Serializable
 			slow.setEnabled(false);
 			money.setEnabled(false);
 			moneyMult.setEnabled(false);
-		}
 		
 		setVisible(false);
 		Game.gamePanel.setVisible(true);

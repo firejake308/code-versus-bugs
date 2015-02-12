@@ -24,7 +24,7 @@ public class Trojan extends Malware
 		maxHealth = 1000;
 		health = 1000;
 		reward = 5;
-		speed = (int) (w * 0.008);
+		speed = (int)(Game.widthOfGamePanel  * 0.02);
 		state = State.INVISIBLE;
 		
 		//System.out.println("x "+x+" y "+y);
